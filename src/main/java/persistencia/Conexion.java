@@ -32,7 +32,7 @@ public class Conexion {
             // localhost indica que MariaDB está ejecutándose localmente.
             // root es el usuario y "" indica que no hay contraseña.         
             // Se le asigna a la variable la conexión que DriverManager consiga con los datos: URL, usuario y contraseña.
-            connection = DriverManager.getConnection("jdbc:mariadb://localhost/", "root", "");
+            connection = DriverManager.getConnection("jdbc:mariadb://localhost/flechaflash", "root", "");
 
             // DriverManager pide el acceso → driver de MariaDB realiza la comunicación → Connection representa ese acceso en Java.
         } catch (SQLException e) {
