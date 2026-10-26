@@ -10,4 +10,16 @@
         <maven.compiler.release>25</maven.compiler.release>
         <exec.mainClass>com.mycompany.gp10_tpfinal_flechaflash.GP10_TPFINAL_FlechaFLASH</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
+    </dependencies>
 </project>
