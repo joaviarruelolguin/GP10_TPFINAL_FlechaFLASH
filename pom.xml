@@ -5,11 +5,13 @@
     <artifactId>GP10_TPFINAL_FlechaFLASH</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
-        <exec.mainClass>com.mycompany.gp10_tpfinal_flechaflash.GP10_TPFINAL_FlechaFLASH</exec.mainClass>
+        <exec.mainClass>vistas.VIstaPrincipal</exec.mainClass>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
@@ -22,4 +24,15 @@
             <version>1.4</version>
         </dependency>
     </dependencies>
+<build>
+    <resources>
+        <resource>
+            <directory>src/main/java</directory>
+            <includes>
+                <include>iconos/**</include>
+            </includes>
+        </resource>
+    </resources>
+</build>
+
 </project>

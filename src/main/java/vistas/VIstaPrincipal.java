@@ -28,27 +28,47 @@ public class VIstaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlMenu = new javax.swing.JPanel();
+        pnPrincipal = new javax.swing.JPanel();
+        pnlContenido = new javax.swing.JPanel();
+        lblTituloPrincipal = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        pnlMenuLateral = new javax.swing.JPanel();
         lblNombreSistema = new javax.swing.JLabel();
         lblSubtitulo = new javax.swing.JLabel();
         btnInicio = new javax.swing.JButton();
         btnPasajeros = new javax.swing.JButton();
         btnColectivos = new javax.swing.JButton();
         btnRecorridos = new javax.swing.JButton();
-        btnRutaViaje = new javax.swing.JButton();
         btnPasajes = new javax.swing.JButton();
         btnVentas = new javax.swing.JButton();
-        pnlContenido = new javax.swing.JPanel();
-        lblTituloPrincipal = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel4 = new javax.swing.JLabel();
+        btnColectivos1 = new javax.swing.JButton();
+        btnColectivos2 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("FlechaFLASH - Gestion de tranasporte");
+        setTitle("FlechaFLASH   Sistema de gestión de transporte de pasajeros");
         setBackground(new java.awt.Color(204, 255, 204));
         setResizable(false);
 
-        pnlMenu.setBackground(new java.awt.Color(20, 43, 73));
-        pnlMenu.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        pnPrincipal.setLayout(new java.awt.BorderLayout());
+
+        pnlContenido.setBackground(new java.awt.Color(241, 245, 249));
+
+        lblTituloPrincipal.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblTituloPrincipal.setForeground(new java.awt.Color(20, 43, 73));
+        lblTituloPrincipal.setText("Bienvenido a FlechaFLASH");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(100, 116, 139));
+        jLabel2.setText("Sistema de gestión de transporte de pasajeros");
+
+        pnlMenuLateral.setBackground(new java.awt.Color(20, 43, 73));
+        pnlMenuLateral.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
 
         lblNombreSistema.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
         lblNombreSistema.setForeground(new java.awt.Color(255, 255, 255));
@@ -67,6 +87,7 @@ public class VIstaPrincipal extends javax.swing.JFrame {
         btnInicio.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnInicio.setFocusPainted(false);
         btnInicio.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnInicio.addActionListener(this::btnInicioActionPerformed);
 
         btnPasajeros.setBackground(new java.awt.Color(30, 58, 95));
         btnPasajeros.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -95,19 +116,10 @@ public class VIstaPrincipal extends javax.swing.JFrame {
         btnRecorridos.setFocusPainted(false);
         btnRecorridos.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        btnRutaViaje.setBackground(new java.awt.Color(30, 58, 95));
-        btnRutaViaje.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        btnRutaViaje.setForeground(new java.awt.Color(255, 255, 255));
-        btnRutaViaje.setText("Rutas de Viaje");
-        btnRutaViaje.setBorderPainted(false);
-        btnRutaViaje.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnRutaViaje.setFocusPainted(false);
-        btnRutaViaje.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-
         btnPasajes.setBackground(new java.awt.Color(30, 58, 95));
         btnPasajes.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         btnPasajes.setForeground(new java.awt.Color(255, 255, 255));
-        btnPasajes.setText("Pasajes");
+        btnPasajes.setText("Ventas realizadas");
         btnPasajes.setBorderPainted(false);
         btnPasajes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPasajes.setFocusPainted(false);
@@ -116,108 +128,188 @@ public class VIstaPrincipal extends javax.swing.JFrame {
         btnVentas.setBackground(new java.awt.Color(30, 58, 95));
         btnVentas.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         btnVentas.setForeground(new java.awt.Color(255, 255, 255));
-        btnVentas.setText("Ventas");
+        btnVentas.setText("Ventas de pasajes");
         btnVentas.setBorderPainted(false);
         btnVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnVentas.setFocusPainted(false);
         btnVentas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        javax.swing.GroupLayout pnlMenuLayout = new javax.swing.GroupLayout(pnlMenu);
-        pnlMenu.setLayout(pnlMenuLayout);
-        pnlMenuLayout.setHorizontalGroup(
-            pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMenuLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSubtitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblNombreSistema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlMenuLayout.createSequentialGroup()
-                        .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnRutaViaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnInicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnPasajeros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnColectivos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnRecorridos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnPasajes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/autobus.png"))); // NOI18N
+
+        jLabel1.setBackground(new java.awt.Color(204, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("GENERAL");
+
+        jLabel4.setBackground(new java.awt.Color(204, 255, 255));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("VENTAS");
+
+        btnColectivos1.setBackground(new java.awt.Color(30, 58, 95));
+        btnColectivos1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btnColectivos1.setForeground(new java.awt.Color(255, 255, 255));
+        btnColectivos1.setText("Salidas y horarios");
+        btnColectivos1.setBorderPainted(false);
+        btnColectivos1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnColectivos1.setFocusPainted(false);
+        btnColectivos1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnColectivos1.addActionListener(this::btnColectivos1ActionPerformed);
+
+        btnColectivos2.setBackground(new java.awt.Color(30, 58, 95));
+        btnColectivos2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btnColectivos2.setForeground(new java.awt.Color(255, 255, 255));
+        btnColectivos2.setText("Asientos ¿? ");
+        btnColectivos2.setBorderPainted(false);
+        btnColectivos2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnColectivos2.setFocusPainted(false);
+        btnColectivos2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
+        jLabel5.setBackground(new java.awt.Color(204, 255, 255));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("ADMINISTRACIÓN");
+
+        javax.swing.GroupLayout pnlMenuLateralLayout = new javax.swing.GroupLayout(pnlMenuLateral);
+        pnlMenuLateral.setLayout(pnlMenuLateralLayout);
+        pnlMenuLateralLayout.setHorizontalGroup(
+            pnlMenuLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMenuLateralLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblNombreSistema, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(pnlMenuLateralLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(pnlMenuLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlMenuLateralLayout.createSequentialGroup()
+                        .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlMenuLateralLayout.createSequentialGroup()
+                        .addGroup(pnlMenuLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblSubtitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(pnlMenuLateralLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(15, 15, 15))))
+            .addGroup(pnlMenuLateralLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(pnlMenuLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlMenuLateralLayout.createSequentialGroup()
+                        .addGroup(pnlMenuLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRecorridos, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnColectivos, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnColectivos1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnColectivos2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPasajeros, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPasajes)
+                            .addGroup(pnlMenuLateralLayout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlMenuLateralLayout.createSequentialGroup()
+                        .addGroup(pnlMenuLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator1))
+                        .addGap(15, 15, 15))))
+            .addGroup(pnlMenuLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlMenuLateralLayout.createSequentialGroup()
+                    .addGap(22, 22, 22)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(113, Short.MAX_VALUE)))
         );
-        pnlMenuLayout.setVerticalGroup(
-            pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMenuLayout.createSequentialGroup()
+        pnlMenuLateralLayout.setVerticalGroup(
+            pnlMenuLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMenuLateralLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(lblNombreSistema)
+                .addGroup(pnlMenuLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNombreSistema)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSubtitulo)
-                .addGap(35, 35, 35)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnInicio)
                 .addGap(18, 18, 18)
-                .addComponent(btnPasajeros)
-                .addGap(18, 18, 18)
-                .addComponent(btnColectivos)
-                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
                 .addComponent(btnRecorridos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnColectivos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(btnColectivos2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnColectivos1)
+                .addGap(27, 27, 27)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnRutaViaje)
-                .addGap(18, 18, 18)
-                .addComponent(btnPasajes)
+                .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addComponent(btnVentas)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addGap(10, 10, 10)
+                .addComponent(btnPasajeros)
+                .addGap(18, 18, 18)
+                .addComponent(btnPasajes)
+                .addGap(38, 38, 38))
+            .addGroup(pnlMenuLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlMenuLateralLayout.createSequentialGroup()
+                    .addGap(187, 187, 187)
+                    .addComponent(jLabel5)
+                    .addContainerGap(347, Short.MAX_VALUE)))
         );
-
-        pnlContenido.setBackground(new java.awt.Color(241, 245, 249));
-
-        lblTituloPrincipal.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        lblTituloPrincipal.setForeground(new java.awt.Color(20, 43, 73));
-        lblTituloPrincipal.setText("Bienvenido a FlechaFLASH");
-
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(100, 116, 139));
-        jLabel2.setText("Sistema de gestión de transporte de pasajeros");
 
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                .addComponent(pnlMenuLateral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContenidoLayout.createSequentialGroup()
-                        .addGap(110, 110, 110)
+                        .addGap(8, 8, 8)
                         .addComponent(lblTituloPrincipal))
-                    .addGroup(pnlContenidoLayout.createSequentialGroup()
-                        .addGap(102, 102, 102)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(132, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(122, 122, 122))
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContenidoLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(55, 55, 55)
                 .addComponent(lblTituloPrincipal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlMenuLateral, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        pnPrincipal.add(pnlContenido, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnInicioActionPerformed
+
+    private void btnColectivos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColectivos1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnColectivos1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,17 +338,25 @@ public class VIstaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnColectivos;
+    private javax.swing.JButton btnColectivos1;
+    private javax.swing.JButton btnColectivos2;
     private javax.swing.JButton btnInicio;
     private javax.swing.JButton btnPasajeros;
     private javax.swing.JButton btnPasajes;
     private javax.swing.JButton btnRecorridos;
-    private javax.swing.JButton btnRutaViaje;
     private javax.swing.JButton btnVentas;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lblNombreSistema;
     private javax.swing.JLabel lblSubtitulo;
     private javax.swing.JLabel lblTituloPrincipal;
+    private javax.swing.JPanel pnPrincipal;
     private javax.swing.JPanel pnlContenido;
-    private javax.swing.JPanel pnlMenu;
+    private javax.swing.JPanel pnlMenuLateral;
     // End of variables declaration//GEN-END:variables
 }
