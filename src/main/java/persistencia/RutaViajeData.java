@@ -27,6 +27,34 @@ public class RutaViajeData {
 
     public boolean guardarRutaViaje(RutaViaje ruta) {  
 
+        if (ruta == null) {
+            System.out.println("No se puede guardar una ruta nula.");
+            return false;
+        }
+
+        if (ruta.getRecorrido() == null || ruta.getColectivo() == null) {
+            System.out.println("La ruta debe tener un recorrido y un colectivo.");
+            return false;
+        }
+        
+        if (ruta.getFechaHoraSalida() == null
+                || ruta.getFechaHoraLlegada() == null) {
+            System.out.println("Las fechas de salida y llegada son obligatorias.");
+            return false;
+        }
+
+        if (!ruta.getFechaHoraLlegada().isAfter(ruta.getFechaHoraSalida())) {
+            System.out.println("La llegada debe ser posterior a la salida.");
+            return false;
+        }
+        
+        
+        if (ruta.getPrecioBase() == null) {
+            System.out.println("El precio base es obligatorio.");
+            return false;
+        }
+        
+        
         String sql = "INSERT INTO rutaviaje "
                 + "(idRecorrido, idColectivo, fechaHoraSalida, "
                 + "fechaHoraLlegada, precioBase, estado) "
@@ -154,7 +182,7 @@ public class RutaViajeData {
             + "r.estado AS recorridoEstado, "
             + "c.idColectivo AS colectivoId, "
             + "c.matricula, c.marca, c.modelo, "
-            + "c.capacidad, c.caducidad, c.chofer "
+            + "c.capacidad, c.caducidad, c.chofer, "
             + "c.estado AS colectivoEstado "
             + "FROM rutaviaje rv "
             + "INNER JOIN recorrido r "
@@ -221,40 +249,59 @@ public class RutaViajeData {
     
     }
 
-
     // MODIFICACOMS UNA RUTA QUE YA EXISTIA 
     public boolean actualizarRutaViaje(RutaViaje ruta) {
 
-    String sql = "UPDATE rutaviaje SET "
-            + "idRecorrido = ?, "
-            + "idColectivo = ?, "
-            + "fechaHoraSalida = ?, "
-            + "fechaHoraLlegada = ?, "
-            + "precioBase = ?, "
-            + "estado = ? "
-            + "WHERE idRutaViaje = ?";
+        if (ruta == null) {
+            System.out.println("No se puede actualizar una ruta nula.");
+            return false;
+        }
 
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        if (ruta.getRecorrido() == null || ruta.getColectivo() == null) {
+            System.out.println("La ruta debe tener un recorrido y un colectivo.");
+            return false;
+        }
 
-        ps.setInt(1, ruta.getRecorrido().getIdRecorrido());
-        ps.setInt(2, ruta.getColectivo().getIdColectivo());
+        if (ruta.getFechaHoraSalida() == null || ruta.getFechaHoraLlegada() == null) {
+            System.out.println("Las fechas de salida y llegada son obligatorias.");
+            return false;
+        }
 
-        ps.setTimestamp(3,
-                Timestamp.valueOf(ruta.getFechaHoraSalida()));
+        if (!ruta.getFechaHoraLlegada().isAfter(ruta.getFechaHoraSalida())) {
+            System.out.println("La llegada debe ser posterior a la salida.");
+            return false;
+        }
 
-        ps.setTimestamp(4,
-                Timestamp.valueOf(ruta.getFechaHoraLlegada()));
+        String sql = "UPDATE rutaviaje SET "
+                + "idRecorrido = ?, "
+                + "idColectivo = ?, "
+                + "fechaHoraSalida = ?, "
+                + "fechaHoraLlegada = ?, "
+                + "precioBase = ?, "
+                + "estado = ? "
+                + "WHERE idRutaViaje = ?";
 
-        ps.setBigDecimal(5, ruta.getPrecioBase());
-        ps.setBoolean(6, ruta.isEstado());
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
-        ps.setInt(7, ruta.getIdRutaViaje());
+            ps.setInt(1, ruta.getRecorrido().getIdRecorrido());
+            ps.setInt(2, ruta.getColectivo().getIdColectivo());
 
-        int filas = ps.executeUpdate();
+            ps.setTimestamp(3,
+                    Timestamp.valueOf(ruta.getFechaHoraSalida()));
 
-        return filas > 0;
+            ps.setTimestamp(4,
+                    Timestamp.valueOf(ruta.getFechaHoraLlegada()));
 
-    } catch (SQLException e) {
+            ps.setBigDecimal(5, ruta.getPrecioBase());
+            ps.setBoolean(6, ruta.isEstado());
+
+            ps.setInt(7, ruta.getIdRutaViaje());
+
+            int filas = ps.executeUpdate();
+
+            return filas > 0;
+
+        } catch (SQLException e) {
         System.out.println("Error al actualizar la ruta: "
                 + e.getMessage());
     }
