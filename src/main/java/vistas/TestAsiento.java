@@ -72,14 +72,5 @@ public class TestAsiento {
             System.out.println("\nACTUALIZAR ASIENTO: "
                     + asientoData.actualizarAsiento(asientoModificar));
         }
-
-        // Eliminar un asiento
-        if (!asientos.isEmpty()) {
-            Asiento asientoEliminar = asientos.get(asientos.size() - 1);
-
-            System.out.println("\nELIMINAR ASIENTO: "
-                    + asientoData.eliminarAsiento(
-                            asientoEliminar.getIdAsiento()));
-        }
     }
 }

@@ -4,6 +4,7 @@ import modelo.Colectivo;
 import persistencia.ColectivoData;
 import java.time.LocalDate;
 import java.util.List;
+import modelo.Asiento;
 
 public class TestColectivo {
 
@@ -23,6 +24,26 @@ public class TestColectivo {
 
         boolean guardado = colectivoData.guardarColectivo(colectivo);
 
+        if (guardado) {
+            System.out.println("\nRECUPERANDO COLECTIVO Y SUS ASIENTOS:");
+
+            Colectivo recuperado = colectivoData.buscarColectivo(
+                    colectivo.getIdColectivo()
+            );
+
+            if (recuperado != null) {
+                System.out.println("ID: " + recuperado.getIdColectivo());
+                System.out.println("Capacidad: " + recuperado.getCapacidad());
+                System.out.println("Cantidad de asientos: "
+                        + recuperado.getAsientos().size());
+
+                for (Asiento asiento : recuperado.getAsientos()) {
+                    System.out.println("Asiento N° " + asiento.getNumeroAsiento());
+                }
+            }
+        }
+        
+        
         if (guardado) {
             System.out.println("¡Colectivo guardado correctamente!");
             System.out.println("ID generado: " + colectivo.getIdColectivo());

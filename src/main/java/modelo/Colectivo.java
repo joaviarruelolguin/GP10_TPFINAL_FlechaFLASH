@@ -2,6 +2,9 @@
 package modelo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Colectivo {
     private int idColectivo;
@@ -13,6 +16,7 @@ public class Colectivo {
     private boolean estado;
     private String chofer;
     
+    private List<Asiento> asientos;
     
     // utilizamos este contructor para crear un nuevo colectivo para guardarlo en la base de datos
     // la base de datos le genera el id
@@ -25,6 +29,14 @@ public class Colectivo {
         this.caducidad = caducidad;
         this.estado = estado;
         this.chofer = chofer;
+        
+        // COMPOSICIÓN. Lista incializada al crearse Colectivo
+        this.asientos = new ArrayList<>();
+        
+        for (int i = 1; i <= capacidad; i++) {
+            asientos.add(new Asiento(this, i));
+        }
+        
     }
     
     // lo utilizamos cuando ya tenemos un colectivo y queremos recuperar la informacion
@@ -38,14 +50,27 @@ public class Colectivo {
         this.caducidad = caducidad;
         this.estado = estado;
         this.chofer = chofer;
+     
+        // COMPOSICIÓN. Lista inicializada para recuperar los asientos existentes.
+        this.asientos = new ArrayList<>();
+
     }
     
     
-   // lo creamos sin atributos y los completamos con los setters
+   // lo creamos sin atributos y los completamos con los setters. 
 
     public Colectivo() {
+        
+        // COMPOSICIÓN. Lista incializada al crearse Colectivo
+        this.asientos = new ArrayList<>();
+
     }
 
+    public void agregarAsiento(Asiento asiento) {
+        asientos.add(asiento);
+    }
+    
+    
     public int getIdColectivo() {
         return idColectivo;
     }
@@ -117,4 +142,7 @@ public class Colectivo {
         return matricula + "-" + marca +"-" + modelo;
     }
     
+    public List<Asiento> getAsientos() {
+        return asientos;
+    }
 }

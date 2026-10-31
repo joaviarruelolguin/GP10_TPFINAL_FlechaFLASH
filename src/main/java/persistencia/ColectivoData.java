@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import modelo.Asiento;
 
 public class ColectivoData {
 
@@ -19,6 +20,35 @@ public class ColectivoData {
 
     }
 
+    
+    // Recuperar los asientos que ya existen en la base de datos.
+    // Cada asiento queda asociado al colectivo recuperado.
+    // No generar asientos nuevos.
+    // La colección asientos se completa mediante agregarAsiento().
+    private void cargarAsientos(Colectivo colectivo) {
+        String sql = "SELECT idAsiento, numeroAsiento FROM asiento WHERE idColectivo = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, colectivo.getIdColectivo());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Asiento asiento = new Asiento(
+                            rs.getInt("idAsiento"),
+                            colectivo,
+                            rs.getInt("numeroAsiento")
+                    );
+
+                    colectivo.agregarAsiento(asiento);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al cargar los asientos del colectivo: " + e.getMessage());
+        }
+    }
+    
+    
     public boolean guardarColectivo(Colectivo colectivo) {
 
         String sql = "INSERT INTO colectivo"
@@ -47,6 +77,14 @@ public class ColectivoData {
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs.next()) {
                         colectivo.setIdColectivo(rs.getInt(1));
+
+                        AsientoData asientoData = new AsientoData();
+
+                        for (Asiento asiento : colectivo.getAsientos()) {
+                            if (!asientoData.guardarAsiento(asiento)) {
+                                return false;
+                            }
+                        }
                     }
                 }
                 return true;
@@ -86,6 +124,7 @@ public class ColectivoData {
                         rs.getString("chofer")
                 );
 
+                cargarAsientos(colectivo);
                 colectivos.add(colectivo);
             }
 
@@ -124,7 +163,8 @@ public class ColectivoData {
                             rs.getBoolean("estado"),
                             rs.getString("chofer")
                     );
-
+                    
+                    cargarAsientos(colectivo);
                     return colectivo;
                 }
             }

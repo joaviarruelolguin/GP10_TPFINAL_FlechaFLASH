@@ -152,29 +152,7 @@ public class AsientoData {
         }
     }
 
-    
-    public boolean eliminarAsiento(int idAsiento) {
-        String sql = "DELETE FROM asiento WHERE idAsiento = ?";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            ps.setInt(1, idAsiento);
-
-            int filas = ps.executeUpdate();
-
-            if (filas > 0) {
-                System.out.println("Asiento eliminado correctamente.");
-                return true;
-            } else {
-                System.out.println("No se encontró el asiento.");
-                return false;
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error al eliminar el asiento: " + e.getMessage());
-            return false;
-        }
-    }
+   
 
 }
 
