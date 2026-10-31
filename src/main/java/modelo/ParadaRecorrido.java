@@ -8,7 +8,6 @@ public class ParadaRecorrido {
     private int orden;
     private double distanciaAcumuladaKm; 
     
-    // Para
 
     public ParadaRecorrido(Recorrido recorrido, String nombreLugar, int orden, double distanciaAcumuladaKm) {
         this.recorrido = recorrido;
