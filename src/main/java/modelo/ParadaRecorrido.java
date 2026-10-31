@@ -8,7 +8,7 @@ public class ParadaRecorrido {
     private int orden;
     private double distanciaAcumuladaKm; 
     
-    // distanciaAcumuladaKm representa la distancia desde el punto de partida hasta cada parada, no la distancia entre dos paradas consecutivas.
+    // Para
 
     public ParadaRecorrido(Recorrido recorrido, String nombreLugar, int orden, double distanciaAcumuladaKm) {
         this.recorrido = recorrido;
