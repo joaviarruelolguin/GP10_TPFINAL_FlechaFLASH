@@ -269,7 +269,7 @@ public class RutaViajeData {
     public boolean desactivarRutaViaje(int idRutaViaje) {
 
     String sql = "UPDATE rutaviaje "
-            + "SET estado = 0 "
+            + "SET estado = FALSE "
             + "WHERE idRutaViaje = ?";
 
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
