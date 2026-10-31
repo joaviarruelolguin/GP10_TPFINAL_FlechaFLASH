@@ -131,7 +131,7 @@ public class PasajeroData {
 
         ArrayList<Pasajero> lista = new ArrayList<>();
 
-        String sql = "SELECT * FROM pasajero";
+        String sql = "SELECT * FROM pasajero ORDER BY apellido, nombre";
 
         try {
 

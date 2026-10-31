@@ -104,14 +104,4 @@ public class Colectivo {
         return matricula + "-" + marca +"-" + modelo;
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
