@@ -140,7 +140,7 @@ public class ColectivoData {
 
         String sql = "UPDATE colectivo SET "
                 + "matricula = ?, marca = ?, modelo = ?, "
-                + "capacidad = ?, caducidad = ?, estado = ? chofer = ? "
+                + "capacidad = ?, caducidad = ?, estado = ?, chofer = ? "
                 + "WHERE idColectivo = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
