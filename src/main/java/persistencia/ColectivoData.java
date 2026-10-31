@@ -173,7 +173,7 @@ public class ColectivoData {
 
     public boolean desactivarColectivo(int idColectivo) {
 
-        String sql = "UPDATE colectivo SET estado = 0 "
+        String sql = "UPDATE colectivo SET estado = FALSE "
                 + "WHERE idColectivo = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
