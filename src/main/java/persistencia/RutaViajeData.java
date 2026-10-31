@@ -80,7 +80,7 @@ public class RutaViajeData {
             + "r.estado AS recorridoEstado, "
             + "c.idColectivo AS colectivoId, "
             + "c.matricula, c.marca, c.modelo, "
-            + "c.capacidad, c.caducidad, "
+            + "c.capacidad, c.caducidad, c.chofer, "
             + "c.estado AS colectivoEstado "
             + "FROM rutaviaje rv "
             + "INNER JOIN recorrido r "
@@ -117,7 +117,8 @@ public class RutaViajeData {
                     rs.getString("modelo"),
                     rs.getInt("capacidad"),
                     caducidad,
-                    rs.getBoolean("colectivoEstado")
+                    rs.getBoolean("colectivoEstado"),
+                    rs.getString("chofer")
             );
 
             RutaViaje ruta = new RutaViaje(
@@ -153,7 +154,7 @@ public class RutaViajeData {
             + "r.estado AS recorridoEstado, "
             + "c.idColectivo AS colectivoId, "
             + "c.matricula, c.marca, c.modelo, "
-            + "c.capacidad, c.caducidad, "
+            + "c.capacidad, c.caducidad, c.chofer "
             + "c.estado AS colectivoEstado "
             + "FROM rutaviaje rv "
             + "INNER JOIN recorrido r "
@@ -192,7 +193,8 @@ public class RutaViajeData {
                         rs.getString("modelo"),
                         rs.getInt("capacidad"),
                         caducidad,
-                        rs.getBoolean("colectivoEstado")
+                        rs.getBoolean("colectivoEstado"),
+                        rs.getString("chofer")
                 );
 
                 return new RutaViaje(
@@ -311,10 +313,7 @@ public class RutaViajeData {
     
     
     }
-    
-    
-    
-
+   
 
 }
 

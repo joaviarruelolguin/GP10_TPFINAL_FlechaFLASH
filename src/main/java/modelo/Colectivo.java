@@ -11,23 +11,25 @@ public class Colectivo {
     private int capacidad;
     private LocalDate caducidad;
     private boolean estado;
-
+    private String chofer;
+    
     
     // utilizamos este contructor para crear un nuevo colectivo para guardarlo en la base de datos
     // la base de datos le genera el id
     public Colectivo(String matricula, String marca, String modelo, 
-            int capacidad, LocalDate caducidad, boolean estado) {
+            int capacidad, LocalDate caducidad, boolean estado, String chofer) {
         this.matricula = matricula;
         this.marca = marca;
         this.modelo = modelo;
         this.capacidad = capacidad;
         this.caducidad = caducidad;
         this.estado = estado;
+        this.chofer = chofer;
     }
     
     // lo utilizamos cuando ya tenemos un colectivo y queremos recuperar la informacion
 
-    public Colectivo(int idColectivo, String matricula, String marca, String modelo, int capacidad, LocalDate caducidad, boolean estado) {
+    public Colectivo(int idColectivo, String matricula, String marca, String modelo, int capacidad, LocalDate caducidad, boolean estado, String chofer) {
         this.idColectivo = idColectivo;
         this.matricula = matricula;
         this.marca = marca;
@@ -35,6 +37,7 @@ public class Colectivo {
         this.capacidad = capacidad;
         this.caducidad = caducidad;
         this.estado = estado;
+        this.chofer = chofer;
     }
     
     
@@ -99,6 +102,16 @@ public class Colectivo {
         this.estado = estado;
     }
 
+    
+    public String getChofer() {
+        return chofer;
+    }
+
+    public void setChofer(String chofer) {
+        this.chofer = chofer;
+    }
+
+    
     @Override
     public String toString() {
         return matricula + "-" + marca +"-" + modelo;

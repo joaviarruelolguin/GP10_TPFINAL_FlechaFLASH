@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-10-2026 a las 01:48:26
+-- Tiempo de generación: 31-10-2026 a las 21:05:55
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -48,7 +48,8 @@ CREATE TABLE `colectivo` (
   `modelo` varchar(50) NOT NULL,
   `capacidad` int(11) NOT NULL,
   `caducidad` date DEFAULT NULL,
-  `estado` tinyint(1) NOT NULL
+  `estado` tinyint(1) NOT NULL,
+  `chofer` varchar(100) NOT NULL
 ) ;
 
 -- --------------------------------------------------------

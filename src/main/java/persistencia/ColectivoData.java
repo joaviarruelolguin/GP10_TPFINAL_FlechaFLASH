@@ -22,8 +22,8 @@ public class ColectivoData {
     public boolean guardarColectivo(Colectivo colectivo) {
 
         String sql = "INSERT INTO colectivo"
-                + "(matricula, marca, modelo, capacidad,caducidad,estado) "
-                + "VALUES (?,?,?,?,?,?)";
+                + "(matricula, marca, modelo, capacidad, caducidad, estado, chofer) "
+                + "VALUES (?,?,?,?,?,?,?)";
 
         try (PreparedStatement ps = connection.prepareStatement(
                 sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -39,6 +39,7 @@ public class ColectivoData {
                 ps.setNull(5, java.sql.Types.DATE);
             }
             ps.setBoolean(6, colectivo.isEstado());
+            ps.setString(7, colectivo.getChofer());
 
             int filas = ps.executeUpdate();
 
@@ -81,7 +82,8 @@ public class ColectivoData {
                         rs.getString("modelo"),
                         rs.getInt("capacidad"),
                         caducidad,
-                        rs.getBoolean("estado")
+                        rs.getBoolean("estado"),
+                        rs.getString("chofer")
                 );
 
                 colectivos.add(colectivo);
@@ -119,7 +121,8 @@ public class ColectivoData {
                             rs.getString("modelo"),
                             rs.getInt("capacidad"),
                             caducidad,
-                            rs.getBoolean("estado")
+                            rs.getBoolean("estado"),
+                            rs.getString("chofer")
                     );
 
                     return colectivo;
@@ -137,7 +140,7 @@ public class ColectivoData {
 
         String sql = "UPDATE colectivo SET "
                 + "matricula = ?, marca = ?, modelo = ?, "
-                + "capacidad = ?, caducidad = ?, estado = ? "
+                + "capacidad = ?, caducidad = ?, estado = ? chofer = ? "
                 + "WHERE idColectivo = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -154,7 +157,8 @@ public class ColectivoData {
             }
 
             ps.setBoolean(6, colectivo.isEstado());
-            ps.setInt(7, colectivo.getIdColectivo());
+            ps.setString(7, colectivo.getChofer());
+            ps.setInt(8, colectivo.getIdColectivo());
 
             int filas = ps.executeUpdate();
 
@@ -187,28 +191,29 @@ public class ColectivoData {
         return false;
     }
     
-public boolean eliminarColectivo(int idColectivo) {
+    
+    public boolean eliminarColectivo(int idColectivo) {
 
-    String sql = "DELETE FROM colectivo WHERE idColectivo = ?";
+        String sql = "DELETE FROM colectivo WHERE idColectivo = ?";
 
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
-        ps.setInt(1, idColectivo);
+            ps.setInt(1, idColectivo);
 
-        int filas = ps.executeUpdate();
+            int filas = ps.executeUpdate();
 
-        return filas > 0;
+            return filas > 0;
 
-    } catch (SQLException e) {
-        System.out.println(
-                "No se pudo eliminar el colectivo. "
-                + "Puede tener asientos o rutas de viaje asociados: "
-                + e.getMessage()
-        );
+        } catch (SQLException e) {
+            System.out.println(
+                    "No se pudo eliminar el colectivo. "
+                    + "Puede tener asientos o rutas de viaje asociados: "
+                    + e.getMessage()
+            );
+        }
+
+        return false;
     }
-
-    return false;
-}
 
 
 }

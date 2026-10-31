@@ -49,8 +49,6 @@ public class Asiento {
     public String toString() {
         return "Asiento N°" + numeroAsiento;
     }
-    
-
-    
+     
     
 }
