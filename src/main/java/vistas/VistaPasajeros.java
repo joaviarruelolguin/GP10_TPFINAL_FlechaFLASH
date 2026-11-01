@@ -1,10 +1,15 @@
 package vistas;
 
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import modelo.Pasajero;
+import persistencia.PasajeroData;
 
 public class VistaPasajeros extends javax.swing.JPanel {
-    
-        DefaultTableModel modelo = new DefaultTableModel() {
+
+    private PasajeroData pasajeroData = new PasajeroData();
+
+    DefaultTableModel modelo = new DefaultTableModel() {
         public boolean isCellEditable(int f, int c) {
             return false;
         }
@@ -12,9 +17,11 @@ public class VistaPasajeros extends javax.swing.JPanel {
 
     public VistaPasajeros() {
         initComponents();
+        armarCabecera();
+        cargarPasajeros();
     }
-    
-        public void armarCabecera() {
+
+    public void armarCabecera() {
         modelo.addColumn("ID");
         modelo.addColumn("Nombre");
         modelo.addColumn("Apellido");
@@ -23,6 +30,23 @@ public class VistaPasajeros extends javax.swing.JPanel {
         modelo.addColumn("Telefono");
 
         pasajerosTabla.setModel(modelo);
+    }
+    
+    public void cargarPasajeros(){
+        modelo.setRowCount(0);
+        
+        ArrayList<Pasajero> listaPasajeros = pasajeroData.listarPasajeros();
+        
+        for(Pasajero lista: listaPasajeros){
+            modelo.addRow(new Object[]{
+                lista.getIdPasajero(),
+                lista.getNombre(),
+                lista.getApellido(),
+                lista.getDni(),
+                lista.getCorreo(),
+                lista.getTelefono()
+            });
+        }
     }
 
     @SuppressWarnings("unchecked")
