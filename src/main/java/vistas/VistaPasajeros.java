@@ -2,6 +2,7 @@ package vistas;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -28,7 +29,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
         cargarPasajeros();
 
         tipoPasajeroComboBox.setModel(new DefaultComboBoxModel<>(TipoPasajero.values()));
-
+        modoNuevo();
     }
 
     public void armarCabecera() {
@@ -38,6 +39,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
         modelo.addColumn("DNI");
         modelo.addColumn("Correo");
         modelo.addColumn("Telefono");
+        modelo.addColumn("Tipo");
 
         pasajerosTabla.setModel(modelo);
     }
@@ -54,8 +56,10 @@ public class VistaPasajeros extends javax.swing.JPanel {
                 lista.getApellido(),
                 lista.getDni(),
                 lista.getCorreo(),
-                lista.getTelefono()
-            });
+                lista.getTelefono(),
+                lista.getTipoPasajero()
+            }
+            );
         }
     }
 
@@ -152,6 +156,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
         btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
 
         btnBorrar.setText("Borrar");
         btnBorrar.addActionListener(this::btnBorrarActionPerformed);
@@ -255,6 +260,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
         labelID.setText("ID");
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
         pasajerosTabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -397,14 +403,86 @@ public class VistaPasajeros extends javax.swing.JPanel {
         int fila = pasajerosTabla.getSelectedRow();
 
         if (fila != -1) {
-            idTextField.setText(pasajerosTabla.getValueAt(fila, 0).toString());
+
             nombreTextField.setText(pasajerosTabla.getValueAt(fila, 1).toString());
             apellidoTextField.setText(pasajerosTabla.getValueAt(fila, 2).toString());
             dniTextField.setText(pasajerosTabla.getValueAt(fila, 3).toString());
             correoTextField.setText(pasajerosTabla.getValueAt(fila, 4).toString());
             telefonoTextField.setText(pasajerosTabla.getValueAt(fila, 5).toString());
+            tipoPasajeroComboBox.setSelectedItem(pasajerosTabla.getValueAt(fila, 6));
+
+            modoSeleccion();
         }
     }//GEN-LAST:event_pasajerosTablaMouseClicked
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        if (validarCamposVacios(crudPanel)) {
+            JOptionPane.showMessageDialog(this, "Campos incompletos.");
+            return;
+        }
+
+        int idPasajero = Integer.parseInt(idTextField.getText());
+        String nombre = nombreTextField.getText().trim();
+        String apellido = apellidoTextField.getText().trim();
+        String dni = dniTextField.getText().trim();
+        String correo = correoTextField.getText().trim();
+        String telefono = telefonoTextField.getText().trim();
+        TipoPasajero tipoPasajero = (TipoPasajero) tipoPasajeroComboBox.getSelectedItem();
+
+        Pasajero p = new Pasajero();
+        p.setIdPasajero(idPasajero);
+        p.setNombre(nombre);
+        p.setApellido(apellido);
+        p.setDni(dni);
+        p.setCorreo(correo);
+        p.setTelefono(telefono);
+        p.setTipoPasajero(tipoPasajero);
+
+        if (pasajeroData.actualizarPasajero(p)) {
+            JOptionPane.showMessageDialog(this, "Pasajero actualizado correctamente.");
+
+            cargarPasajeros();
+            vaciarCampos(crudPanel);
+            modoNuevo();
+            pasajerosTabla.clearSelection();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar el pasajero.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String idIngresado = idTextField.getText().trim();
+
+        if (idIngresado.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe completar el campo ID.");
+            return;
+        }
+
+        try {
+            int idPasajero = Integer.parseInt(idIngresado);
+            Pasajero p = pasajeroData.buscarPasajero(idPasajero);
+
+            if (p == null) {
+                JOptionPane.showMessageDialog(this, "Pasajero no encontrado.");
+                return;
+            }
+
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                int idTabla = Integer.parseInt(modelo.getValueAt(i, 0).toString());
+
+                if (idTabla == p.getIdPasajero()) {
+                    pasajerosTabla.setRowSelectionInterval(i, i);
+
+                    pasajerosTabla.scrollRectToVisible(pasajerosTabla.getCellRect(i, 0, true));
+
+                    break;
+                }
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El id debe ser un número.");
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -484,13 +562,14 @@ public class VistaPasajeros extends javax.swing.JPanel {
     }
 
     private void modoNuevo() {
-        btnBorrar.setEnabled(false);
+        btnGuardar.setEnabled(true);
         btnActualizar.setEnabled(false);
+        btnBorrar.setEnabled(false);
     }
 
-    private void modoSeleccion(boolean activa) {
-        btnBorrar.setEnabled(true);
+    private void modoSeleccion() {
+        btnGuardar.setEnabled(false);
         btnActualizar.setEnabled(true);
-
+        btnBorrar.setEnabled(true);
     }
 }
