@@ -12,7 +12,7 @@ public class TestPasajero {
         // Línea de código para que aparezcan las tildes y la ñ.
         System.setOut(new java.io.PrintStream(System.out, true, java.nio.charset.StandardCharsets.UTF_8));
 
-        // Conexión a la BD gracias al connection del constructor.
+        // Conexión a lad BD gracias al connection del constructor.
         PasajeroData pasajeroData = new PasajeroData();
 
         Pasajero pasajero1 = new Pasajero("30111222", "Hernán", "López", "hernan@mail.com", "2664111222", TipoPasajero.GENERAL);
