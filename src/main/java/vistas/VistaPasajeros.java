@@ -363,7 +363,28 @@ public class VistaPasajeros extends javax.swing.JPanel {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        // TODO add your handling code here:
+        String idPasajero = idTextField.getText().trim();
+        if (idPasajero.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Seleccione o busque un pasajero.");
+            return;
+        }
+
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea borrar al pasajero?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            int id = Integer.parseInt(idPasajero);
+
+            if (pasajeroData.borrarPasajero(id)) {
+                JOptionPane.showMessageDialog(this, "Pasajero borrado correctamente.");
+
+                cargarPasajeros();
+                vaciarCampos(crudPanel);
+                modoNuevo();
+                pasajerosTabla.clearSelection();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo borrar el pasajero.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
