@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-10-2026 a las 21:05:55
+-- Tiempo de generación: 02-11-2026 a las 06:22:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -35,6 +35,102 @@ CREATE TABLE `asiento` (
   `numeroAsiento` int(11) NOT NULL
 ) ;
 
+--
+-- Volcado de datos para la tabla `asiento`
+--
+
+INSERT INTO `asiento` (`idAsiento`, `idColectivo`, `numeroAsiento`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6),
+(7, 1, 7),
+(8, 1, 8),
+(9, 1, 9),
+(10, 1, 10),
+(11, 1, 11),
+(12, 1, 12),
+(13, 1, 13),
+(14, 1, 14),
+(15, 1, 15),
+(16, 1, 16),
+(17, 1, 17),
+(18, 1, 18),
+(19, 1, 19),
+(20, 1, 20),
+(21, 1, 21),
+(22, 1, 22),
+(23, 1, 23),
+(24, 1, 24),
+(25, 1, 25),
+(26, 1, 26),
+(27, 1, 27),
+(28, 1, 28),
+(29, 1, 29),
+(30, 1, 30),
+(31, 1, 31),
+(32, 1, 32),
+(33, 1, 33),
+(34, 1, 34),
+(35, 1, 35),
+(36, 1, 36),
+(37, 1, 37),
+(38, 1, 38),
+(39, 1, 39),
+(40, 1, 40),
+(41, 1, 41),
+(42, 1, 42),
+(43, 1, 43),
+(44, 1, 44),
+(45, 1, 45),
+(46, 3, 1),
+(47, 3, 2),
+(48, 3, 3),
+(49, 3, 4),
+(50, 3, 5),
+(51, 3, 6),
+(52, 3, 7),
+(53, 3, 8),
+(54, 3, 9),
+(55, 3, 10),
+(56, 3, 11),
+(57, 3, 12),
+(58, 3, 13),
+(59, 3, 14),
+(60, 3, 15),
+(61, 3, 16),
+(62, 3, 17),
+(63, 3, 18),
+(64, 3, 19),
+(65, 3, 20),
+(66, 3, 21),
+(67, 3, 22),
+(68, 3, 23),
+(69, 3, 24),
+(70, 3, 25),
+(71, 3, 26),
+(72, 3, 27),
+(73, 3, 28),
+(74, 3, 29),
+(75, 3, 30),
+(76, 3, 31),
+(77, 3, 32),
+(78, 3, 33),
+(79, 3, 34),
+(80, 3, 35),
+(81, 3, 36),
+(82, 3, 37),
+(83, 3, 38),
+(84, 3, 39),
+(85, 3, 40),
+(86, 3, 41),
+(87, 3, 42),
+(88, 3, 43),
+(89, 3, 44),
+(90, 3, 45);
+
 -- --------------------------------------------------------
 
 --
@@ -52,6 +148,14 @@ CREATE TABLE `colectivo` (
   `chofer` varchar(100) NOT NULL
 ) ;
 
+--
+-- Volcado de datos para la tabla `colectivo`
+--
+
+INSERT INTO `colectivo` (`idColectivo`, `matricula`, `marca`, `modelo`, `capacidad`, `caducidad`, `estado`, `chofer`) VALUES
+(1, 'TEST-CO-001', 'Mercedes Benz', 'OF 1721', 45, NULL, 1, 'Juan Perez'),
+(3, 'TEST-CO-002', 'Mercedes Benz', 'OF 1721', 45, NULL, 1, 'Juan Perez');
+
 -- --------------------------------------------------------
 
 --
@@ -61,10 +165,19 @@ CREATE TABLE `colectivo` (
 CREATE TABLE `horarioparadaviaje` (
   `idHorarioParadaViaje` int(11) NOT NULL,
   `idRutaViaje` int(11) NOT NULL,
+  `idRecorrido` int(11) NOT NULL,
   `idParadaRecorrido` int(11) NOT NULL,
   `fechaHoraLlegada` datetime NOT NULL,
   `fechaHoraSalida` datetime NOT NULL
 ) ;
+
+--
+-- Volcado de datos para la tabla `horarioparadaviaje`
+--
+
+INSERT INTO `horarioparadaviaje` (`idHorarioParadaViaje`, `idRutaViaje`, `idRecorrido`, `idParadaRecorrido`, `fechaHoraLlegada`, `fechaHoraSalida`) VALUES
+(1, 2, 3, 2, '2026-11-01 08:00:00', '2026-11-01 08:05:00'),
+(2, 2, 3, 3, '2026-11-01 08:30:00', '2026-11-01 08:35:00');
 
 -- --------------------------------------------------------
 
@@ -79,6 +192,14 @@ CREATE TABLE `paradarecorrido` (
   `orden` int(11) NOT NULL,
   `distanciaAcumuladaKm` decimal(7,2) NOT NULL
 ) ;
+
+--
+-- Volcado de datos para la tabla `paradarecorrido`
+--
+
+INSERT INTO `paradarecorrido` (`idParadaRecorrido`, `idRecorrido`, `nombreLugar`, `orden`, `distanciaAcumuladaKm`) VALUES
+(2, 3, 'La Punta - Modificada', 1, 20.00),
+(3, 3, 'La Carolina', 2, 80.00);
 
 -- --------------------------------------------------------
 
@@ -137,6 +258,13 @@ CREATE TABLE `recorrido` (
   `estado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `recorrido`
+--
+
+INSERT INTO `recorrido` (`idRecorrido`, `descripcion`, `estado`) VALUES
+(3, 'Recorrido de prueba', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -152,6 +280,13 @@ CREATE TABLE `rutaviaje` (
   `precioBase` decimal(10,2) NOT NULL,
   `estado` tinyint(1) NOT NULL
 ) ;
+
+--
+-- Volcado de datos para la tabla `rutaviaje`
+--
+
+INSERT INTO `rutaviaje` (`idRutaViaje`, `idRecorrido`, `idColectivo`, `fechaHoraSalida`, `fechaHoraLlegada`, `precioBase`, `estado`) VALUES
+(2, 3, 1, '2026-11-01 08:00:00', '2026-11-01 09:00:00', 3500.00, 1);
 
 -- --------------------------------------------------------
 
@@ -196,14 +331,16 @@ ALTER TABLE `colectivo`
 ALTER TABLE `horarioparadaviaje`
   ADD PRIMARY KEY (`idHorarioParadaViaje`),
   ADD UNIQUE KEY `idRutaViaje` (`idRutaViaje`,`idParadaRecorrido`),
-  ADD KEY `idParadaRecorrido` (`idParadaRecorrido`);
+  ADD KEY `fk_hpv_rutaviaje_recorrido` (`idRutaViaje`,`idRecorrido`),
+  ADD KEY `fk_hpv_parada_recorrido` (`idParadaRecorrido`,`idRecorrido`);
 
 --
 -- Indices de la tabla `paradarecorrido`
 --
 ALTER TABLE `paradarecorrido`
   ADD PRIMARY KEY (`idParadaRecorrido`),
-  ADD UNIQUE KEY `idRecorrido` (`idRecorrido`,`orden`);
+  ADD UNIQUE KEY `idRecorrido` (`idRecorrido`,`orden`),
+  ADD UNIQUE KEY `uq_paradarecorrido_id_recorrido` (`idParadaRecorrido`,`idRecorrido`);
 
 --
 -- Indices de la tabla `pasaje`
@@ -236,6 +373,7 @@ ALTER TABLE `recorrido`
 --
 ALTER TABLE `rutaviaje`
   ADD PRIMARY KEY (`idRutaViaje`),
+  ADD UNIQUE KEY `uq_rutaviaje_id_recorrido` (`idRutaViaje`,`idRecorrido`),
   ADD KEY `idRecorrido` (`idRecorrido`),
   ADD KEY `idColectivo` (`idColectivo`);
 
@@ -291,7 +429,7 @@ ALTER TABLE `pasajero`
 -- AUTO_INCREMENT de la tabla `recorrido`
 --
 ALTER TABLE `recorrido`
-  MODIFY `idRecorrido` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idRecorrido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `rutaviaje`
@@ -313,20 +451,20 @@ ALTER TABLE `venta`
 -- Filtros para la tabla `asiento`
 --
 ALTER TABLE `asiento`
-  ADD CONSTRAINT `asiento_ibfk_1` FOREIGN KEY (`idColectivo`) REFERENCES `colectivo` (`idColectivo`);
+  ADD CONSTRAINT `fk_asiento_colectivo` FOREIGN KEY (`idColectivo`) REFERENCES `colectivo` (`idColectivo`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `horarioparadaviaje`
 --
 ALTER TABLE `horarioparadaviaje`
-  ADD CONSTRAINT `horarioparadaviaje_ibfk_1` FOREIGN KEY (`idRutaViaje`) REFERENCES `rutaviaje` (`idRutaViaje`),
-  ADD CONSTRAINT `horarioparadaviaje_ibfk_2` FOREIGN KEY (`idParadaRecorrido`) REFERENCES `paradarecorrido` (`idParadaRecorrido`);
+  ADD CONSTRAINT `fk_hpv_parada_recorrido` FOREIGN KEY (`idParadaRecorrido`,`idRecorrido`) REFERENCES `paradarecorrido` (`idParadaRecorrido`, `idRecorrido`),
+  ADD CONSTRAINT `fk_hpv_rutaviaje_recorrido` FOREIGN KEY (`idRutaViaje`,`idRecorrido`) REFERENCES `rutaviaje` (`idRutaViaje`, `idRecorrido`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `paradarecorrido`
 --
 ALTER TABLE `paradarecorrido`
-  ADD CONSTRAINT `paradarecorrido_ibfk_1` FOREIGN KEY (`idRecorrido`) REFERENCES `recorrido` (`idRecorrido`);
+  ADD CONSTRAINT `fk_paradarecorrido_recorrido` FOREIGN KEY (`idRecorrido`) REFERENCES `recorrido` (`idRecorrido`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `pasaje`

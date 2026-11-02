@@ -1,4 +1,4 @@
-package vistas;
+package test;
 
 import modelo.Colectivo;
 import persistencia.ColectivoData;
@@ -12,44 +12,23 @@ public class TestColectivo {
 
         ColectivoData colectivoData = new ColectivoData();
 
-        Colectivo colectivo = new Colectivo(
-                "TEST-CO-001",
-                "Mercedes Benz",
-                "OF 1721",
-                45,
-                null,
-                true,
-                "Juan Perez"
-        );
+        // Recuperamos un colectivo existente
+        Colectivo colectivo = colectivoData.buscarColectivo(3);
 
-        boolean guardado = colectivoData.guardarColectivo(colectivo);
+        if (colectivo == null) {
+            System.out.println("No se encontró el colectivo.");
+            return;
+        }
 
-        if (guardado) {
-            System.out.println("\nRECUPERANDO COLECTIVO Y SUS ASIENTOS:");
+        System.out.println("\nRECUPERANDO COLECTIVO Y SUS ASIENTOS:");
+        System.out.println("ID: " + colectivo.getIdColectivo());
+        System.out.println("Capacidad: " + colectivo.getCapacidad());
+        System.out.println("Cantidad de asientos: " + colectivo.getAsientos().size());
 
-            Colectivo recuperado = colectivoData.buscarColectivo(
-                    colectivo.getIdColectivo()
-            );
-
-            if (recuperado != null) {
-                System.out.println("ID: " + recuperado.getIdColectivo());
-                System.out.println("Capacidad: " + recuperado.getCapacidad());
-                System.out.println("Cantidad de asientos: "
-                        + recuperado.getAsientos().size());
-
-                for (Asiento asiento : recuperado.getAsientos()) {
-                    System.out.println("Asiento N° " + asiento.getNumeroAsiento());
-                }
-            }
+        for (Asiento asiento : colectivo.getAsientos()) {
+            System.out.println("Asiento N° " + asiento.getNumeroAsiento());
         }
         
-        
-        if (guardado) {
-            System.out.println("¡Colectivo guardado correctamente!");
-            System.out.println("ID generado: " + colectivo.getIdColectivo());
-        } else {
-            System.out.println("No se pudo guardar el colectivo.");
-        }
         
         List<Colectivo> lista = colectivoData.listarColectivos();
 
@@ -71,7 +50,7 @@ public class TestColectivo {
 
         System.out.println("\nBUSCANDO COLECTIVO:");
 
-        Colectivo encontrado = colectivoData.buscarColectivo(2);
+        Colectivo encontrado = colectivoData.buscarColectivo(colectivo.getIdColectivo());
 
         if (encontrado != null) {
             System.out.println("Colectivo encontrado:");
@@ -86,7 +65,7 @@ public class TestColectivo {
 
         System.out.println("\nACTUALIZANDO COLECTIVO:");
 
-        Colectivo colectivoModificar = colectivoData.buscarColectivo(2);
+        Colectivo colectivoModificar = colectivoData.buscarColectivo(colectivo.getIdColectivo());
 
         if (colectivoModificar != null) {
 
@@ -99,7 +78,7 @@ public class TestColectivo {
             if (actualizado) {
                 System.out.println("Colectivo actualizado correctamente.");
 
-                Colectivo actualizadoDB = colectivoData.buscarColectivo(2);
+                Colectivo actualizadoDB = colectivoData.buscarColectivo(colectivo.getIdColectivo());
                 System.out.println(actualizadoDB);
             } else {
                 System.out.println("No se pudo actualizar el colectivo.");
@@ -111,13 +90,13 @@ public class TestColectivo {
 
         System.out.println("\nDESACTIVANDO COLECTIVO:");
 
-        boolean desactivado = colectivoData.desactivarColectivo(2);
+        boolean desactivado = colectivoData.desactivarColectivo(colectivo.getIdColectivo());
 
         if (desactivado) {
             System.out.println("Colectivo desactivado correctamente.");
 
             Colectivo colectivoDesactivado
-                    = colectivoData.buscarColectivo(2);
+                    = colectivoData.buscarColectivo(colectivo.getIdColectivo());
 
             System.out.println("Estado: "
                     + colectivoDesactivado.isEstado());
@@ -127,13 +106,13 @@ public class TestColectivo {
         }
         System.out.println("\nELIMINANDO COLECTIVO:");
 
-        boolean eliminado = colectivoData.eliminarColectivo(2);
+        boolean eliminado = colectivoData.eliminarColectivo(colectivo.getIdColectivo());
 
         if (eliminado) {
             System.out.println("Colectivo eliminado correctamente.");
 
             Colectivo colectivoEliminado
-                    = colectivoData.buscarColectivo(2);
+                    = colectivoData.buscarColectivo(colectivo.getIdColectivo());
 
             if (colectivoEliminado == null) {
                 System.out.println("Comprobación: el colectivo ya no existe.");

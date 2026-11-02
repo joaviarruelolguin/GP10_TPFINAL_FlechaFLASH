@@ -1,4 +1,3 @@
-
 package modelo;
 
 import java.time.LocalDate;
@@ -7,6 +6,7 @@ import java.util.List;
 
 
 public class Colectivo {
+    
     private int idColectivo;
     private String matricula;
     private String marca;

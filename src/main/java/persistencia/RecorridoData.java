@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import modelo.ParadaRecorrido;
 
 
 public class RecorridoData {
@@ -43,6 +44,11 @@ public class RecorridoData {
     
     public boolean guardarRecorrido(Recorrido recorrido) {
 
+        if (recorrido == null || recorrido.getParadas() == null || recorrido.getParadas().isEmpty()) {
+            System.out.println("El recorrido debe tener al menos una parada.");
+            return false;
+        }
+              
         if (recorrido.getDescripcion() == null || recorrido.getDescripcion().trim().isEmpty()) {
             
             return false;
@@ -70,11 +76,28 @@ public class RecorridoData {
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     
                     if (rs.next()) {
-                        
+
                         recorrido.setIdRecorrido(rs.getInt(1));
+
+                        ParadaRecorridoData paradaData = new ParadaRecorridoData();
+
+                        for (ParadaRecorrido parada : recorrido.getParadas()) {
+
+                            if (parada == null) {
+                                System.out.println("El recorrido contiene una parada nula.");
+                                return false;
+                            }
+
+                            parada.setRecorrido(recorrido);
+
+                            if (!paradaData.guardarParadaRecorrido(parada)) {
+                                return false;
+                            }
+                        }
+
+                        return true;
                     }
                 }
-                return true;
             }
 
         } catch (SQLException e) {
@@ -83,7 +106,7 @@ public class RecorridoData {
 
         return false;
     }
-    
+
     
     public List<Recorrido> listarRecorridos() {
 
@@ -101,6 +124,8 @@ public class RecorridoData {
                         rs.getBoolean("estado")
                 );
 
+                ParadaRecorridoData paradaData = new ParadaRecorridoData();
+                recorrido.setParadas(paradaData.listarParadasPorRecorrido(recorrido.getIdRecorrido()));
                 recorridos.add(recorrido);
             }
 
@@ -125,6 +150,9 @@ public class RecorridoData {
                         rs.getString("descripcion"),
                         rs.getBoolean("estado")
                 );
+                
+                ParadaRecorridoData paradaData = new ParadaRecorridoData();
+                recorrido.setParadas(paradaData.listarParadasPorRecorrido(recorrido.getIdRecorrido()));
                 recorridos.add(recorrido);
             }
 
@@ -135,7 +163,12 @@ public class RecorridoData {
         return recorridos;
     }
     
+    
     public Recorrido buscarRecorrido(int idRecorrido) {
+
+        if (idRecorrido <= 0) {
+            return null;
+        }
 
         String sql = "SELECT * FROM recorrido WHERE idRecorrido = ?";
 
@@ -153,6 +186,10 @@ public class RecorridoData {
                             rs.getBoolean("estado")
                     );
 
+                    ParadaRecorridoData paradaData = new ParadaRecorridoData();
+                    recorrido.setParadas(paradaData.listarParadasPorRecorrido(recorrido.getIdRecorrido()));
+                    
+                    
                     return recorrido;
                 }
             }
@@ -192,6 +229,10 @@ public class RecorridoData {
     
     // Método que incluye la posibilidad de reactivar un recorrido
     public boolean actualizarRecorrido(Recorrido recorrido) {
+
+        if (recorrido == null || recorrido.getIdRecorrido() <= 0) {
+            return false;
+        }
 
         if (recorrido.getDescripcion() == null || recorrido.getDescripcion().trim().isEmpty()) {
             return false;
@@ -248,9 +289,14 @@ public class RecorridoData {
 
         return false;
     }
-    
-       public boolean eliminarRecorrido(int idRecorrido) {
 
+    public boolean eliminarRecorrido(int idRecorrido) {
+
+        if (idRecorrido <= 0) {
+            System.out.println("El ID del recorrido no es válido.");
+            return false;
+        }
+        
         String sql = "DELETE FROM recorrido WHERE idRecorrido = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -264,7 +310,7 @@ public class RecorridoData {
         } catch (SQLException e) {
             System.out.println(
                     "No se pudo eliminar el recorrido. "
-                    + "Puede tener rutas de viaje o paradas asociadas: "
+                    + "Puede tener rutas de viaje asociadas: "
                     + e.getMessage()
             );
         }

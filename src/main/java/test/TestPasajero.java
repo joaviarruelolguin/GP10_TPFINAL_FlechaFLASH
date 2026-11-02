@@ -1,4 +1,4 @@
-package vistas;
+package test;
 
 import java.util.ArrayList;
 import modelo.Pasajero;

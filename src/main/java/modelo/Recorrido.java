@@ -10,11 +10,17 @@ public class Recorrido {
     private boolean estado;
     private List<ParadaRecorrido> paradas = new ArrayList<>();
 
-    public Recorrido(String descripcion, boolean estado) {
+    // Constructor para crear un recorrido nuevo recibiendo sus paradas. (COMPOSICIÓN)
+    public Recorrido(String descripcion, boolean estado, List<ParadaRecorrido> paradas) {
         this.descripcion = descripcion;
         this.estado = estado;
+
+        for (ParadaRecorrido parada : paradas) {
+            agregarParada(parada);
+        }
     }
 
+    // Constructor para recuperar un recorrido de la BD. Después, el DAO consulta la tabla ParadaRecorrido y completa la lista.
     public Recorrido(int idRecorrido, String descripcion, boolean estado) {
         this.idRecorrido = idRecorrido;
         this.descripcion = descripcion;
@@ -53,7 +59,11 @@ public class Recorrido {
     }
 
     public void setParadas(List<ParadaRecorrido> paradas) {
-        this.paradas = paradas;
+        
+        this.paradas = new ArrayList<>();
+        for (ParadaRecorrido parada : paradas) {
+            agregarParada(parada);
+        }
     }
 
     @Override
@@ -62,7 +72,10 @@ public class Recorrido {
     }
 
     public void agregarParada(ParadaRecorrido parada) {
-        paradas.add(parada);
+        if (parada != null) {
+            parada.setRecorrido(this); // Cada parada queda asociada al recorrido.
+            paradas.add(parada);
+        }
     }
 
 }

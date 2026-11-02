@@ -1,12 +1,13 @@
 
-package vistas;
+package test;
 
 import java.util.List;
 import modelo.Recorrido;
 import persistencia.RecorridoData;
+import modelo.ParadaRecorrido;
 
 public class TestRecorrido {
-    
+
     public static void main(String[] args) {
 
         // Línea de código para que aparezcan las tildes y la ñ.
@@ -15,9 +16,24 @@ public class TestRecorrido {
         // Conexión a la BD gracias al connection del constructor.
         RecorridoData recorridoData = new RecorridoData();
 
-        // Crear recorridos de prueba.
-        Recorrido recorrido1 = new Recorrido("San Luis - La Punta", true);
-        Recorrido recorrido2 = new Recorrido("San Luis - La Carolina", true);
+        // Crear recorrido 1 con sus paradas.
+        Recorrido recorrido1 = new Recorrido();
+        recorrido1.setDescripcion("San Luis - Buenos Aires");
+        recorrido1.setEstado(true);
+        recorrido1.agregarParada(new ParadaRecorrido(null, "San Luis", 1, 0.0));   
+        recorrido1.agregarParada(new ParadaRecorrido(null, "Villa Mercedes", 2, 90.0));   
+        recorrido1.agregarParada(new ParadaRecorrido(null, "Río Cuarto", 3, 180.0));
+        recorrido1.agregarParada(new ParadaRecorrido(null, "Junín", 4, 450.0));
+        recorrido1.agregarParada(new ParadaRecorrido(null, "Buenos Aires", 5, 800.0)); // Distancias acumuladas desde el origen, no distancias entre paradas consecutivas.
+
+        // Crear recorrido 2 con sus paradas.
+        Recorrido recorrido2 = new Recorrido();
+        recorrido2.setDescripcion("San Luis - Mendoza");
+        recorrido2.setEstado(true);
+        recorrido2.agregarParada(new ParadaRecorrido(null, "San Luis", 1, 0.0));
+        recorrido2.agregarParada(new ParadaRecorrido(null, "La Paz", 2, 180.0));
+        recorrido2.agregarParada(new ParadaRecorrido(null, "Santa Rosa", 3, 230.0));
+        recorrido2.agregarParada(new ParadaRecorrido(null, "Mendoza", 4, 260.0));  // Distancias acumuladas desde el origen, no distancias entre paradas consecutivas.
 
         // Guardar recorridos.
         System.out.println("\n GUARDAR RECORRIDOS \n");
@@ -61,13 +77,17 @@ public class TestRecorrido {
         System.out.println(recorridoData.eliminarRecorrido(id1));
         System.out.println(recorridoData.eliminarRecorrido(id2));
 
-        // Listado final.
+        // Listado final: recorridos con sus paradas asociadas (COMPOSICIÓN)
         System.out.println("\n LISTADO FINAL \n");
 
-        for (Recorrido recorrido : recorridoData.listarRecorridos()) {
+        for (Recorrido recorrido : lista) {
             System.out.println(recorrido);
+            for (ParadaRecorrido parada : recorrido.getParadas()) {
+                System.out.println("  " + parada.getOrden() + ". "
+                        + parada.getNombreLugar() + " - "
+                        + parada.getDistanciaAcumuladaKm() + " km");
+            }
         }
-    } 
-    
-}
+    }
 
+}

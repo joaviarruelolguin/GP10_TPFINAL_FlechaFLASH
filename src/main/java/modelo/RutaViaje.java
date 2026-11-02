@@ -2,6 +2,8 @@ package modelo;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RutaViaje {
 
@@ -12,6 +14,7 @@ public class RutaViaje {
     private LocalDateTime fechaHoraLlegada;
     private BigDecimal precioBase;
     private boolean estado;
+    private List<HorarioParadaViaje> horarios = new ArrayList<>();
 
     public RutaViaje(Recorrido recorrido, Colectivo colectivo, LocalDateTime fechaHoraSalida, LocalDateTime fechaHoraLlegada, BigDecimal precioBase, boolean estado) {
         this.recorrido = recorrido;
@@ -90,6 +93,32 @@ public class RutaViaje {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+
+    public List<HorarioParadaViaje> getHorarios() {
+        return horarios;
+    }
+
+    public void setHorarios(List<HorarioParadaViaje> horarios) {
+        
+        this.horarios = new ArrayList<>();
+
+        if (horarios != null) {
+            
+            for (HorarioParadaViaje horario : horarios) {
+                agregarHorario(horario);
+            }
+        }
+    }
+    
+      
+    public void agregarHorario(HorarioParadaViaje horario) {
+        
+        if (horario != null) {
+            horario.setRutaViaje(this);
+            horarios.add(horario);
+        }
+    }
+
 
     @Override
     public String toString() {

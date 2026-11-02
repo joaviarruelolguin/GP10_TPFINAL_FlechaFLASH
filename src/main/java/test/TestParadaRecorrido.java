@@ -1,5 +1,5 @@
 
-package vistas;
+package test;
 
 import java.util.List;
 import modelo.ParadaRecorrido;
@@ -19,7 +19,15 @@ public class TestParadaRecorrido {
         ParadaRecorridoData paradaData = new ParadaRecorridoData();
 
         // Crear un recorrido de prueba.
-        Recorrido recorrido = new Recorrido("Recorrido de prueba", true);
+        Recorrido recorrido = new Recorrido();
+        recorrido.setDescripcion("San Luis - Buenos Aires");
+        recorrido.setEstado(true);
+
+        recorrido.agregarParada(new ParadaRecorrido(null, "San Luis", 1, 0));
+        recorrido.agregarParada(new ParadaRecorrido(null, "Villa Mercedes", 2, 100));
+        recorrido.agregarParada(new ParadaRecorrido(null, "Río Cuarto", 3, 300));
+        recorrido.agregarParada(new ParadaRecorrido(null, "Junín", 4, 600));
+        recorrido.agregarParada(new ParadaRecorrido(null, "Buenos Aires", 5, 800));
 
         System.out.println("\n GUARDAR RECORRIDO \n");
         System.out.println(recorridoData.guardarRecorrido(recorrido));
@@ -27,21 +35,11 @@ public class TestParadaRecorrido {
         // Obtener el ID generado.
         int idRecorrido = recorrido.getIdRecorrido();
         System.out.println("ID del recorrido: " + idRecorrido);
+        
+           // Obtener los IDs generados de las paradas.
+        int idParada1 = recorrido.getParadas().get(0).getIdParadaRecorrido();
+        int idParada2 = recorrido.getParadas().get(1).getIdParadaRecorrido();
 
-        // Crear paradas de prueba.
-        ParadaRecorrido parada1 = new ParadaRecorrido(recorrido, "San Luis", 1, 0);
-        ParadaRecorrido parada2 = new ParadaRecorrido(recorrido, "La Punta", 2, 15);
-        ParadaRecorrido parada3 = new ParadaRecorrido(recorrido, "La Carolina", 3, 80);
-
-        // Guardar paradas.
-        System.out.println("\n GUARDAR PARADAS \n");
-        System.out.println("Parada 1: " + paradaData.guardarParadaRecorrido(parada1));
-        System.out.println("Parada 2: " + paradaData.guardarParadaRecorrido(parada2));
-        System.out.println("Parada 3: " + paradaData.guardarParadaRecorrido(parada3));
-
-        // Obtener los IDs generados.
-        int idParada1 = parada1.getIdParadaRecorrido();
-        int idParada2 = parada2.getIdParadaRecorrido();
 
         // Listar paradas del recorrido.
         System.out.println("\n LISTADO DE PARADAS \n");
@@ -49,7 +47,9 @@ public class TestParadaRecorrido {
         List<ParadaRecorrido> lista = paradaData.listarParadasPorRecorrido(idRecorrido);
 
         for (ParadaRecorrido parada : lista) {
-            System.out.println(parada);
+            System.out.println(parada.getOrden() + ". "
+                    + parada.getNombreLugar() + " - "
+                    + parada.getDistanciaAcumuladaKm() + " km");
         }
 
         // Buscar parada.
