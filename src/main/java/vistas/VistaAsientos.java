@@ -26,19 +26,58 @@ public class VistaAsientos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        headerVista = new javax.swing.JPanel();
+        tituloVista = new javax.swing.JLabel();
+        iconoVista = new javax.swing.JLabel();
+
+        headerVista.setBackground(new java.awt.Color(20, 43, 73));
+        headerVista.setPreferredSize(new java.awt.Dimension(179, 85));
+
+        tituloVista.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        tituloVista.setForeground(new java.awt.Color(242, 242, 242));
+        tituloVista.setText("Asientos");
+
+        iconoVista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/asientos.png"))); // NOI18N
+
+        javax.swing.GroupLayout headerVistaLayout = new javax.swing.GroupLayout(headerVista);
+        headerVista.setLayout(headerVistaLayout);
+        headerVistaLayout.setHorizontalGroup(
+            headerVistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerVistaLayout.createSequentialGroup()
+                .addContainerGap(453, Short.MAX_VALUE)
+                .addComponent(tituloVista)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(iconoVista)
+                .addGap(30, 30, 30))
+        );
+        headerVistaLayout.setVerticalGroup(
+            headerVistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(headerVistaLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(headerVistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tituloVista)
+                    .addComponent(iconoVista))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(headerVista, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(headerVista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 557, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel headerVista;
+    private javax.swing.JLabel iconoVista;
+    private javax.swing.JLabel tituloVista;
     // End of variables declaration//GEN-END:variables
 }
