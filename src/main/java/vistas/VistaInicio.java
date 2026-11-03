@@ -40,10 +40,12 @@ public class VistaInicio extends javax.swing.JPanel {
         icono1 = new javax.swing.JLabel();
         lblVenta = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         pnlNuevaSalida = new javax.swing.JPanel();
         icono2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         lblProximasSalidas = new javax.swing.JLabel();
         pnlListadoSalidas = new javax.swing.JPanel();
@@ -229,6 +231,10 @@ public class VistaInicio extends javax.swing.JPanel {
 
         jLabel2.setText("Vender pasajes");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel4.setText(">");
+
         javax.swing.GroupLayout pnlNuevaVentaLayout = new javax.swing.GroupLayout(pnlNuevaVenta);
         pnlNuevaVenta.setLayout(pnlNuevaVentaLayout);
         pnlNuevaVentaLayout.setHorizontalGroup(
@@ -240,13 +246,16 @@ public class VistaInicio extends javax.swing.JPanel {
                 .addGroup(pnlNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(lblVenta))
-                .addContainerGap(294, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 254, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
         pnlNuevaVentaLayout.setVerticalGroup(
             pnlNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlNuevaVentaLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(pnlNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
                     .addGroup(pnlNuevaVentaLayout.createSequentialGroup()
                         .addComponent(lblVenta)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -272,6 +281,10 @@ public class VistaInicio extends javax.swing.JPanel {
 
         jLabel3.setText("Crear una salida de transporte");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel5.setText(">");
+
         javax.swing.GroupLayout pnlNuevaSalidaLayout = new javax.swing.GroupLayout(pnlNuevaSalida);
         pnlNuevaSalida.setLayout(pnlNuevaSalidaLayout);
         pnlNuevaSalidaLayout.setHorizontalGroup(
@@ -283,12 +296,17 @@ public class VistaInicio extends javax.swing.JPanel {
                 .addGroup(pnlNuevaSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3))
-                .addContainerGap(223, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 183, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
         pnlNuevaSalidaLayout.setVerticalGroup(
             pnlNuevaSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlNuevaSalidaLayout.createSequentialGroup()
                 .addGroup(pnlNuevaSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlNuevaSalidaLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel5))
                     .addGroup(pnlNuevaSalidaLayout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(jLabel1)
@@ -574,6 +592,8 @@ public class VistaInicio extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lblAccesosRapidos1;
