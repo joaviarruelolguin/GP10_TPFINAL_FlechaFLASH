@@ -211,7 +211,7 @@ public class VistaInicio extends javax.swing.JPanel {
 
         lblAccesosRapidos1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblAccesosRapidos1.setForeground(new java.awt.Color(20, 43, 73));
-        lblAccesosRapidos1.setText("Accesos rapidos");
+        lblAccesosRapidos1.setText("Accesos rápidos");
 
         pnlAccesosRapidos.setLayout(new java.awt.GridLayout(2, 1, 20, 12));
 
@@ -493,7 +493,7 @@ public class VistaInicio extends javax.swing.JPanel {
                             .addComponent(lblSubtitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblTituloPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblProximasSalidas)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -504,11 +504,11 @@ public class VistaInicio extends javax.swing.JPanel {
                                 .addGap(6, 6, 6)
                                 .addComponent(lblAccesosRapidos1))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pnlEstadisticas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(pnlListadoSalidas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
