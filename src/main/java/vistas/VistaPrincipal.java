@@ -16,8 +16,14 @@ public class VistaPrincipal extends javax.swing.JFrame {
     // Se crea un objeto de cada clase/vista y se los agrega como contenedor al pnlContenido para luego poder hacerlos visibles.
     private void configurarNavegacion() {
     
-    // Registrar paneles agregando las instancias y asignar identificadores.
-    pnlContenido.add(new VistaInicio(), "INICIO");
+    // Registrar paneles agregando las instancias y asignar identificadores.   
+    VistaInicio inicio = new VistaInicio();
+    
+        javax.swing.JScrollPane scrollInicio = new javax.swing.JScrollPane(inicio);
+        scrollInicio.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollInicio.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        pnlContenido.add(scrollInicio, "INICIO");       
+        
     pnlContenido.add(new VistaRecorridos(), "RECORRIDOS");
     pnlContenido.add(new VistaColectivos(), "COLECTIVOS");
     pnlContenido.add(new VistaAsientos(), "ASIENTOS");
