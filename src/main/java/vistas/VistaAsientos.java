@@ -35,9 +35,12 @@ public class VistaAsientos extends javax.swing.JPanel {
         tfidColectivo = new javax.swing.JTextField();
         lbnumAsiento = new javax.swing.JLabel();
         tfnumAsiento = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btGuardar = new javax.swing.JButton();
         lbidAsiento = new javax.swing.JLabel();
         tfidAsiento = new javax.swing.JTextField();
+        btActualizar = new javax.swing.JButton();
+        btBuscar = new javax.swing.JButton();
+        btListar = new javax.swing.JButton();
 
         headerVista.setBackground(new java.awt.Color(20, 43, 73));
         headerVista.setPreferredSize(new java.awt.Dimension(179, 85));
@@ -84,13 +87,22 @@ public class VistaAsientos extends javax.swing.JPanel {
 
         tfnumAsiento.addActionListener(this::tfnumAsientoActionPerformed);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
-        jButton1.setText("Guardar");
+        btGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btGuardar.setText("Guardar");
 
         lbidAsiento.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         lbidAsiento.setText("ID del Asiento:");
 
         tfidAsiento.addActionListener(this::tfidAsientoActionPerformed);
+
+        btActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/actualizar.png"))); // NOI18N
+        btActualizar.setText("Actualizar");
+
+        btBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
+        btBuscar.setText("Buscar");
+
+        btListar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/listar.png"))); // NOI18N
+        btListar.setText("Listar");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -100,7 +112,13 @@ public class VistaAsientos extends javax.swing.JPanel {
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btGuardar)
+                        .addGap(70, 70, 70)
+                        .addComponent(btActualizar)
+                        .addGap(61, 61, 61)
+                        .addComponent(btBuscar)
+                        .addGap(56, 56, 56)
+                        .addComponent(btListar)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,7 +154,11 @@ public class VistaAsientos extends javax.swing.JPanel {
                             .addComponent(tfidColectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfnumAsiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btGuardar)
+                            .addComponent(btActualizar)
+                            .addComponent(btBuscar)
+                            .addComponent(btListar))
                         .addGap(26, 26, 26))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lbidAsiento)
@@ -179,9 +201,12 @@ public class VistaAsientos extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btActualizar;
+    private javax.swing.JButton btBuscar;
+    private javax.swing.JButton btGuardar;
+    private javax.swing.JButton btListar;
     private javax.swing.JPanel headerVista;
     private javax.swing.JLabel iconoVista;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbidAsiento;
