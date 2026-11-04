@@ -9,7 +9,7 @@ public class Venta {
     private int idVenta;
     private Pasajero pasajeroComprador;
     private LocalDateTime fechaHoraVenta;
-    private String medioPago;
+    private MedioPago medioPago;
     private int cantidadCuotas;
     private int cantidadPasajes;
     private BigDecimal importeTotal;
@@ -19,7 +19,7 @@ public class Venta {
 
     // Constructor sin ID: para registrar una venta nueva
     public Venta(Pasajero pasajeroComprador, LocalDateTime fechaHoraVenta,
-            String medioPago, int cantidadCuotas, int cantidadPasajes,
+            MedioPago medioPago, int cantidadCuotas, int cantidadPasajes,
             BigDecimal importeTotal, String tipoComprobante,
             String numeroComprobante, boolean estado) {
 
@@ -36,7 +36,7 @@ public class Venta {
 
     // Constructor con ID: para recuperar una venta de la BD
     public Venta(int idVenta, Pasajero pasajeroComprador,
-            LocalDateTime fechaHoraVenta, String medioPago,
+            LocalDateTime fechaHoraVenta, MedioPago medioPago,
             int cantidadCuotas, int cantidadPasajes,
             BigDecimal importeTotal, String tipoComprobante,
             String numeroComprobante, boolean estado) {
@@ -82,11 +82,11 @@ public class Venta {
         this.fechaHoraVenta = fechaHoraVenta;
     }
 
-    public String getMedioPago() {
+    public MedioPago getMedioPago() {
         return medioPago;
     }
 
-    public void setMedioPago(String medioPago) {
+    public void setMedioPago(MedioPago medioPago) {
         this.medioPago = medioPago;
     }
 
