@@ -1,4 +1,3 @@
-
 package persistencia;
 
 import java.math.BigDecimal;
@@ -18,20 +17,24 @@ public class PasajeData {
     public PasajeData() {
         con = Conexion.getInstancia().getConnection();
     }
-    
-    // recibe una ruta, una parada de origen y una parada destino
 
+    // recibe una ruta, una parada de origen y una parada destino
     public BigDecimal calcularPrecioPasaje(
             RutaViaje ruta,
             ParadaRecorrido origen,
             ParadaRecorrido destino) throws SQLException {
 
-        // si la ruta, el origen o el destino no existen, informo que los datos requeridos son obligatorios
-        if (ruta == null || origen == null || destino == null) {
+        if (ruta.getRecorrido() == null) {  // comprobamos que la ruta tenga un recorrido 
             throw new IllegalArgumentException(
-                    "La ruta, el origen y el destino son obligatorios.");
+                    "La ruta debe tener un recorrido asignado."); 
         }
 
+        if (origen.getRecorrido() == null // comprobamos que la parada de origen y la de destino tengan un recorrido
+                || destino.getRecorrido() == null) {
+            throw new IllegalArgumentException(
+                    "Las paradas deben tener un recorrido asignado.");
+        }  
+        // si todo esta correcto obtengo el id del recorrido
         // recibo la ruta, obtengo el recorrido y guardo el id para consultar las paradas que tiene asignadas
         int idRecorrido = ruta.getRecorrido().getIdRecorrido();
 
@@ -51,9 +54,9 @@ public class PasajeData {
 
         // busca la distancia total del recorrido
         String sql = "SELECT distanciaAcumuladaKm "
-                   + "FROM paradarecorrido "
-                   + "WHERE idRecorrido = ? "
-                   + "ORDER BY orden DESC LIMIT 1";  // ordena desde el orden mas alto al ams bajo y devuelve solo un registro
+                + "FROM paradarecorrido "
+                + "WHERE idRecorrido = ? "
+                + "ORDER BY orden DESC LIMIT 1";  // ordena desde el orden mas alto al ams bajo y devuelve solo un registro
 
         double distanciaTotal;
 
@@ -79,8 +82,8 @@ public class PasajeData {
         }
 
         // Calcula los kilómetros del tramo
-        double distanciaTramo =
-                destino.getDistanciaAcumuladaKm()
+        double distanciaTramo
+                = destino.getDistanciaAcumuladaKm()
                 - origen.getDistanciaAcumuladaKm();
 
         if (distanciaTramo <= 0) {
@@ -99,7 +102,7 @@ public class PasajeData {
         }
 
         BigDecimal precioPasaje = kmTramo
-                .multiply(precioBase)   //multiplica los km del tramo por el precio base
+                .multiply(precioBase) //multiplica los km del tramo por el precio base
                 .divide(kmTotal, 2, RoundingMode.HALF_UP); // divide por los km totales y redodndea decimales
 
         return precioPasaje; // devuelve el resultado 
