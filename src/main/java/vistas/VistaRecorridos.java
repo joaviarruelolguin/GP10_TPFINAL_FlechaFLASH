@@ -63,9 +63,9 @@ public class VistaRecorridos extends javax.swing.JPanel {
             headerVistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerVistaLayout.createSequentialGroup()
                 .addContainerGap(29, Short.MAX_VALUE)
-                .addGroup(headerVistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(headerVistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGap(28, 28, 28))
         );
 
@@ -73,11 +73,11 @@ public class VistaRecorridos extends javax.swing.JPanel {
         lblRecorridosRegistrados.setForeground(new java.awt.Color(20, 43, 73));
         lblRecorridosRegistrados.setText("Recorridos registrados");
 
-        lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(20, 43, 73));
         lblTitulo.setText("Gestión de Recorridos");
 
-        lblSubtitulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblSubtitulo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblSubtitulo.setForeground(new java.awt.Color(100, 116, 139));
         lblSubtitulo.setText("Administrá los recorridos y sus paradas");
 
@@ -212,17 +212,20 @@ public class VistaRecorridos extends javax.swing.JPanel {
         pnlFormularioRecorridoLayout.setHorizontalGroup(
             pnlFormularioRecorridoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFormularioRecorridoLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(pnlFormularioRecorridoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlParadas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblParadasRecorrido)
-                    .addComponent(lblDatosRecorrido)
+                .addGroup(pnlFormularioRecorridoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlFormularioRecorridoLayout.createSequentialGroup()
+                        .addGap(302, 302, 302)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioRecorridoLayout.createSequentialGroup()
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(pnlDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAgregarParada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(30, 30, 30)
+                        .addGroup(pnlFormularioRecorridoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblParadasRecorrido)
+                            .addComponent(lblDatosRecorrido)
+                            .addGroup(pnlFormularioRecorridoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(btnAgregarParada, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
+                                .addComponent(pnlParadas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(pnlDescripcion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         pnlFormularioRecorridoLayout.setVerticalGroup(
@@ -253,16 +256,15 @@ public class VistaRecorridos extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lblRecorridosRegistrados)
-                            .addComponent(scrollRecorridos)
                             .addComponent(lblSubtitulo)
+                            .addComponent(scrollRecorridos, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
                             .addComponent(pnlFormularioRecorrido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(35, Short.MAX_VALUE))))
+                        .addGap(0, 35, Short.MAX_VALUE)))
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(103, 103, 103)
                 .addComponent(btnNuevo)
