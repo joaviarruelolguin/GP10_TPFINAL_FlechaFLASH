@@ -127,7 +127,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
         );
 
         crudPanel.setBackground(new java.awt.Color(242, 239, 239));
-        crudPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        crudPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(206, 206, 206)));
 
         tituloCrudPanel.setBackground(new java.awt.Color(20, 43, 73));
         tituloCrudPanel.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -258,7 +258,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
         );
 
         consultaPanel.setBackground(new java.awt.Color(242, 239, 239));
-        consultaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        consultaPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(206, 206, 206)));
 
         tituloConsultaPanel.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         tituloConsultaPanel.setText("Lista de pasajeros");
@@ -337,17 +337,17 @@ public class VistaPasajeros extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(crudPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(consultaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(headerVista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(crudPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(consultaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
     }// </editor-fold>//GEN-END:initComponents
 
