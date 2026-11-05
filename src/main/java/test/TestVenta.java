@@ -41,8 +41,10 @@ public class TestVenta {
 
 //        Asiento asiento1 = asientoData.buscarAsiento(4);
 //        Asiento asiento2 = asientoData.buscarAsiento(5);
-        Asiento asiento1 = asientoData.buscarAsiento(8);
-        Asiento asiento2 = asientoData.buscarAsiento(9);
+//        Asiento asiento1 = asientoData.buscarAsiento(8);
+//        Asiento asiento2 = asientoData.buscarAsiento(9);
+        Asiento asiento1 = asientoData.buscarAsiento(10);
+        Asiento asiento2 = asientoData.buscarAsiento(11);
 
 //        Asiento asiento1 = asientoData.buscarAsiento(2);
 //        Asiento asiento2 = asientoData.buscarAsiento(3);
@@ -72,6 +74,8 @@ public class TestVenta {
                 ruta, origen, destino);
 
         System.out.println("Precio calculado: $" + precio);
+        Pasajero pasajeroInexistente = new Pasajero();
+        pasajeroInexistente.setIdPasajero(99999);
 
         // 5. Creamos el objeto Pasaje.
         Pasaje pasaje1 = new Pasaje(
@@ -87,7 +91,7 @@ public class TestVenta {
         );
 
         Pasaje pasaje2 = new Pasaje(
-                pasajero2,
+                pasajeroInexistente,
                 ruta,
                 asiento2,
                 origen,
