@@ -135,6 +135,46 @@ public class ColectivoData {
         return colectivos;
     }
 
+    public List<Colectivo> listarColectivosActivos() {
+
+        List<Colectivo> colectivos = new ArrayList<>();
+        String sql = "SELECT * FROM colectivo WHERE estado = TRUE ORDER BY idColectivo";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                LocalDate caducidad = null;
+
+                if (rs.getDate("caducidad") != null) {
+                    caducidad = rs.getDate("caducidad").toLocalDate();
+                }
+
+                Colectivo colectivo = new Colectivo(
+                        rs.getInt("idColectivo"),
+                        rs.getString("matricula"),
+                        rs.getString("marca"),
+                        rs.getString("modelo"),
+                        rs.getInt("capacidad"),
+                        caducidad,
+                        rs.getBoolean("estado"),
+                        rs.getString("chofer")
+                );
+
+                cargarAsientos(colectivo);
+                colectivos.add(colectivo);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar colectivos activos: " + e.getMessage());
+        }
+
+        return colectivos;
+    }
+
+
+    
+
     public Colectivo buscarColectivo(int idColectivo) {
 
         String sql = "SELECT * FROM colectivo WHERE idColectivo = ?";

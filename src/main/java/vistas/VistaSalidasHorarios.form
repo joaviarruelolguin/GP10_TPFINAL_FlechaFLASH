@@ -35,7 +35,6 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="pnlAviso" alignment="1" max="32767" attributes="0"/>
                           <Component id="jScrollPane2" alignment="1" max="32767" attributes="0"/>
                           <Component id="pnlDatosSalida" max="32767" attributes="0"/>
                           <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
@@ -63,11 +62,11 @@
               <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="129" max="-2" attributes="0"/>
               <Component id="btnGuardar" min="-2" pref="251" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
               <Component id="btnCancelar" min="-2" pref="251" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="157" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
@@ -103,20 +102,18 @@
               <Component id="lblParadasHorarios" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="125" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-              <Component id="pnlAviso" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnGuardar" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                   <Component id="btnCancelar" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="28" max="32767" attributes="0"/>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="238" max="-2" attributes="0"/>
                   <Component id="lblSalidasRegistradas1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="768" max="32767" attributes="0"/>
+                  <EmptySpace pref="712" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -276,6 +273,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Nuevo"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNuevoActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnEditar">
       <Properties>
@@ -356,7 +356,7 @@
                           <Component id="dtChFecha" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="103" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="spnHoraSalida" max="32767" attributes="0"/>
                       <Component id="lblHoraSalida" max="32767" attributes="0"/>
@@ -414,8 +414,12 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cmbRecorridoItemStateChanged"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbRecorridoActionPerformed"/>
+          </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Recorrido&gt;"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="lblHoraSalida">
@@ -469,7 +473,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Colectivo&gt;"/>
           </AuxValues>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="dtChFecha">
@@ -502,67 +506,6 @@
         <Property name="text" type="java.lang.String" value="Salidas registradas"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JPanel" name="pnlAviso">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="fa" green="ee" red="e6" type="rgb"/>
-        </Property>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-            <LineBorder>
-              <Color PropertyName="color" blue="e1" green="be" red="a5" type="rgb"/>
-            </LineBorder>
-          </Border>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pnlAvisoMouseClicked"/>
-      </Events>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                  <Component id="lblIcono" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="txtTexto" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="14" max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lblIcono" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtTexto" min="-2" pref="32" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="0" pref="8" max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JLabel" name="lblIcono">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/iconos/info.png"/>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="txtTexto">
-          <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="69" green="41" red="23" type="rgb"/>
-            </Property>
-            <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="&lt;html&gt;Las paradas y su orden se cargan autom&#xe1;ticamente desde el recorrido seleccionado. Ingres&#xe1; los kil&#xf3;metros acumulados de cada parada; &lt;br&gt;los horarios se calculan autom&#xe1;ticamente a partir de la hora de salida y la velocidad promedio del viaje.&lt;/html&gt;"/>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
     <Component class="javax.swing.JButton" name="btnGuardar">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">

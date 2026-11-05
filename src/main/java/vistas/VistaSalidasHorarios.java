@@ -2,14 +2,24 @@ package vistas;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
+import persistencia.RecorridoData;
+import persistencia.ColectivoData;
+import modelo.Recorrido;
+import modelo.Colectivo;
+import modelo.ParadaRecorrido;
+
 
 public class VistaSalidasHorarios extends javax.swing.JPanel {
 
+      private RecorridoData recorridoData = new RecorridoData();
+    private ColectivoData colectivoData = new ColectivoData();
     
     public VistaSalidasHorarios() {
         initComponents();
         configurarHoraSalida();
         configurarTablaHorarios();
+        cargarComboBox();
+        habilitarFormulario(false);
     }
 
    
@@ -44,9 +54,6 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
         spnHoraSalida = new javax.swing.JSpinner();
         txtPrecioBase = new javax.swing.JTextField();
         lblSalidasRegistradas1 = new javax.swing.JLabel();
-        pnlAviso = new javax.swing.JPanel();
-        lblIcono = new javax.swing.JLabel();
-        txtTexto = new javax.swing.JLabel();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
@@ -136,6 +143,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Nuevo.png"))); // NOI18N
         btnNuevo.setText("Nuevo");
+        btnNuevo.addActionListener(this::btnNuevoActionPerformed);
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Editar.png"))); // NOI18N
         btnEditar.setText("Editar");
@@ -162,6 +170,9 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
         lblRecorrido.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblRecorrido.setForeground(new java.awt.Color(82, 100, 125));
         lblRecorrido.setText("RECORRIDO");
+
+        cmbRecorrido.addItemListener(this::cmbRecorridoItemStateChanged);
+        cmbRecorrido.addActionListener(this::cmbRecorridoActionPerformed);
 
         lblHoraSalida.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblHoraSalida.setForeground(new java.awt.Color(82, 100, 125));
@@ -204,7 +215,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
                     .addGroup(pnlDatosSalidaLayout.createSequentialGroup()
                         .addGap(59, 59, 59)
                         .addComponent(dtChFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
                 .addGroup(pnlDatosSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(spnHoraSalida)
                     .addComponent(lblHoraSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -239,41 +250,6 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
         lblSalidasRegistradas1.setForeground(new java.awt.Color(23, 47, 77));
         lblSalidasRegistradas1.setText("Salidas registradas");
 
-        pnlAviso.setBackground(new java.awt.Color(230, 238, 250));
-        pnlAviso.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(165, 190, 225)));
-        pnlAviso.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pnlAvisoMouseClicked(evt);
-            }
-        });
-
-        lblIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/info.png"))); // NOI18N
-
-        txtTexto.setForeground(new java.awt.Color(35, 65, 105));
-        txtTexto.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        txtTexto.setText("<html>Las paradas y su orden se cargan automáticamente desde el recorrido seleccionado. Ingresá los kilómetros acumulados de cada parada; <br>los horarios se calculan automáticamente a partir de la hora de salida y la velocidad promedio del viaje.</html>");
-
-        javax.swing.GroupLayout pnlAvisoLayout = new javax.swing.GroupLayout(pnlAviso);
-        pnlAviso.setLayout(pnlAvisoLayout);
-        pnlAvisoLayout.setHorizontalGroup(
-            pnlAvisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlAvisoLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(lblIcono)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtTexto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
-        pnlAvisoLayout.setVerticalGroup(
-            pnlAvisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlAvisoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlAvisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblIcono)
-                    .addComponent(txtTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 8, Short.MAX_VALUE))
-        );
-
         btnGuardar.setBackground(new java.awt.Color(0, 108, 158));
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
@@ -301,7 +277,6 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pnlAviso, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(pnlDatosSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane1)
@@ -321,11 +296,11 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(36, 36, 36))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(129, 129, 129)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(157, 157, 157))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(45, 45, 45)
@@ -356,18 +331,16 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
                 .addComponent(lblParadasHorarios)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(pnlAviso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(238, 238, 238)
                     .addComponent(lblSalidasRegistradas1)
-                    .addContainerGap(768, Short.MAX_VALUE)))
+                    .addContainerGap(712, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -444,15 +417,105 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
         tblHorariosEstimados.getColumnModel().getColumn(2).setCellEditor(new javax.swing.DefaultCellEditor(campoKm));
 
     }
+
+    private void cargarComboBox() {
+        cmbRecorrido.removeAllItems();
+        cmbColectivo.removeAllItems();
+
+        for (Recorrido recorrido : recorridoData.listarRecorridosActivos()) {
+            cmbRecorrido.addItem(recorrido);
+        }
+
+        for (Colectivo colectivo : colectivoData.listarColectivosActivos()) {
+            cmbColectivo.addItem(colectivo);
+        }
+    }
+
+    
+    private void habilitarFormulario(boolean habilitar) {
+        cmbRecorrido.setEnabled(habilitar);
+        cmbColectivo.setEnabled(habilitar);
+        dtChFecha.setEnabled(habilitar);
+        spnHoraSalida.setEnabled(habilitar);
+        txtPrecioBase.setEnabled(habilitar);
+        tblHorariosEstimados.setEnabled(habilitar);
+
+        btnGuardar.setEnabled(habilitar);
+        btnCancelar.setEnabled(habilitar);
+
+        btnNuevo.setEnabled(!habilitar);
+        btnEditar.setEnabled(!habilitar);
+        btnDesactivar.setEnabled(!habilitar);
+        btnEliminar.setEnabled(!habilitar);
+    }
     
     
+
     private void pnlDatosSalidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlDatosSalidaMouseClicked
 
     }//GEN-LAST:event_pnlDatosSalidaMouseClicked
 
-    private void pnlAvisoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlAvisoMouseClicked
+    private void cmbRecorridoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRecorridoActionPerformed
+        
+        
+        
+    }//GEN-LAST:event_cmbRecorridoActionPerformed
 
-    }//GEN-LAST:event_pnlAvisoMouseClicked
+    private void limpiarFormulario() {
+        cmbRecorrido.setSelectedIndex(-1);
+        cmbColectivo.setSelectedIndex(-1);
+
+        dtChFecha.setDate(null);
+        spnHoraSalida.setValue(new java.util.Date());
+
+        txtPrecioBase.setText("");
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tblHorariosEstimados.getModel();
+
+        modelo.setRowCount(0);
+    }
+    
+    
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+
+        limpiarFormulario();
+        habilitarFormulario(true);
+
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    
+    
+    
+    private void cargarParadas(Recorrido recorrido) {
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tblHorariosEstimados.getModel();
+
+        modelo.setRowCount(0);
+
+        for (ParadaRecorrido parada : recorrido.getParadas()) {
+            modelo.addRow(new Object[]{
+                parada.getOrden(),
+                parada.getNombreLugar(),
+                parada.getDistanciaAcumuladaKm(),
+                "",
+                ""
+            });
+        }
+    }
+
+    
+    private void cmbRecorridoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbRecorridoItemStateChanged
+
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            Recorrido recorrido = (Recorrido) cmbRecorrido.getSelectedItem();
+
+            if (recorrido != null) {
+                cargarParadas(recorrido);
+            }
+        }
+
+    }//GEN-LAST:event_cmbRecorridoItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -462,8 +525,8 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JComboBox<String> cmbColectivo;
-    private javax.swing.JComboBox<String> cmbRecorrido;
+    private javax.swing.JComboBox<Colectivo> cmbColectivo;
+    private javax.swing.JComboBox<Recorrido> cmbRecorrido;
     private com.toedter.calendar.JDateChooser dtChFecha;
     private java.awt.Panel headerVista;
     private javax.swing.JLabel jLabel1;
@@ -474,19 +537,16 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
     private javax.swing.JLabel lblDatosSalidas;
     private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblHoraSalida;
-    private javax.swing.JLabel lblIcono;
     private javax.swing.JLabel lblParadasHorarios;
     private javax.swing.JLabel lblPrecioBase;
     private javax.swing.JLabel lblRecorrido;
     private javax.swing.JLabel lblSalidasRegistradas1;
     private javax.swing.JLabel lblSubtitulo;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JPanel pnlAviso;
     private javax.swing.JPanel pnlDatosSalida;
     private javax.swing.JSpinner spnHoraSalida;
     private javax.swing.JTable tblHorariosEstimados;
     private javax.swing.JTable tblSalidasRegistradas;
     private javax.swing.JTextField txtPrecioBase;
-    private javax.swing.JLabel txtTexto;
     // End of variables declaration//GEN-END:variables
 }

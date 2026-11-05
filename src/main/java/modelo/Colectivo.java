@@ -136,10 +136,9 @@ public class Colectivo {
         this.chofer = chofer;
     }
 
-    
     @Override
     public String toString() {
-        return matricula + "-" + marca +"-" + modelo;
+        return matricula;
     }
     
     public List<Asiento> getAsientos() {
