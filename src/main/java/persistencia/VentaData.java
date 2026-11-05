@@ -1,15 +1,15 @@
 package persistencia;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode; // para redondear el resultado
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
-import modelo.MedioPago;
 
+import modelo.MedioPago;
 import modelo.Venta;
 import modelo.Pasaje;
 
@@ -21,46 +21,103 @@ public class VentaData {
         con = Conexion.getInstancia().getConnection();
     }
 
-    private static final BigDecimal INTERES_CREDITO
-            = new BigDecimal("0.10");   // se establece una constante con el intres del credito (10%)
+    // Comprueba que todos los pasajes tengan los datos necesarios
+    // antes de comenzar a registrar la venta en la base de datos.
+    private void validarPasajes(List<Pasaje> pasajes) {
 
-    public BigDecimal calcularImporteTotal( // recibe la lista de pasajes, la cantidad de cuotas y los medios de pago
-            //si no hay cuotas no se aplica el interes
-            List<Pasaje> pasajes, int cantidadCuotas, MedioPago medioPago) {
-
-        // si no recibo lista o la lista no contiene pasaje, no se calcla la venta
         if (pasajes == null || pasajes.isEmpty()) {
             throw new IllegalArgumentException(
                     "La venta debe incluir al menos un pasaje.");
         }
-        if (medioPago == null) { // debe haber un mediod e pago sino no se vende el pasaje
+
+        // Por cada objeto pasaje que encuentre en la lista,
+        // ejecuta las siguientes comprobaciones.
+        for (Pasaje pasaje : pasajes) {
+
+            // Comprobamos que el pasaje tenga todos los objetos necesarios.
+            if (pasaje == null
+                    || pasaje.getPasajero() == null
+                    || pasaje.getRutaViaje() == null
+                    || pasaje.getAsiento() == null
+                    || pasaje.getParadaOrigen() == null
+                    || pasaje.getParadaDestino() == null
+                    || pasaje.getPrecioFinal() == null) {
+
+                throw new IllegalArgumentException(
+                        "Hay un pasaje con datos incompletos.");
+            }
+
+            // Comprobamos que los identificadores de las referencias
+            // sean válidos.
+            if (pasaje.getPasajero().getIdPasajero() <= 0
+                    || pasaje.getRutaViaje().getIdRutaViaje() <= 0
+                    || pasaje.getAsiento().getIdAsiento() <= 0
+                    || pasaje.getParadaOrigen().getIdParadaRecorrido() <= 0
+                    || pasaje.getParadaDestino().getIdParadaRecorrido() <= 0) {
+
+                throw new IllegalArgumentException(
+                        "Hay referencias inválidas en un pasaje.");
+            }
+
+            // El precio del pasaje no puede ser negativo.
+            if (pasaje.getPrecioFinal().compareTo(BigDecimal.ZERO) < 0) {
+                throw new IllegalArgumentException(
+                        "El precio del pasaje no puede ser negativo.");
+            }
+        }
+    }
+
+    // Se establece una constante con el interés del crédito (10%).
+    private static final BigDecimal INTERES_CREDITO
+            = new BigDecimal("0.10");
+
+    public BigDecimal calcularImporteTotal(
+            // Recibe la lista de pasajes, la cantidad de cuotas
+            // y el medio de pago. Si no hay financiación, no se aplica interés.
+            List<Pasaje> pasajes,
+            int cantidadCuotas,
+            MedioPago medioPago) {
+
+        // Si no recibo una lista o no contiene pasajes,
+        // no se calcula la venta.
+        if (pasajes == null || pasajes.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "La venta debe incluir al menos un pasaje.");
+        }
+
+        // Debe haber un medio de pago seleccionado.
+        if (medioPago == null) {
             throw new IllegalArgumentException(
                     "Debe seleccionar un medio de pago.");
         }
 
-        if (medioPago != MedioPago.CREDITO && cantidadCuotas != 0) {  // tiene que ser credito para que permita las cuotas
-            throw new IllegalArgumentException(
-                    "Solo las tarjetas de crédito permiten financiar en cuotas.");
-        }
-
-        if (medioPago == MedioPago.CREDITO && cantidadCuotas == 0) { // se debe seleccionar al menos una cuota
-            throw new IllegalArgumentException(
-                    "Debe seleccionar entre 1 y 6 cuotas para pagar con crédito.");
-        }
-
-        // las cuotas deben ser entre 0 y6 sino rechazo el calculo
+        // Las cuotas deben estar entre 0 y 6.
         if (cantidadCuotas < 0 || cantidadCuotas > 6) {
             throw new IllegalArgumentException(
                     "La cantidad de cuotas debe estar entre 0 y 6.");
         }
 
-        // variable de subtotal inicializada en 0
+        // Solo se permite financiar con tarjeta de crédito.
+        if (medioPago != MedioPago.CREDITO && cantidadCuotas != 0) {
+            throw new IllegalArgumentException(
+                    "Solo las tarjetas de crédito permiten financiar en cuotas.");
+        }
+
+        // Si se utiliza crédito, debe seleccionarse al menos una cuota.
+        if (medioPago == MedioPago.CREDITO && cantidadCuotas == 0) {
+            throw new IllegalArgumentException(
+                    "Debe seleccionar entre 1 y 6 cuotas para pagar con crédito.");
+        }
+
+        // Variable de subtotal inicializada en cero.
         BigDecimal subtotal = BigDecimal.ZERO;
 
-        // por cada objeto pasaje que encuentre en la lista de pasajes ejecuta las instrucciones 
+        // Por cada objeto pasaje que encuentre en la lista,
+        // ejecuta las instrucciones.
         for (Pasaje pasaje : pasajes) {
 
-            // validamos cada pasaje (que exista el objeto pasaje, que tenga un precio y que el precio no sea negativo
+            // Validamos que exista el pasaje, que tenga un precio
+            // y que ese precio no sea negativo.
             if (pasaje == null || pasaje.getPrecioFinal() == null
                     || pasaje.getPrecioFinal().compareTo(BigDecimal.ZERO) < 0) {
 
@@ -68,79 +125,90 @@ public class VentaData {
                         "El pasaje tiene un precio inválido.");
             }
 
-            subtotal = subtotal.add(pasaje.getPrecioFinal());  // toma el subtotal que ya tengo y suma el precio actual
-        }   // obtenemos el subtotala de todos los pasajes
+            // Toma el subtotal que ya tenemos y suma el precio actual.
+            subtotal = subtotal.add(pasaje.getPrecioFinal());
 
-        //  aplicamos el interes si corresponde que corresponde exclusivamente al medio de pago
+        } // Obtenemos el subtotal de todos los pasajes.
+
+        // Aplicamos el interés únicamente si se paga con crédito.
         if (medioPago == MedioPago.CREDITO) {
+
             BigDecimal interes = subtotal.multiply(INTERES_CREDITO);
+
             subtotal = subtotal.add(interes);
         }
 
-        // Redondeamos el importe final
+        // Redondeamos el importe final a dos decimales.
         return subtotal.setScale(2, RoundingMode.HALF_UP);
     }
 
     /*
- * SYNCHRONIZED:
- * Se utiliza para controlar el acceso concurrente al método.
- * En Java, varios hilos pueden ejecutar tareas al mismo tiempo.
- * Si dos hilos intentan acceder a una misma sección de código
- * protegida por el mismo bloqueo, uno debe esperar a que el otro
- * termine y libere ese bloqueo.
- *
- * En FlechaFLASH compartimos una única conexión a MariaDB mediante
- * el patrón Singleton. Por eso es importante controlar el acceso
- * a la conexión durante las transacciones, evitando que distintas
- * operaciones interfieran entre sí.
- *
- * IMPORTANTE: synchronized en un método de instancia bloquea
- * únicamente el objeto actual (this). Si existen varias instancias
- * de VentaData, este modificador por sí solo no protege la conexión
- * compartida.
+     * SYNCHRONIZED:
+     * Se utiliza para controlar el acceso concurrente a una sección de código.
+     * En Java, varios hilos pueden ejecutar tareas al mismo tiempo.
+     * Si dos hilos intentan acceder a una sección protegida por el mismo
+     * bloqueo, uno debe esperar a que el otro termine y libere ese bloqueo.
+     *
+     * En FlechaFLASH compartimos una única conexión a MariaDB mediante
+     * el patrón Singleton. Por eso sincronizamos sobre el objeto Connection,
+     * que es el recurso compartido que necesitamos proteger durante
+     * las transacciones.
+     *
+     * IMPORTANTE: las demás clases que utilicen esta conexión también
+     * deberán respetar el mismo bloqueo para evitar interferencias.
      */
-    public synchronized boolean registrarVenta(
+    public boolean registrarVenta(
             Venta venta, List<Pasaje> pasajes) throws SQLException {
 
-        if (venta == null) { // debe haber un objeto venta
-            throw new IllegalArgumentException("La venta es obligatoria.");
+        // Debe existir un objeto Venta.
+        if (venta == null) {
+            throw new IllegalArgumentException(
+                    "La venta es obligatoria.");
         }
 
-        if (venta.getPasajeroComprador() == null // debe haber un id valido de comprador
+        // Debe haber un comprador con un identificador válido.
+        if (venta.getPasajeroComprador() == null
                 || venta.getPasajeroComprador().getIdPasajero() <= 0) {
 
             throw new IllegalArgumentException(
                     "Debe seleccionar un comprador válido.");
         }
 
-        if (pasajes == null || pasajes.isEmpty()) {   // debe haber un pasaje
+        // Debe existir una fecha y hora para registrar la venta.
+        if (venta.getFechaHoraVenta() == null) {
             throw new IllegalArgumentException(
-                    "La venta debe incluir al menos un pasaje.");
+                    "La fecha y hora de la venta son obligatorias.");
         }
+
+        // Debe haber un medio de pago seleccionado.
         if (venta.getMedioPago() == null) {
             throw new IllegalArgumentException(
                     "Debe seleccionar un medio de pago.");
         }
 
-        if (venta.getCantidadCuotas() < 0 // las cuotas deben estar entre 0 y 6
-                || venta.getCantidadCuotas() > 6) {
+        // Validamos todos los pasajes antes de iniciar la transacción.
+        validarPasajes(pasajes);
 
-            throw new IllegalArgumentException(
-                    "La cantidad de cuotas debe estar entre 0 y 6.");
-        }
-        if (venta.getMedioPago() == null) {
-            throw new IllegalArgumentException(
-                    "Debe seleccionar un medio de pago.");
-        }
-
+        // Calculamos el importe total teniendo en cuenta
+        // los precios de los pasajes, las cuotas y el medio de pago.
         BigDecimal importeTotal = calcularImporteTotal(
-                // llamamos al metodo y le damos la lista de pasajes, la cant de cuotas y el medio de pagp
-
                 pasajes,
                 venta.getCantidadCuotas(),
                 venta.getMedioPago());
 
-        // insertamos un registro en la tabla ventas  completando los datos
+        // Guardamos el importe calculado en el objeto Venta.
+        venta.setImporteTotal(importeTotal);
+
+        // Obtenemos la cantidad de pasajes a partir del tamaño de la lista.
+        venta.setCantidadPasajes(pasajes.size());
+
+        // Comprobamos que la conexión con la base de datos esté disponible.
+        if (con == null || con.isClosed()) {
+            throw new SQLException(
+                    "No hay una conexión disponible con la base de datos.");
+        }
+
+        // Insertamos un registro en la tabla venta completando sus datos.
         String sqlVenta = "INSERT INTO venta "
                 + "(idPasajeroComprador, fechaHoraVenta, medioPago, "
                 + "cantidadCuotas, cantidadPasajes, importeTotal, "
@@ -153,14 +221,21 @@ public class VentaData {
                 + "precioFinal, estado, idVenta) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-// Sincronizamos sobre la conexión compartida.
-// De esta manera, dos operaciones que utilicen este mismo bloqueo
-// no podrán ejecutar simultáneamente sus transacciones.
+        // Sincronizamos sobre la conexión compartida.
+        // De esta manera, las operaciones que utilicen este mismo bloqueo
+        // no podrán ejecutar simultáneamente sus transacciones.
         synchronized (con) {
 
             // Guardamos el estado anterior de AutoCommit para poder restaurarlo
             // una vez finalizada la operación.
             boolean autoCommitAnterior = con.getAutoCommit();
+
+            // Indicamos si la transacción llegó a iniciarse.
+            boolean transaccionIniciada = false;
+
+            // Guardamos la excepción principal para no perderla
+            // si posteriormente falla el rollback o la restauración.
+            Throwable errorPrincipal = null;
 
             try {
 
@@ -168,6 +243,8 @@ public class VentaData {
                 // Desactivamos AutoCommit para que las operaciones no se confirmen
                 // individualmente, sino todas juntas al finalizar.
                 con.setAutoCommit(false);
+
+                transaccionIniciada = true;
 
                 // Insertar la venta.
                 // Preparamos la consulta SQL y solicitamos que MariaDB
@@ -196,7 +273,7 @@ public class VentaData {
                     // Ejecutamos la inserción de la venta.
                     psVenta.executeUpdate();
 
-                    // Recuperar el ID generado por MariaDB.
+                    //  Recuperar el ID generado por MariaDB.
                     // Este identificador será necesario para relacionar
                     // los pasajes con la venta recién registrada.
                     try (ResultSet rs = psVenta.getGeneratedKeys()) {
@@ -210,40 +287,16 @@ public class VentaData {
                         venta.setIdVenta(rs.getInt(1));
                     }
                 }
+                // Creamos el objeto que permite comprobar la disponibilidad de los asientos.
+                PasajeData pasajeData = new PasajeData();
 
-                // nsertar todos los pasajes asociados a la venta.
+                // Insertar todos los pasajes asociados a la venta.
                 // Utilizamos un PreparedStatement para ejecutar la misma
                 // consulta varias veces, cambiando sus parámetros.
                 try (PreparedStatement psPasaje = con.prepareStatement(sqlPasaje)) {
 
                     // Recorremos la lista de pasajes que forman parte de la venta.
                     for (Pasaje pasaje : pasajes) {
-
-                        // Comprobamos que el pasaje tenga todos los objetos
-                        // necesarios para poder registrarse.
-                        if (pasaje == null
-                                || pasaje.getPasajero() == null
-                                || pasaje.getRutaViaje() == null
-                                || pasaje.getAsiento() == null
-                                || pasaje.getParadaOrigen() == null
-                                || pasaje.getParadaDestino() == null
-                                || pasaje.getPrecioFinal() == null) {
-
-                            throw new IllegalArgumentException(
-                                    "Hay un pasaje con datos incompletos.");
-                        }
-
-                        // Comprobamos que los identificadores de las referencias
-                        // sean válidos y correspondan a registros existentes.
-                        if (pasaje.getPasajero().getIdPasajero() <= 0
-                                || pasaje.getRutaViaje().getIdRutaViaje() <= 0
-                                || pasaje.getAsiento().getIdAsiento() <= 0
-                                || pasaje.getParadaOrigen().getIdParadaRecorrido() <= 0
-                                || pasaje.getParadaDestino().getIdParadaRecorrido() <= 0) {
-
-                            throw new IllegalArgumentException(
-                                    "Hay referencias inválidas en un pasaje.");
-                        }
 
                         // Asignamos los valores correspondientes a cada parámetro.
                         psPasaje.setInt(1,
@@ -261,40 +314,64 @@ public class VentaData {
                         psPasaje.setInt(5,
                                 pasaje.getParadaDestino().getIdParadaRecorrido());
 
-                        // Registramos la fecha y hora de la venta.
                         psPasaje.setTimestamp(6,
                                 Timestamp.valueOf(venta.getFechaHoraVenta()));
 
                         psPasaje.setBigDecimal(7, pasaje.getPrecioFinal());
-                        psPasaje.setBoolean(8, pasaje.isEstado());
-
-                        // Relacionamos el pasaje con la venta mediante su ID.
+                        pasaje.setEstado(true);
+                        psPasaje.setBoolean(8, true);
                         psPasaje.setInt(9, venta.getIdVenta());
+                        // Comprobamos que el asiento esté disponible para el tramo solicitado.
+                        boolean disponible = pasajeData.asientoDisponible(
+                                pasaje.getRutaViaje().getIdRutaViaje(),
+                                pasaje.getAsiento().getIdAsiento(),
+                                pasaje.getParadaOrigen().getOrden(),
+                                pasaje.getParadaDestino().getOrden());
 
-                        // Ejecutamos la inserción del pasaje.
+                        if (!disponible) {
+                            throw new IllegalArgumentException(
+                                    "El asiento no está disponible para el tramo seleccionado.");
+                        }
+
+// Ejecutamos la inserción del pasaje.
                         psPasaje.executeUpdate();
 
-                        // Asociamos también los objetos en memoria.
+                        // Asociamos el objeto pasaje con la venta.
                         pasaje.setVenta(venta);
                     }
                 }
 
                 // Confirmar todas las operaciones.
                 // Si la venta y todos sus pasajes se insertaron correctamente,
-                // confirmamos los cambios en la base de datos.
+                // guardamos definitivamente los cambios en MariaDB.
                 con.commit();
 
+                // Devolvemos true para indicar que la venta fue registrada.
                 return true;
 
             } catch (SQLException | RuntimeException e) {
 
-                // Deshacer las operaciones si algo falla.
-                // Si ocurre un error, intentamos cancelar todos los cambios
-                // realizados durante esta transacción.
-                con.rollback();
+                // Guardamos la excepción original para no perderla
+                // si posteriormente falla el rollback o la restauración.
+                errorPrincipal = e;
 
-                // Volvemos a lanzar la excepción para que pueda ser tratada
-                // por la clase que invocó este método.
+                // Deshacer las operaciones si algo falla.
+                // Solo intentamos el rollback si la transacción se inició.
+                if (transaccionIniciada) {
+
+                    try {
+
+                        con.rollback();
+
+                    } catch (SQLException errorRollback) {
+
+                        // Si también falla el rollback, agregamos ese error
+                        // como información secundaria de la excepción original.
+                        e.addSuppressed(errorRollback);
+                    }
+                }
+
+                // Propagamos la excepción original.
                 throw e;
 
             } finally {
@@ -302,7 +379,24 @@ public class VentaData {
                 // Restaurar el comportamiento anterior.
                 // Recuperamos la configuración de AutoCommit que tenía
                 // la conexión antes de comenzar la transacción.
-                con.setAutoCommit(autoCommitAnterior);
+                try {
+
+                    con.setAutoCommit(autoCommitAnterior);
+
+                } catch (SQLException errorRestauracion) {
+
+                    // Si ya existía un error, agregamos la falla de
+                    // restauración sin ocultar la excepción original.
+                    if (errorPrincipal != null) {
+
+                        errorPrincipal.addSuppressed(errorRestauracion);
+
+                    } else {
+
+                        // Si no había otro error, propagamos este.
+                        throw errorRestauracion;
+                    }
+                }
             }
         }
     }
