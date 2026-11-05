@@ -59,10 +59,69 @@ public class VentaData {
                         "Hay referencias inválidas en un pasaje.");
             }
 
+            // Comprobamos que la ruta y las paradas pertenezcan al mismo recorrido.
+            if (pasaje.getRutaViaje().getRecorrido() == null
+                    || pasaje.getParadaOrigen().getRecorrido() == null
+                    || pasaje.getParadaDestino().getRecorrido() == null) {
+
+                throw new IllegalArgumentException(
+                        "La ruta y las paradas deben tener un recorrido asignado.");
+            }
+
+            int idRecorrido = pasaje.getRutaViaje()
+                    .getRecorrido().getIdRecorrido();
+
+            if (pasaje.getParadaOrigen().getRecorrido().getIdRecorrido() != idRecorrido
+                    || pasaje.getParadaDestino().getRecorrido().getIdRecorrido() != idRecorrido
+                    || pasaje.getParadaOrigen().getOrden()
+                    >= pasaje.getParadaDestino().getOrden()) {
+
+                throw new IllegalArgumentException(
+                        "Las paradas deben pertenecer al recorrido y respetar el orden de la ruta.");
+            }
+            // Comprobamos que el asiento pertenezca al colectivo asignado a la ruta.
+            if (pasaje.getRutaViaje().getColectivo() == null
+                    || pasaje.getAsiento().getColectivo() == null) {
+
+                throw new IllegalArgumentException(
+                        "La ruta y el asiento deben tener un colectivo asignado.");
+            }
+
+            int idColectivoRuta = pasaje.getRutaViaje()
+                    .getColectivo().getIdColectivo();
+
+            int idColectivoAsiento = pasaje.getAsiento()
+                    .getColectivo().getIdColectivo();
+
+            if (idColectivoRuta != idColectivoAsiento) {
+                throw new IllegalArgumentException(
+                        "El asiento no pertenece al colectivo asignado a la ruta.");
+            }
+
             // El precio del pasaje no puede ser negativo.
             if (pasaje.getPrecioFinal().compareTo(BigDecimal.ZERO) < 0) {
                 throw new IllegalArgumentException(
                         "El precio del pasaje no puede ser negativo.");
+            }
+            // Comprobamos que la ruta esté habilitada.
+            if (!pasaje.getRutaViaje().isEstado()) {
+                throw new IllegalArgumentException(
+                        "No se pueden vender pasajes para una ruta deshabilitada.");
+            }
+            // Comprobamos que el colectivo asignado a la ruta esté activo.
+            if (pasaje.getRutaViaje().getColectivo() == null
+                    || !pasaje.getRutaViaje().getColectivo().isEstado()) {
+
+                throw new IllegalArgumentException(
+                        "No se pueden vender pasajes para un colectivo inactivo.");
+            }
+            // Comprobamos que la fecha de salida de la ruta sea futura.
+            if (pasaje.getRutaViaje().getFechaHoraSalida() == null
+                    || !pasaje.getRutaViaje().getFechaHoraSalida()
+                            .isAfter(java.time.LocalDateTime.now())) {
+
+                throw new IllegalArgumentException(
+                        "No se pueden vender pasajes para una ruta cuya salida ya pasó.");
             }
         }
     }
@@ -318,7 +377,6 @@ public class VentaData {
                                 Timestamp.valueOf(venta.getFechaHoraVenta()));
 
                         psPasaje.setBigDecimal(7, pasaje.getPrecioFinal());
-                        pasaje.setEstado(true);
                         psPasaje.setBoolean(8, true);
                         psPasaje.setInt(9, venta.getIdVenta());
                         // Comprobamos que el asiento esté disponible para el tramo solicitado.
@@ -333,7 +391,9 @@ public class VentaData {
                                     "El asiento no está disponible para el tramo seleccionado.");
                         }
 
-// Ejecutamos la inserción del pasaje.
+
+                        // Ejecutamos la inserción del pasaje.
+                        pasaje.setEstado(true);
                         psPasaje.executeUpdate();
 
                         // Asociamos el objeto pasaje con la venta.

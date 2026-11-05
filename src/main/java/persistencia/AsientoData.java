@@ -1,4 +1,3 @@
-
 package persistencia;
 
 import java.sql.Connection;
@@ -8,17 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import modelo.Asiento;
 import modelo.Colectivo;
-
+import java.time.LocalDate;
 
 public class AsientoData {
-    
+
     private Connection connection;
 
     public AsientoData() {
         connection = Conexion.getInstancia().getConnection();
     }
-    
-    
+
     public boolean guardarAsiento(Asiento asiento) {
         String sql = "INSERT INTO asiento (idColectivo, numeroAsiento) VALUES (?, ?)";
 
@@ -36,9 +34,7 @@ public class AsientoData {
             return false;
         }
     }
-    
-    
-    
+
     public ArrayList<Asiento> listarAsientosPorColectivo(Colectivo colectivo) {
         ArrayList<Asiento> lista = new ArrayList<>();
 
@@ -83,8 +79,8 @@ public class AsientoData {
 
         return lista;
     }
-    
-      public Asiento buscarAsiento(int idAsiento) {
+
+    public Asiento buscarAsiento(int idAsiento) {
         String sql = "SELECT a.idAsiento, a.numeroAsiento, "
                 + "c.idColectivo, c.matricula, c.marca, c.modelo, "
                 + "c.capacidad, c.caducidad, c.estado, c.chofer "
@@ -98,13 +94,18 @@ public class AsientoData {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
+                    java.sql.Date fechaSQL = rs.getDate("caducidad");
+
+                    LocalDate caducidad = (fechaSQL != null)
+                            ? fechaSQL.toLocalDate()
+                            : null;
                     Colectivo colectivo = new Colectivo(
                             rs.getInt("idColectivo"),
                             rs.getString("matricula"),
                             rs.getString("marca"),
                             rs.getString("modelo"),
                             rs.getInt("capacidad"),
-                            rs.getDate("caducidad").toLocalDate(),
+                            caducidad, 
                             rs.getBoolean("estado"),
                             rs.getString("chofer")
                     );
@@ -124,8 +125,6 @@ public class AsientoData {
         return null;
     }
 
-      
-      
     public boolean actualizarAsiento(Asiento asiento) {
         String sql = "UPDATE asiento SET idColectivo = ?, numeroAsiento = ? "
                 + "WHERE idAsiento = ?";
@@ -152,7 +151,4 @@ public class AsientoData {
         }
     }
 
-   
-
 }
-
