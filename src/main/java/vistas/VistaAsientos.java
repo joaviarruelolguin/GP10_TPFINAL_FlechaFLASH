@@ -312,7 +312,29 @@ public class VistaAsientos extends javax.swing.JPanel {
     }//GEN-LAST:event_btListarActionPerformed
 
     private void btGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarActionPerformed
-        
+        try {
+            int idColectivo = Integer.parseInt(tfidColectivo.getText());
+            int numeroAsiento = Integer.parseInt(tfnumAsiento.getText());
+            Colectivo colectivo = colectivoData.buscarColectivo(idColectivo);
+            if (colectivo != null) {
+                Asiento asiento = new Asiento(colectivo, numeroAsiento);
+                if (asientoData.guardarAsiento(asiento)) {
+                    JOptionPane.showMessageDialog(this, "Asiento guardado correctamente.");
+                    tfidAsiento.setText("");
+                    tfidColectivo.setText("");
+                    tfnumAsiento.setText("");
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo guardar el asiento.");
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró el colectivo.");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese números válidos.");
+        }
     }//GEN-LAST:event_btGuardarActionPerformed
 
     private void btActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btActualizarActionPerformed
