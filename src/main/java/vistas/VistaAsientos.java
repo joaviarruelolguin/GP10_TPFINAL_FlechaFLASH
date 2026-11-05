@@ -5,6 +5,7 @@
 package vistas;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -279,7 +280,38 @@ public class VistaAsientos extends javax.swing.JPanel {
     }//GEN-LAST:event_tfidAsientoActionPerformed
 
     private void btListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarActionPerformed
-        
+        try {
+            int idColectivo = Integer.parseInt(tfidColectivo.getText());
+            Colectivo colectivo = colectivoData.buscarColectivo(idColectivo);
+            if (colectivo != null) {
+                ArrayList<Asiento> lista = asientoData.listarAsientosPorColectivo(colectivo);
+                modelo.setRowCount(0);
+                for (Asiento asiento : lista) {
+                    Colectivo col = asiento.getColectivo();
+                    modelo.addRow(new Object[]{
+                        asiento.getIdAsiento(),
+                        col.getIdColectivo(),
+                        col.getMatricula(),
+                        col.getMarca(),
+                        col.getModelo(),
+                        col.getCapacidad(),
+                        col.getCaducidad(),
+                        col.isEstado(),
+                        col.getChofer(),
+                        asiento.getNumeroAsiento()
+                    });
+                }
+
+                jTable1.setModel(modelo);
+
+                JOptionPane.showMessageDialog(this, "Se listaron " + lista.size() + " asientos.");
+
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró el colectivo.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un ID de colectivo válido.");
+        }
     }//GEN-LAST:event_btListarActionPerformed
 
     private void btGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarActionPerformed
