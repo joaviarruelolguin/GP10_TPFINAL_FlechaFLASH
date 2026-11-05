@@ -301,11 +301,8 @@ public class VistaAsientos extends javax.swing.JPanel {
                         asiento.getNumeroAsiento()
                     });
                 }
-
                 jTable1.setModel(modelo);
-
                 JOptionPane.showMessageDialog(this, "Se listaron " + lista.size() + " asientos.");
-
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró el colectivo.");
             }
