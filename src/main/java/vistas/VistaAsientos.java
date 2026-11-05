@@ -341,33 +341,37 @@ public class VistaAsientos extends javax.swing.JPanel {
         int idAsiento = Integer.parseInt(tfidAsiento.getText());
         int idColectivo = Integer.parseInt(tfidColectivo.getText());
         int numeroAsiento = Integer.parseInt(tfnumAsiento.getText());
-
-    
         Colectivo colectivo = colectivoData.buscarColectivo(idColectivo);
-
         if (colectivo != null) {
-
-        
             Asiento asiento = new Asiento();
             asiento.setIdAsiento(idAsiento);
             asiento.setColectivo(colectivo);
             asiento.setNumeroAsiento(numeroAsiento);
-
-        
             if (asientoData.actualizarAsiento(asiento)) {
                 JOptionPane.showMessageDialog(this, "Asiento actualizado correctamente.");
             } else {
                 JOptionPane.showMessageDialog(this, "No se pudo actualizar el asiento.");
             }
-
         } else {
             JOptionPane.showMessageDialog(this, "No se encontró el colectivo.");
         }
-
     }//GEN-LAST:event_btActualizarActionPerformed
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
-        
+        try {
+            int idAsiento = Integer.parseInt(tfidAsiento.getText());
+            Asiento asiento = asientoData.buscarAsiento(idAsiento);
+            if (asiento != null) {
+                tfidAsiento.setText(String.valueOf(asiento.getIdAsiento()));
+                tfidColectivo.setText(String.valueOf(asiento.getColectivo().getIdColectivo()));
+                tfnumAsiento.setText(String.valueOf(asiento.getNumeroAsiento()));
+                JOptionPane.showMessageDialog(this, "Asiento encontrado correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró el asiento.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un ID de asiento válido.");
+        }
     }//GEN-LAST:event_btBuscarActionPerformed
 
 
