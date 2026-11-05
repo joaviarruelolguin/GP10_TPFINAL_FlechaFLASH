@@ -396,18 +396,4 @@ public class VistaAsientos extends javax.swing.JPanel {
     private javax.swing.JTextField tfnumAsiento;
     private javax.swing.JLabel tituloVista;
     // End of variables declaration//GEN-END:variables
-
-    public boolean validarCamposVacios(JPanel jPanel) {
-
-        for (Component c : jPanel.getComponents()) {
-            if (c instanceof JTextField) {
-                JTextField caja = (JTextField) c;
-
-                if (caja.getText().trim().isEmpty()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }
