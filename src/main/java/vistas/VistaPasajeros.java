@@ -351,67 +351,6 @@ public class VistaPasajeros extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (validarCamposVacios(crudPanel)) {
-            JOptionPane.showMessageDialog(this, "Campos incompletos.");
-            return;
-        }
-
-        String nombre = nombreTextField.getText().trim();
-        String apellido = apellidoTextField.getText().trim();
-        String dni = dniTextField.getText().trim();
-        String correo = correoTextField.getText().trim();
-        String telefono = telefonoTextField.getText().trim();
-        TipoPasajero tipoPasajero = (TipoPasajero) tipoPasajeroComboBox.getSelectedItem();
-
-        Pasajero pasajero = new Pasajero(dni, nombre, apellido, correo, telefono, tipoPasajero);
-
-        if (pasajeroData.guardarPasajero(pasajero)) {
-            JOptionPane.showMessageDialog(this, "El pasajero se ha guardado correctamente.");
-
-            cargarPasajeros();
-
-            vaciarCampos(crudPanel);
-
-            modoNuevo();
-
-            pasajerosTabla.clearSelection();
-        } else {
-            JOptionPane.showMessageDialog(this, "No se pudo guardar el pasajero.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        String idPasajero = idTextField.getText().trim();
-        if (idPasajero.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Seleccione o busque un pasajero.");
-            return;
-        }
-
-        int respuesta = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea borrar al pasajero?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-
-        if (respuesta == JOptionPane.YES_OPTION) {
-            int id = Integer.parseInt(idPasajero);
-
-            if (pasajeroData.borrarPasajero(id)) {
-                JOptionPane.showMessageDialog(this, "Pasajero borrado correctamente.");
-
-                cargarPasajeros();
-                vaciarCampos(crudPanel);
-                modoNuevo();
-                pasajerosTabla.clearSelection();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo borrar el pasajero.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_btnBorrarActionPerformed
-
-    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        vaciarCampos(crudPanel);
-        modoNuevo();
-        pasajerosTabla.clearSelection();
-    }//GEN-LAST:event_btnLimpiarActionPerformed
-
     private void pasajerosTablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pasajerosTablaMouseClicked
         int fila = pasajerosTabla.getSelectedRow();
 
@@ -427,41 +366,6 @@ public class VistaPasajeros extends javax.swing.JPanel {
             modoSeleccion();
         }
     }//GEN-LAST:event_pasajerosTablaMouseClicked
-
-    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        if (validarCamposVacios(crudPanel)) {
-            JOptionPane.showMessageDialog(this, "Campos incompletos.");
-            return;
-        }
-
-        int idPasajero = Integer.parseInt(idTextField.getText());
-        String nombre = nombreTextField.getText().trim();
-        String apellido = apellidoTextField.getText().trim();
-        String dni = dniTextField.getText().trim();
-        String correo = correoTextField.getText().trim();
-        String telefono = telefonoTextField.getText().trim();
-        TipoPasajero tipoPasajero = (TipoPasajero) tipoPasajeroComboBox.getSelectedItem();
-
-        Pasajero p = new Pasajero();
-        p.setIdPasajero(idPasajero);
-        p.setNombre(nombre);
-        p.setApellido(apellido);
-        p.setDni(dni);
-        p.setCorreo(correo);
-        p.setTelefono(telefono);
-        p.setTipoPasajero(tipoPasajero);
-
-        if (pasajeroData.actualizarPasajero(p)) {
-            JOptionPane.showMessageDialog(this, "Pasajero actualizado correctamente.");
-
-            cargarPasajeros();
-            vaciarCampos(crudPanel);
-            modoNuevo();
-            pasajerosTabla.clearSelection();
-        } else {
-            JOptionPane.showMessageDialog(this, "No se pudo actualizar el pasajero.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String idIngresado = idTextField.getText().trim();
@@ -499,8 +403,105 @@ public class VistaPasajeros extends javax.swing.JPanel {
     private void idTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_idTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnBuscarActionPerformed(null);
+        }
     }//GEN-LAST:event_idTextFieldKeyPressed
-    }
+
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+        String idPasajero = idTextField.getText().trim();
+        if (idPasajero.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Seleccione o busque un pasajero.");
+            return;
+        }
+
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea borrar al pasajero?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            int id = Integer.parseInt(idPasajero);
+
+            if (pasajeroData.borrarPasajero(id)) {
+                JOptionPane.showMessageDialog(this, "Pasajero borrado correctamente.");
+
+                cargarPasajeros();
+                vaciarCampos(crudPanel);
+                modoNuevo();
+                pasajerosTabla.clearSelection();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo borrar el pasajero.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnBorrarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        if (validarCamposVacios(crudPanel)) {
+            JOptionPane.showMessageDialog(this, "Campos incompletos.");
+            return;
+        }
+
+        int idPasajero = Integer.parseInt(idTextField.getText());
+        String nombre = nombreTextField.getText().trim();
+        String apellido = apellidoTextField.getText().trim();
+        String dni = dniTextField.getText().trim();
+        String correo = correoTextField.getText().trim();
+        String telefono = telefonoTextField.getText().trim();
+        TipoPasajero tipoPasajero = (TipoPasajero) tipoPasajeroComboBox.getSelectedItem();
+
+        Pasajero p = new Pasajero();
+        p.setIdPasajero(idPasajero);
+        p.setNombre(nombre);
+        p.setApellido(apellido);
+        p.setDni(dni);
+        p.setCorreo(correo);
+        p.setTelefono(telefono);
+        p.setTipoPasajero(tipoPasajero);
+
+        if (pasajeroData.actualizarPasajero(p)) {
+            JOptionPane.showMessageDialog(this, "Pasajero actualizado correctamente.");
+
+            cargarPasajeros();
+            vaciarCampos(crudPanel);
+            modoNuevo();
+            pasajerosTabla.clearSelection();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar el pasajero.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        if (validarCamposVacios(crudPanel)) {
+            JOptionPane.showMessageDialog(this, "Campos incompletos.");
+            return;
+        }
+
+        String nombre = nombreTextField.getText().trim();
+        String apellido = apellidoTextField.getText().trim();
+        String dni = dniTextField.getText().trim();
+        String correo = correoTextField.getText().trim();
+        String telefono = telefonoTextField.getText().trim();
+        TipoPasajero tipoPasajero = (TipoPasajero) tipoPasajeroComboBox.getSelectedItem();
+
+        Pasajero pasajero = new Pasajero(dni, nombre, apellido, correo, telefono, tipoPasajero);
+
+        if (pasajeroData.guardarPasajero(pasajero)) {
+            JOptionPane.showMessageDialog(this, "El pasajero se ha guardado correctamente.");
+
+            cargarPasajeros();
+
+            vaciarCampos(crudPanel);
+
+            modoNuevo();
+
+            pasajerosTabla.clearSelection();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo guardar el pasajero.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        vaciarCampos(crudPanel);
+        modoNuevo();
+        pasajerosTabla.clearSelection();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoTextField;
