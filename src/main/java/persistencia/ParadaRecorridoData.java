@@ -372,7 +372,7 @@ public class ParadaRecorridoData {
             return false;
         }
         
-        String sqlBuscar = "SELECT idRecorrido FROM paradarecorrido WHERE idParadaRecorrido = ?";
+        String sqlBuscar = "SELECT idRecorrido, orden FROM paradarecorrido WHERE idParadaRecorrido = ?";
         String sqlEliminar = "DELETE FROM paradarecorrido WHERE idParadaRecorrido = ?";
         String sqlListar = "SELECT idParadaRecorrido FROM paradarecorrido WHERE idRecorrido = ? ORDER BY orden";
         String sqlActualizar = "UPDATE paradarecorrido SET orden = ? WHERE idParadaRecorrido = ?";
@@ -384,6 +384,7 @@ public class ParadaRecorridoData {
             connection.setAutoCommit(false);
 
             int idRecorrido;
+            int ordenParada;
 
             // Obtener el recorrido de la parada
             try (PreparedStatement ps = connection.prepareStatement(sqlBuscar)) {
@@ -395,10 +396,17 @@ public class ParadaRecorridoData {
                         return false;
                     }
                     idRecorrido = rs.getInt("idRecorrido");
+                    ordenParada = rs.getInt("orden");
+                }
+
+                if (ordenParada == 1) {
+                    System.out.println("No se puede eliminar la primera parada porque representa el origen del recorrido.");
+                    connection.rollback();
+                    return false;
                 }
             }
-            
-            
+
+
             if (tieneSalidasAsociadas(idRecorrido)) {
                 System.out.println("No se pueden eliminar paradas de un recorrido con salidas asociadas.");
                 connection.rollback();

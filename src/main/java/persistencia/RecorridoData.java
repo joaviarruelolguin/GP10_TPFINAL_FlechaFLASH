@@ -21,7 +21,7 @@ public class RecorridoData {
 
     
     // Método para evitar modificar o eliminar un recorrido sin saber si tiene salidas.
-    private boolean tieneSalidasAsociadas(int idRecorrido) {
+    public boolean tieneSalidasAsociadas(int idRecorrido) {
         String sql = "SELECT 1 FROM RutaViaje WHERE idRecorrido = ? LIMIT 1";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -52,12 +52,10 @@ public class RecorridoData {
 
         } catch (SQLException e) {
             System.out.println("Error al comprobar descripción: " + e.getMessage());
+            return true;
         }
-
-        return false;
     }
-    
-    
+
     
     public boolean guardarRecorrido(Recorrido recorrido) {
 
@@ -288,7 +286,97 @@ public class RecorridoData {
         return false;
     }
 
+    public boolean actualizarRecorridoCompleto(Recorrido recorrido) {
+        if (recorrido == null || recorrido.getIdRecorrido() <= 0 || recorrido.getParadas() == null || recorrido.getParadas().size() < 2) {
+            System.out.println("El recorrido debe tener al menos dos paradas.");
+            return false;
+        }
 
+        int idRecorrido = recorrido.getIdRecorrido();
+        String descripcion = recorrido.getDescripcion() == null ? "" : recorrido.getDescripcion().trim();
+
+        if (descripcion.isEmpty()) {
+            System.out.println("La descripción del recorrido es obligatoria.");
+            return false;
+        }
+
+        if (tieneSalidasAsociadas(idRecorrido)) {
+            System.out.println("No se puede modificar un recorrido con salidas asociadas.");
+            return false;
+        }
+
+        Recorrido actual = buscarRecorrido(idRecorrido);
+
+        if (actual == null) {
+            return false;
+        }
+
+        if (existeDescripcion(descripcion, idRecorrido)) {
+            System.out.println("Ya existe otro recorrido con esa descripción.");
+            return false;
+        }
+
+        double distanciaAnterior = -1;
+
+        for (int i = 0; i < recorrido.getParadas().size(); i++) {
+            ParadaRecorrido parada = recorrido.getParadas().get(i);
+
+            if (parada == null || parada.getNombreLugar() == null || parada.getNombreLugar().trim().isEmpty()) {
+                System.out.println("Hay una parada sin nombre.");
+                return false;
+            }
+
+            double distancia = parada.getDistanciaAcumuladaKm();
+
+            if (distancia < 0 || distancia > 20000 || (i == 0 && distancia != 0) || (i > 0 && distancia <= distanciaAnterior)) {
+                System.out.println("Las distancias de las paradas no son válidas.");
+                return false;
+            }
+
+            distanciaAnterior = distancia;
+        }
+
+        String sqlActualizar = "UPDATE recorrido SET descripcion = ? WHERE idRecorrido = ?";
+        String sqlEliminarParadas = "DELETE FROM paradarecorrido WHERE idRecorrido = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sqlActualizar)) {
+            ps.setString(1, descripcion);
+            ps.setInt(2, idRecorrido);
+
+            if (ps.executeUpdate() == 0) {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar la descripción: " + e.getMessage());
+            return false;
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement(sqlEliminarParadas)) {
+            ps.setInt(1, idRecorrido);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar las paradas anteriores: " + e.getMessage());
+            return false;
+        }
+
+        ParadaRecorridoData paradaData = new ParadaRecorridoData();
+
+        for (ParadaRecorrido parada : recorrido.getParadas()) {
+            parada.setRecorrido(actual);
+
+            if (!paradaData.guardarParadaRecorrido(parada)) {
+                System.out.println("No se pudieron guardar todas las paradas.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    
     public boolean desactivarRecorrido(int idRecorrido) {
 
         if (idRecorrido <= 0) {

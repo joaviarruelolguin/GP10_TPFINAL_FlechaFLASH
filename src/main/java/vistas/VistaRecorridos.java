@@ -1,15 +1,442 @@
-
 package vistas;
 
+import modelo.Recorrido;
+import java.util.List;
+import java.util.ArrayList;
+import modelo.ParadaRecorrido;
 
 public class VistaRecorridos extends javax.swing.JPanel {
 
-    
+    private persistencia.RecorridoData recorridoData = new persistencia.RecorridoData();
+    private java.util.List<modelo.ParadaRecorrido> paradasFormulario = new java.util.ArrayList<>();
+    private boolean modoEdicion = false;
+    private int idRecorridoSeleccionado = -1;
+
+    private List<Recorrido> recorridosCargados = new ArrayList<>();
+
+    private List<javax.swing.JTextField> camposNombreParada = new ArrayList<>();
+    private List<javax.swing.JTextField> camposDistanciaParada = new ArrayList<>();
+
     public VistaRecorridos() {
         initComponents();
+
+        pnlParadas.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 8, 8));
+        pnlParadas.setBackground(java.awt.Color.WHITE);
+
+        configurarTablaRecorridos();
+        configurarEventos();
+        habilitarFormulario(false);
+        cargarRecorridos();
+
     }
 
-   
+    private void configurarTablaRecorridos() {
+        String[] columnas = {"Descripción", "Cantidad de paradas", "Estado"};
+        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int fila, int columna) {
+                return false;
+            }
+        };
+        tblRecorridos.setModel(modelo);
+    }
+
+    private void cargarRecorridos() {
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tblRecorridos.getModel();
+        modelo.setRowCount(0);
+        recorridosCargados = recorridoData.listarRecorridos();
+
+        for (Recorrido recorrido : recorridosCargados) {
+            int cantidadParadas = recorrido.getParadas() == null ? 0 : recorrido.getParadas().size();
+            String estado = recorrido.isEstado() ? "Activo" : "Inactivo";
+
+            modelo.addRow(new Object[]{recorrido.getDescripcion(), cantidadParadas, estado});
+        }
+    }
+
+    private Recorrido obtenerRecorridoSeleccionado() {
+        int fila = tblRecorridos.getSelectedRow();
+
+        if (fila == -1) {
+            return null;
+        }
+
+        fila = tblRecorridos.convertRowIndexToModel(fila);
+        return recorridosCargados.get(fila);
+    }
+
+    private void habilitarFormulario(boolean habilitar) {
+        pnlFormularioRecorrido.setVisible(habilitar);
+        txtDescripcion.setEnabled(habilitar);
+        pnlParadas.setEnabled(habilitar);
+        btnAgregarParada.setEnabled(habilitar);
+        btnGuardar.setEnabled(habilitar);
+        btnCancelar.setEnabled(habilitar);
+
+        btnNuevo.setEnabled(!habilitar);
+        btnEditar.setEnabled(!habilitar);
+        btnDesactivar.setEnabled(!habilitar);
+        btnEliminar.setEnabled(!habilitar);
+        tblRecorridos.setEnabled(!habilitar);
+    }
+
+    private void configurarEventos() {
+        btnNuevo.addActionListener(e -> nuevoRecorrido());
+        btnEditar.addActionListener(e -> editarRecorrido());
+        btnDesactivar.addActionListener(e -> cambiarEstadoRecorrido());
+        btnEliminar.addActionListener(e -> eliminarRecorrido());
+        btnCancelar.addActionListener(e -> cancelarFormulario());
+        btnGuardar.addActionListener(e -> guardar());
+        btnAgregarParada.addActionListener(e -> agregarFilaParada());
+
+        tblRecorridos.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                Recorrido seleccionado = obtenerRecorridoSeleccionado();
+                idRecorridoSeleccionado = seleccionado != null ? seleccionado.getIdRecorrido() : -1;
+
+                if (seleccionado != null && !seleccionado.isEstado()) {
+                    btnDesactivar.setText("Reactivar");
+                } else {
+                    btnDesactivar.setText("Desactivar");
+                }
+            }
+        });
+    }
+
+    private void nuevoRecorrido() {
+        modoEdicion = false;
+        idRecorridoSeleccionado = -1;
+
+        txtDescripcion.setText("");
+        paradasFormulario.clear();
+        camposNombreParada.clear();
+        camposDistanciaParada.clear();
+        pnlParadas.removeAll();
+        pnlParadas.revalidate();
+        pnlParadas.repaint();
+
+        tblRecorridos.clearSelection();
+        habilitarFormulario(true);
+        agregarFilaParada();
+        agregarFilaParada();
+        txtDescripcion.requestFocusInWindow();
+    }
+
+    private void editarRecorrido() {
+        Recorrido seleccionado = obtenerRecorridoSeleccionado();
+
+        if (seleccionado == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccioná un recorrido para editar.");
+            return;
+        }
+
+        if (recorridoData.tieneSalidasAsociadas(seleccionado.getIdRecorrido())) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Este recorrido tiene salidas asociadas. No se pueden modificar su descripción ni sus paradas.");
+            return;
+        }
+
+        modoEdicion = true;
+        idRecorridoSeleccionado = seleccionado.getIdRecorrido();
+
+        txtDescripcion.setText(seleccionado.getDescripcion());
+        camposNombreParada.clear();
+        camposDistanciaParada.clear();
+        pnlParadas.removeAll();
+
+        habilitarFormulario(true);
+
+        for (ParadaRecorrido parada : seleccionado.getParadas()) {
+            agregarFilaParada();
+
+            int indice = camposNombreParada.size() - 1;
+            camposNombreParada.get(indice).setText(parada.getNombreLugar());
+            camposDistanciaParada.get(indice).setText(String.valueOf(parada.getDistanciaAcumuladaKm()));
+        }
+
+        actualizarOrdenesParadas();
+    }
+
+    private void cambiarEstadoRecorrido() {
+        Recorrido seleccionado = obtenerRecorridoSeleccionado();
+
+        if (seleccionado == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccioná un recorrido.");
+            return;
+        }
+
+        boolean nuevoEstado = !seleccionado.isEstado();
+
+        String mensaje = nuevoEstado
+                ? "¿Deseás reactivar este recorrido?"
+                : "¿Deseás desactivar este recorrido?";
+
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                mensaje,
+                "Confirmar operación",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion != javax.swing.JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        Recorrido recorrido = new Recorrido(
+                seleccionado.getIdRecorrido(),
+                seleccionado.getDescripcion(),
+                nuevoEstado
+        );
+
+        boolean resultado = recorridoData.actualizarRecorrido(recorrido);
+
+        if (resultado) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    nuevoEstado ? "Recorrido reactivado correctamente." : "Recorrido desactivado correctamente.");
+
+            cargarRecorridos();
+            btnDesactivar.setText("Desactivar");
+            idRecorridoSeleccionado = -1;
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se pudo cambiar el estado del recorrido.");
+        }
+    }
+    
+    private void cancelarFormulario() {
+        modoEdicion = false;
+        idRecorridoSeleccionado = -1;
+
+        txtDescripcion.setText("");
+        paradasFormulario.clear();
+        camposNombreParada.clear();
+        camposDistanciaParada.clear();
+
+        pnlParadas.removeAll();
+        pnlParadas.revalidate();
+        pnlParadas.repaint();
+
+        habilitarFormulario(false);
+        btnDesactivar.setText("Desactivar");
+        cargarRecorridos();
+    }
+
+    private void agregarFilaParada() {
+        int orden = camposNombreParada.size() + 1;
+
+        javax.swing.JPanel fila = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 8, 5));
+        fila.setBackground(java.awt.Color.WHITE);
+
+        javax.swing.JLabel lblOrden = new javax.swing.JLabel(String.valueOf(orden));
+        lblOrden.setPreferredSize(new java.awt.Dimension(20, 25));
+
+        javax.swing.JTextField txtNombre = new javax.swing.JTextField(14);
+        txtNombre.setToolTipText("Nombre de la parada");
+
+        javax.swing.JTextField txtDistancia = new javax.swing.JTextField(6);
+        txtDistancia.setToolTipText("Distancia acumulada en km");
+
+        if (orden == 1) {
+            txtDistancia.setText("0");
+            txtDistancia.setEnabled(false);
+        }
+
+        javax.swing.JButton btnEliminarFila = new javax.swing.JButton("X");
+
+        btnEliminarFila.addActionListener(e -> {
+            int indice = camposNombreParada.indexOf(txtNombre);
+
+            if (indice == 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, "No se puede eliminar la primera parada porque representa el origen del recorrido.");
+                return;
+            }
+
+            if (camposNombreParada.size() <= 2) {
+                javax.swing.JOptionPane.showMessageDialog(this, "El recorrido debe tener al menos dos paradas.");
+                return;
+            }
+
+            camposNombreParada.remove(txtNombre);
+            camposDistanciaParada.remove(txtDistancia);
+            pnlParadas.remove(fila);
+            actualizarOrdenesParadas();
+        });
+
+        fila.add(lblOrden);
+        fila.add(txtNombre);
+        fila.add(txtDistancia);
+        fila.add(btnEliminarFila);
+
+        camposNombreParada.add(txtNombre);
+        camposDistanciaParada.add(txtDistancia);
+
+        pnlParadas.add(fila);
+        pnlParadas.revalidate();
+        pnlParadas.repaint();
+    }
+
+    private void actualizarOrdenesParadas() {
+        int orden = 1;
+
+        for (java.awt.Component componente : pnlParadas.getComponents()) {
+            if (componente instanceof javax.swing.JPanel fila) {
+                for (java.awt.Component elemento : fila.getComponents()) {
+                    if (elemento instanceof javax.swing.JLabel lblOrden) {
+                        lblOrden.setText(String.valueOf(orden));
+                    }
+                }
+                orden++;
+            }
+        }
+
+        if (!camposDistanciaParada.isEmpty()) {
+            camposDistanciaParada.get(0).setText("0");
+            camposDistanciaParada.get(0).setEnabled(false);
+        }
+
+        pnlParadas.revalidate();
+        pnlParadas.repaint();
+    }
+
+    private List<ParadaRecorrido> obtenerParadasFormulario() {
+
+        List<ParadaRecorrido> paradas = new ArrayList<>();
+
+        if (camposNombreParada.size() < 2) {
+            javax.swing.JOptionPane.showMessageDialog(this, "El recorrido debe tener al menos dos paradas.");
+            return null;
+        }
+
+        double distanciaAnterior = -1;
+
+        for (int i = 0; i < camposNombreParada.size(); i++) {
+            String nombre = camposNombreParada.get(i).getText().trim();
+            String textoDistancia = camposDistanciaParada.get(i).getText().trim();
+
+            if (nombre.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Completá el nombre de todas las paradas.");
+                return null;
+            }
+
+            double distancia;
+
+            try {
+                distancia = Double.parseDouble(textoDistancia.replace(",", "."));
+            } catch (NumberFormatException e) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Ingresá una distancia válida en la parada " + (i + 1) + ".");
+                return null;
+            }
+
+            if (distancia < 0 || distancia > 20000) {
+                javax.swing.JOptionPane.showMessageDialog(this, "La distancia debe estar entre 0 y 20.000 km.");
+                return null;
+            }
+
+            if (i == 0 && distancia != 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, "La primera parada debe tener una distancia de 0 km.");
+                return null;
+            }
+
+            if (i > 0 && distancia <= distanciaAnterior) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Las distancias deben ser crecientes. Revisá la parada " + (i + 1) + ".");
+                return null;
+            }
+
+            paradas.add(new ParadaRecorrido(null, nombre, i + 1, distancia));
+            distanciaAnterior = distancia;
+        }
+
+        return paradas;
+    }
+
+    private boolean validarDescripcion() {
+        String descripcion = txtDescripcion.getText().trim();
+
+        if (descripcion.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Ingresá la descripción del recorrido.");
+            txtDescripcion.requestFocusInWindow();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void guardar() {
+        if (!validarDescripcion()) {
+            return;
+        }
+
+        List<ParadaRecorrido> paradas = obtenerParadasFormulario();
+
+        if (paradas == null) {
+            return;
+        }
+
+        boolean resultado;
+
+        if (modoEdicion) {
+            Recorrido actual = recorridoData.buscarRecorrido(idRecorridoSeleccionado);
+
+            if (actual == null) {
+                javax.swing.JOptionPane.showMessageDialog(this, "No se encontró el recorrido seleccionado.");
+                return;
+            }
+
+            Recorrido recorrido = new Recorrido(idRecorridoSeleccionado, txtDescripcion.getText().trim(), actual.isEstado());
+            recorrido.setParadas(paradas);
+
+            resultado = recorridoData.actualizarRecorridoCompleto(recorrido);
+
+        } else {
+            Recorrido recorrido = new Recorrido(txtDescripcion.getText().trim(), true, paradas);
+            resultado = recorridoData.guardarRecorrido(recorrido);
+        }
+
+        if (resultado) {
+            javax.swing.JOptionPane.showMessageDialog(this, modoEdicion ? "Recorrido actualizado correctamente." : "Recorrido guardado correctamente.");
+            cancelarFormulario();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se pudo guardar el recorrido.");
+        }
+    }
+
+    
+    private void eliminarRecorrido() {
+        Recorrido seleccionado = obtenerRecorridoSeleccionado();
+
+        if (seleccionado == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccioná un recorrido para eliminar.");
+            return;
+        }
+
+        if (recorridoData.tieneSalidasAsociadas(seleccionado.getIdRecorrido())) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se puede eliminar este recorrido porque tiene salidas asociadas. Podés desactivarlo.");
+            return;
+        }
+
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "¿Estás seguro de que querés eliminar el recorrido \"" + seleccionado.getDescripcion() + "\" y todas sus paradas?",
+                "Confirmar eliminación",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+
+        if (confirmacion != javax.swing.JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        boolean resultado = recorridoData.eliminarRecorrido(seleccionado.getIdRecorrido());
+
+        if (resultado) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Recorrido eliminado correctamente.");
+            cargarRecorridos();
+            idRecorridoSeleccionado = -1;
+            btnDesactivar.setText("Desactivar");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se pudo eliminar el recorrido.");
+        }
+    }
+
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -149,7 +576,6 @@ public class VistaRecorridos extends javax.swing.JPanel {
 
         txtDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         txtDescripcion.setForeground(new java.awt.Color(23, 47, 77));
-        txtDescripcion.setText("jTextField1");
 
         javax.swing.GroupLayout pnlDescripcionLayout = new javax.swing.GroupLayout(pnlDescripcion);
         pnlDescripcion.setLayout(pnlDescripcionLayout);
@@ -158,8 +584,8 @@ public class VistaRecorridos extends javax.swing.JPanel {
             .addGroup(pnlDescripcionLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(pnlDescripcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDescripcion))
+                    .addComponent(lblDescripcion)
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlDescripcionLayout.setVerticalGroup(
@@ -201,7 +627,6 @@ public class VistaRecorridos extends javax.swing.JPanel {
                 pnlParadasMouseClicked(evt);
             }
         });
-        pnlParadas.setLayout(new javax.swing.BoxLayout(pnlParadas, javax.swing.BoxLayout.Y_AXIS));
 
         lblParadasRecorrido.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblParadasRecorrido.setForeground(new java.awt.Color(23, 47, 77));
