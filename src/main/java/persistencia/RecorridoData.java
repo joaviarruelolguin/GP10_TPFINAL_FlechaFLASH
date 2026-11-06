@@ -20,7 +20,24 @@ public class RecorridoData {
     }
 
     
-    
+    // Método para evitar modificar o eliminar un recorrido sin saber si tiene salidas.
+    private boolean tieneSalidasAsociadas(int idRecorrido) {
+        String sql = "SELECT 1 FROM RutaViaje WHERE idRecorrido = ? LIMIT 1";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idRecorrido);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al comprobar salidas asociadas: " + e.getMessage());
+            return true;
+        }
+    }
+
+
     private boolean existeDescripcion(String descripcion) {
 
         String sql = "SELECT idRecorrido FROM recorrido WHERE LOWER(TRIM(descripcion)) = LOWER(TRIM(?))";
@@ -226,10 +243,9 @@ public class RecorridoData {
     }
     
     
-    
-    // Método que incluye la posibilidad de reactivar un recorrido
+       // Método que incluye la posibilidad de reactivar un recorrido.
+       // Si tiene salidas asociadas, se permite cambiar el estado, pero no la descripción.
     public boolean actualizarRecorrido(Recorrido recorrido) {
-
         if (recorrido == null || recorrido.getIdRecorrido() <= 0) {
             return false;
         }
@@ -240,8 +256,18 @@ public class RecorridoData {
 
         String descripcion = recorrido.getDescripcion().trim();
 
-        if (existeDescripcion(descripcion, recorrido.getIdRecorrido())) {
-            
+        Recorrido actual = buscarRecorrido(recorrido.getIdRecorrido());
+
+        if (actual == null) {
+            return false;
+        }
+
+        if (tieneSalidasAsociadas(recorrido.getIdRecorrido())) {
+            if (!actual.getDescripcion().equalsIgnoreCase(descripcion)) {
+                System.out.println("No se puede modificar la descripción de un recorrido con salidas asociadas.");
+                return false;
+            }
+        } else if (existeDescripcion(descripcion, recorrido.getIdRecorrido())) {
             System.out.println("Ya existe otro recorrido con esa descripción.");
             return false;
         }
@@ -249,14 +275,11 @@ public class RecorridoData {
         String sql = "UPDATE recorrido SET descripcion = ?, estado = ? WHERE idRecorrido = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-
             ps.setString(1, descripcion);
             ps.setBoolean(2, recorrido.isEstado());
             ps.setInt(3, recorrido.getIdRecorrido());
 
-            int filas = ps.executeUpdate();
-
-            return filas > 0;
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("Error al actualizar recorrido: " + e.getMessage());
@@ -264,8 +287,8 @@ public class RecorridoData {
 
         return false;
     }
-    
-    
+
+
     public boolean desactivarRecorrido(int idRecorrido) {
 
         if (idRecorrido <= 0) {
@@ -291,32 +314,29 @@ public class RecorridoData {
     }
 
     public boolean eliminarRecorrido(int idRecorrido) {
-
+        
         if (idRecorrido <= 0) {
             System.out.println("El ID del recorrido no es válido.");
             return false;
         }
-        
+
+        if (tieneSalidasAsociadas(idRecorrido)) {
+            System.out.println("No se puede eliminar un recorrido que tiene salidas asociadas.");
+            return false;
+        }
+
         String sql = "DELETE FROM recorrido WHERE idRecorrido = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-
             ps.setInt(1, idRecorrido);
 
-            int filas = ps.executeUpdate();
-
-            return filas > 0;
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println(
-                    "No se pudo eliminar el recorrido. "
-                    + "Puede tener rutas de viaje asociadas: "
-                    + e.getMessage()
-            );
+            System.out.println("Error al eliminar recorrido: " + e.getMessage());
         }
 
         return false;
     }
-    
     
 }

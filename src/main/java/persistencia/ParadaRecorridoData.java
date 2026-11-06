@@ -17,6 +17,23 @@ public class ParadaRecorridoData {
     public ParadaRecorridoData() {
         connection = Conexion.getInstancia().getConnection();
     }
+   
+    private boolean tieneSalidasAsociadas(int idRecorrido) {
+        
+        String sql = "SELECT 1 FROM RutaViaje WHERE idRecorrido = ? LIMIT 1";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idRecorrido);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al comprobar salidas asociadas: " + e.getMessage());
+            return true;
+        }
+    }
 
     private boolean existeOrden(int idRecorrido, int orden) {
 
@@ -94,6 +111,12 @@ public class ParadaRecorridoData {
 
         int idRecorrido = parada.getRecorrido().getIdRecorrido();
 
+        if (tieneSalidasAsociadas(idRecorrido)) {
+            System.out.println("No se pueden agregar paradas a un recorrido con salidas asociadas.");
+            return false;
+        }
+
+        
         if (existeOrden(idRecorrido, parada.getOrden())) {
             
             System.out.println("Ya existe una parada con ese orden en el recorrido.");
@@ -302,6 +325,11 @@ public class ParadaRecorridoData {
         }
 
         int idRecorrido = parada.getRecorrido().getIdRecorrido();
+        
+         if (tieneSalidasAsociadas(idRecorrido)) {
+            System.out.println("No se pueden modificar paradas de un recorrido con salidas asociadas.");
+            return false;
+        }
 
         if (existeOrden(idRecorrido, parada.getOrden(), parada.getIdParadaRecorrido())) {
             
@@ -368,6 +396,13 @@ public class ParadaRecorridoData {
                     }
                     idRecorrido = rs.getInt("idRecorrido");
                 }
+            }
+            
+            
+            if (tieneSalidasAsociadas(idRecorrido)) {
+                System.out.println("No se pueden eliminar paradas de un recorrido con salidas asociadas.");
+                connection.rollback();
+                return false;
             }
 
             // Eliminar la parada

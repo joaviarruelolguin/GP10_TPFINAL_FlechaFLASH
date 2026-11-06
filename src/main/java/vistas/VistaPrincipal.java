@@ -13,36 +13,42 @@ public class VistaPrincipal extends javax.swing.JFrame {
         mostrarPantalla("INICIO");
     }
 
+      private void agregarVistaConScroll(javax.swing.JPanel vista, String nombre) {
+          
+        javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(vista);
+        scroll.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scroll.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        pnlContenido.add(scroll, nombre);
+        
+    }
+
     // Se crea un objeto de cada clase/vista y se los agrega como contenedor al pnlContenido para luego poder hacerlos visibles.
     private void configurarNavegacion() {
-    
-    // Registrar paneles agregando las instancias y asignar identificadores.   
-        VistaInicio inicio = new VistaInicio();
 
-        javax.swing.JScrollPane scrollInicio = new javax.swing.JScrollPane(inicio);
-        scrollInicio.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollInicio.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        pnlContenido.add(scrollInicio, "INICIO");
+        // Registrar paneles agregando las instancias y asignar identificadores.   
+        VistaInicio inicio = new VistaInicio();
+        agregarVistaConScroll(inicio, "INICIO");
 
         VistaRecorridos recorridos = new VistaRecorridos();
-        javax.swing.JScrollPane scrollRecorridos = new javax.swing.JScrollPane(recorridos);
-        scrollRecorridos.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollRecorridos.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        pnlContenido.add(scrollRecorridos, "RECORRIDOS");
-        
-        pnlContenido.add(new VistaColectivos(), "COLECTIVOS");
-        pnlContenido.add(new VistaAsientos(), "ASIENTOS");
+        agregarVistaConScroll(recorridos, "RECORRIDOS");
+
+        VistaColectivos colectivos = new VistaColectivos();
+        agregarVistaConScroll(colectivos, "COLECTIVOS");
+
+        VistaAsientos asientos = new VistaAsientos();
+        agregarVistaConScroll(asientos, "ASIENTOS");
 
         VistaSalidasHorarios salidasHorarios = new VistaSalidasHorarios();
-        javax.swing.JScrollPane scrollSalidasHorarios = new javax.swing.JScrollPane(salidasHorarios);
-        scrollSalidasHorarios.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollSalidasHorarios.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        pnlContenido.add(scrollSalidasHorarios, "SALIDASHORARIOS");
+        agregarVistaConScroll(salidasHorarios, "SALIDASHORARIOS");
 
-        pnlContenido.add(new VistaVentaPasajes(), "VENTAPASAJES");
-        pnlContenido.add(new VistaPasajeros(), "PASAJEROS");
-        pnlContenido.add(new VistaVentasRealizadas(), "VENTASREALIZADAS");
+        VistaVentaPasajes ventaPasajes = new VistaVentaPasajes();
+        agregarVistaConScroll(ventaPasajes, "VENTAPASAJES");
 
+        VistaPasajeros pasajeros = new VistaPasajeros();
+        agregarVistaConScroll(pasajeros, "PASAJEROS");
+
+        VistaVentasRealizadas ventasRealizadas = new VistaVentasRealizadas();
+        agregarVistaConScroll(ventasRealizadas, "VENTASREALIZADAS");
     }
 
     // Método para indicar a Java que al abrir el sistema muestre VistaInicio
