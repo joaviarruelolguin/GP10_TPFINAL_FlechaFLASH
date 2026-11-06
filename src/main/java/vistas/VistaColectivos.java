@@ -30,9 +30,6 @@ public class VistaColectivos extends javax.swing.JPanel {
         subtituloGestion = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblColectivos = new javax.swing.JTable();
-        btnActualizar = new javax.swing.JButton();
-        btnDesactivar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
         panelCrud = new javax.swing.JPanel();
         tituloSeccionCrud = new javax.swing.JLabel();
         labelMatricula = new javax.swing.JLabel();
@@ -46,13 +43,16 @@ public class VistaColectivos extends javax.swing.JPanel {
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
-        btnCancelar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        btnNuevo1 = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         encabezadoVista = new javax.swing.JPanel();
         tituloVista = new javax.swing.JLabel();
         iconoVista = new javax.swing.JLabel();
-        btnNuevo1 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnDesactivar = new javax.swing.JButton();
+        btnDesactivar1 = new javax.swing.JButton();
 
         tituloGestion.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         tituloGestion.setForeground(new java.awt.Color(23, 47, 77));
@@ -74,26 +74,6 @@ public class VistaColectivos extends javax.swing.JPanel {
             }
         ));
         jScrollPane1.setViewportView(tblColectivos);
-
-        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnActualizar.setForeground(new java.awt.Color(0, 108, 158));
-        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/actualizar.png"))); // NOI18N
-        btnActualizar.setText("Actualizar");
-        btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 108, 158)));
-        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
-
-        btnDesactivar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnDesactivar.setForeground(new java.awt.Color(51, 51, 51));
-        btnDesactivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Desactivar.png"))); // NOI18N
-        btnDesactivar.setText("Desactivar");
-        btnDesactivar.addActionListener(this::btnDesactivarActionPerformed);
-
-        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnEliminar.setForeground(new java.awt.Color(255, 0, 0));
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/borrar.png"))); // NOI18N
-        btnEliminar.setText("Eliminar");
-        btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
-        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
         panelCrud.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -125,17 +105,25 @@ public class VistaColectivos extends javax.swing.JPanel {
         labelCaducidad.setForeground(new java.awt.Color(51, 51, 51));
         labelCaducidad.setText("CADUCIDAD");
 
-        btnCancelar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnCancelar.setForeground(new java.awt.Color(51, 51, 51));
-        btnCancelar.setText("Cancelar");
-        btnCancelar.addActionListener(this::btnCancelarActionPerformed);
-
         btnGuardar.setBackground(new java.awt.Color(0, 108, 158));
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Nuevo.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
+
+        btnNuevo1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnNuevo1.setForeground(new java.awt.Color(50, 50, 50));
+        btnNuevo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clean.png"))); // NOI18N
+        btnNuevo1.setText("Limpiar campos");
+        btnNuevo1.addActionListener(this::btnNuevo1ActionPerformed);
+
+        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnActualizar.setForeground(new java.awt.Color(0, 108, 158));
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/actualizar.png"))); // NOI18N
+        btnActualizar.setText("Actualizar");
+        btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 108, 158)));
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
 
         javax.swing.GroupLayout panelCrudLayout = new javax.swing.GroupLayout(panelCrud);
         panelCrud.setLayout(panelCrudLayout);
@@ -162,11 +150,13 @@ public class VistaColectivos extends javax.swing.JPanel {
                             .addComponent(labelCaducidad)
                             .addComponent(labelModelo)
                             .addComponent(jTextField2)
-                            .addGroup(panelCrudLayout.createSequentialGroup()
-                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE))))
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)))
+                    .addGroup(panelCrudLayout.createSequentialGroup()
+                        .addComponent(btnNuevo1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(332, 332, 332)
+                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
         panelCrudLayout.setVerticalGroup(
@@ -202,9 +192,11 @@ public class VistaColectivos extends javax.swing.JPanel {
                         .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnNuevo1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -238,34 +230,45 @@ public class VistaColectivos extends javax.swing.JPanel {
                 .addContainerGap(44, Short.MAX_VALUE))
         );
 
-        btnNuevo1.setBackground(new java.awt.Color(0, 108, 158));
-        btnNuevo1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnNuevo1.setForeground(new java.awt.Color(255, 255, 255));
-        btnNuevo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clean.png"))); // NOI18N
-        btnNuevo1.setText("Nuevo");
-        btnNuevo1.addActionListener(this::btnNuevo1ActionPerformed);
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 0, 0));
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/borrar.png"))); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
+
+        btnDesactivar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnDesactivar.setForeground(new java.awt.Color(51, 51, 51));
+        btnDesactivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Desactivar.png"))); // NOI18N
+        btnDesactivar.setText("Desactivar");
+        btnDesactivar.addActionListener(this::btnDesactivarActionPerformed);
+
+        btnDesactivar1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnDesactivar1.setForeground(new java.awt.Color(51, 51, 51));
+        btnDesactivar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/actualizar.png"))); // NOI18N
+        btnDesactivar1.setText("Activar");
+        btnDesactivar1.addActionListener(this::btnDesactivar1ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(subtituloGestion)
-                    .addComponent(tituloGestion)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnNuevo1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
-                        .addComponent(btnDesactivar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panelCrud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addContainerGap(24, Short.MAX_VALUE))
             .addComponent(encabezadoVista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(93, 93, 93)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDesactivar1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDesactivar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(subtituloGestion)
+                        .addComponent(tituloGestion)
+                        .addComponent(panelCrud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,15 +280,14 @@ public class VistaColectivos extends javax.swing.JPanel {
                 .addComponent(subtituloGestion)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDesactivar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnNuevo1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(btnDesactivar1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
                 .addComponent(panelCrud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -305,19 +307,19 @@ public class VistaColectivos extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
     private void btnNuevo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevo1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNuevo1ActionPerformed
 
+    private void btnDesactivar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDesactivar1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
-    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnDesactivar;
+    private javax.swing.JButton btnDesactivar1;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo1;

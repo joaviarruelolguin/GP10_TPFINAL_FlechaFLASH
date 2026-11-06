@@ -191,6 +191,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
         btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
 
         labelTipoPasajero.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        labelTipoPasajero.setForeground(new java.awt.Color(51, 51, 51));
         labelTipoPasajero.setText("TIPO PASAJERO");
 
         javax.swing.GroupLayout crudPanelLayout = new javax.swing.GroupLayout(crudPanel);
