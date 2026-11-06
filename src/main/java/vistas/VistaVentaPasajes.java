@@ -8,7 +8,10 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
     public VistaVentaPasajes() {
         initComponents();
         aplicarEstilos();
-        System.out.println("ESTILOS APLICADOS");
+        estilizarTabla();
+        cargarCompradores();
+        cargarRutas();
+        cargarPasajeros();
     }
 
     private void aplicarEstilos() {
@@ -64,6 +67,170 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         txtPrecioPasaje.setText("");
         txtNumeroComprobante.setText("");
         txtImporteTotal.setText("");
+        txtImporteTotal.setVisible(false);
+        txtImporteTotal.setVisible(false);
+        jLabel19.setVisible(false);
+
+    }
+
+    private void cargarCompradores() {
+
+        try {
+            persistencia.PasajeroData pasajeroData
+                    = new persistencia.PasajeroData();
+
+            cbComprador.removeAllItems();
+
+            for (modelo.Pasajero pasajero
+                    : pasajeroData.listarPasajeros()) {
+
+                ((javax.swing.JComboBox) cbComprador).addItem(pasajero);
+            }
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar los compradores: " + e.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void cargarPasajeros() {
+
+        try {
+            persistencia.PasajeroData pasajeroData
+                    = new persistencia.PasajeroData();
+
+            cbPasajero.removeAllItems();
+
+            for (modelo.Pasajero pasajero
+                    : pasajeroData.listarPasajeros()) {
+
+                ((javax.swing.JComboBox) cbPasajero).addItem(pasajero);
+            }
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar los pasajeros: " + e.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void cargarAsientos() {
+
+        cbAsiento.removeAllItems();
+
+        modelo.RutaViaje rutaSeleccionada
+                = (modelo.RutaViaje) cbRutaViaje.getSelectedItem();
+
+        if (rutaSeleccionada == null
+                || rutaSeleccionada.getColectivo() == null) {
+            return;
+        }
+
+        try {
+            persistencia.AsientoData asientoData
+                    = new persistencia.AsientoData();
+
+            java.util.List<modelo.Asiento> asientos
+                    = asientoData.listarAsientosPorColectivo(
+                            rutaSeleccionada.getColectivo()
+                    );
+
+            for (modelo.Asiento asiento : asientos) {
+                ((javax.swing.JComboBox) cbAsiento).addItem(asiento);
+            }
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar los asientos: " + e.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void cargarRutas() {
+
+        try {
+            persistencia.RutaViajeData rutaData
+                    = new persistencia.RutaViajeData();
+
+            cbRutaViaje.removeAllItems();
+
+            for (modelo.RutaViaje ruta
+                    : rutaData.listarRutasViaje()) {
+
+                ((javax.swing.JComboBox) cbRutaViaje).addItem(ruta);
+            }
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar las rutas: " + e.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void cargarParadas() {
+
+        // Limpiar los desplegables
+        cbOrigen.removeAllItems();
+        cbDestino.removeAllItems();
+
+        modelo.RutaViaje rutaSeleccionada
+                = (modelo.RutaViaje) cbRutaViaje.getSelectedItem();
+
+        if (rutaSeleccionada == null) {
+            return;
+        }
+
+        try {
+            persistencia.ParadaRecorridoData paradaData
+                    = new persistencia.ParadaRecorridoData();
+
+            java.util.List<modelo.ParadaRecorrido> paradas
+                    = paradaData.listarParadasPorRecorrido(
+                            rutaSeleccionada.getRecorrido().getIdRecorrido()
+                    );
+
+            for (modelo.ParadaRecorrido parada : paradas) {
+                ((javax.swing.JComboBox) cbOrigen).addItem(parada);
+                ((javax.swing.JComboBox) cbDestino).addItem(parada);
+            }
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar las paradas: " + e.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void estilizarTabla() {
+
+        javax.swing.table.JTableHeader encabezado
+                = tablaPasajes.getTableHeader();
+
+        encabezado.setBackground(new java.awt.Color(20, 43, 73));
+        encabezado.setForeground(java.awt.Color.WHITE);
+        encabezado.setFont(
+                new java.awt.Font("Arial", java.awt.Font.BOLD, 12)
+        );
+
+        encabezado.setPreferredSize(
+                new java.awt.Dimension(0, 30)
+        );
     }
 
     @SuppressWarnings("unchecked")
@@ -115,6 +282,9 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         txtImporteTotal = new javax.swing.JTextField();
         btnCancelarVenta = new javax.swing.JButton();
         btnRegistrarVenta = new javax.swing.JButton();
+        panelImporteTotal = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -184,7 +354,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                             .addGroup(panelDatosventaLayout.createSequentialGroup()
                                 .addComponent(txtEstadoVenta)
                                 .addGap(167, 167, 167)))))
-                .addContainerGap(229, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelDatosventaLayout.setVerticalGroup(
             panelDatosventaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,6 +388,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
         cbRutaViaje.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbRutaViaje.setForeground(new java.awt.Color(45, 55, 70));
+        cbRutaViaje.addItemListener(this::cbRutaViajeItemStateChanged);
 
         jLabel8.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(65, 75, 90));
@@ -361,7 +532,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                 .addGroup(panelDetallePasajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
         panelDetallePasajesLayout.setVerticalGroup(
             panelDetallePasajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -432,6 +603,37 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         btnRegistrarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/NuevaVentaI.png"))); // NOI18N
         btnRegistrarVenta.setText("REGISTRAR VENTA ");
 
+        panelImporteTotal.setBackground(new java.awt.Color(20, 43, 73));
+
+        jLabel20.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel20.setText("IMPORTE TOTAL DE LA VENTA");
+
+        jLabel21.setFont(new java.awt.Font("Arial", 1, 26)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel21.setText("$ 0,00");
+
+        javax.swing.GroupLayout panelImporteTotalLayout = new javax.swing.GroupLayout(panelImporteTotal);
+        panelImporteTotal.setLayout(panelImporteTotalLayout);
+        panelImporteTotalLayout.setHorizontalGroup(
+            panelImporteTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImporteTotalLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(panelImporteTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20))
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+        panelImporteTotalLayout.setVerticalGroup(
+            panelImporteTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImporteTotalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel20)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout panelPagoLayout = new javax.swing.GroupLayout(panelPago);
         panelPago.setLayout(panelPagoLayout);
         panelPagoLayout.setHorizontalGroup(
@@ -444,6 +646,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                         .addComponent(btnCancelarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRegistrarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel14)
                     .addGroup(panelPagoLayout.createSequentialGroup()
                         .addGroup(panelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -455,15 +658,19 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                             .addComponent(cbMedioPago, 0, 156, Short.MAX_VALUE)
                             .addComponent(cbCuotas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cbTipoComprobante, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(55, 55, 55)
                         .addGroup(panelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel19))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNumeroComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-                            .addComponent(txtImporteTotal)))
-                    .addComponent(jLabel14))
+                            .addGroup(panelPagoLayout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addGroup(panelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel19))
+                                .addGap(48, 48, 48)
+                                .addGroup(panelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtNumeroComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                                    .addComponent(txtImporteTotal)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPagoLayout.createSequentialGroup()
+                                .addGap(168, 168, 168)
+                                .addComponent(panelImporteTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelPagoLayout.setVerticalGroup(
@@ -493,8 +700,10 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                             .addComponent(cbTipoComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelPagoLayout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addComponent(txtImporteTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                        .addComponent(txtImporteTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                        .addComponent(panelImporteTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(12, 12, 12)
                 .addGroup(panelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRegistrarVenta))
@@ -510,9 +719,9 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                 .addGroup(panelContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelSeccionPasajes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelDatosventa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelDetallePasajes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(172, Short.MAX_VALUE))
+                    .addComponent(panelPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelDetallePasajes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
         panelContenidoLayout.setVerticalGroup(
             panelContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -525,7 +734,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                 .addComponent(panelDetallePasajes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(panelPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jScrollPane2.setViewportView(panelContenido);
@@ -540,6 +749,13 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
     private void btnCancelarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarVentaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarVentaActionPerformed
+
+    private void cbRutaViajeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbRutaViajeItemStateChanged
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            cargarParadas();
+            cargarAsientos();
+        }
+    }//GEN-LAST:event_cbRutaViajeItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -567,6 +783,8 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -580,6 +798,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
     private javax.swing.JPanel panelContenido;
     private javax.swing.JPanel panelDatosventa;
     private javax.swing.JPanel panelDetallePasajes;
+    private javax.swing.JPanel panelImporteTotal;
     private javax.swing.JPanel panelPago;
     private javax.swing.JPanel panelSeccionPasajes;
     private javax.swing.JTable tablaPasajes;

@@ -52,13 +52,21 @@ public class AsientoData {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+                    java.sql.Date fechaCaducidadSQL = rs.getDate("caducidad");
+
+                    java.time.LocalDate fechaCaducidad = null;
+
+                    if (fechaCaducidadSQL != null) {
+                        fechaCaducidad = fechaCaducidadSQL.toLocalDate();
+                    }
+
                     Colectivo col = new Colectivo(
                             rs.getInt("idColectivo"),
                             rs.getString("matricula"),
                             rs.getString("marca"),
                             rs.getString("modelo"),
                             rs.getInt("capacidad"),
-                            rs.getDate("caducidad").toLocalDate(),
+                            fechaCaducidad,
                             rs.getBoolean("estado"),
                             rs.getString("chofer")
                     );
@@ -105,7 +113,7 @@ public class AsientoData {
                             rs.getString("marca"),
                             rs.getString("modelo"),
                             rs.getInt("capacidad"),
-                            caducidad, 
+                            caducidad,
                             rs.getBoolean("estado"),
                             rs.getString("chofer")
                     );
