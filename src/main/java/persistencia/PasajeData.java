@@ -193,4 +193,42 @@ public class PasajeData {
             }
         }
     }
+    //consulta la disponibilidad sin bloquear el asiento ni exigir una transacción.
+public boolean consultarDisponibilidad(
+        int idRutaViaje,
+        int idAsiento,
+        int ordenOrigen,
+        int ordenDestino) throws SQLException {
+
+    if (ordenOrigen >= ordenDestino) {
+        throw new IllegalArgumentException(
+                "El origen debe ser anterior al destino.");
+    }
+
+    String sql = "SELECT COUNT(*) "
+            + "FROM pasaje p "
+            + "INNER JOIN paradarecorrido origen "
+            + "ON p.idParadaOrigen = origen.idParadaRecorrido "
+            + "INNER JOIN paradarecorrido destino "
+            + "ON p.idParadaDestino = destino.idParadaRecorrido "
+            + "WHERE p.idRutaViaje = ? "
+            + "AND p.idAsiento = ? "
+            + "AND p.estado = 1 "
+            + "AND origen.orden < ? "
+            + "AND destino.orden > ?";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, idRutaViaje);
+        ps.setInt(2, idAsiento);
+        ps.setInt(3, ordenDestino);
+        ps.setInt(4, ordenOrigen);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            rs.next();
+            return rs.getInt(1) == 0;
+        }
+    }
+}
+
 }

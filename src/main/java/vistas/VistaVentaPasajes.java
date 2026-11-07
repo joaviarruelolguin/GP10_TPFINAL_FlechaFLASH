@@ -1,10 +1,15 @@
 package vistas;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class VistaVentaPasajes extends javax.swing.JPanel {
 
-    /**
-     * Creates new form VistaVentaPasajes
-     */
+    private java.util.List<modelo.Pasaje> listaPasajes
+            = new java.util.ArrayList<>();
+
+    private boolean cargandoParadas = false;
+
     public VistaVentaPasajes() {
         initComponents();
         aplicarEstilos();
@@ -12,6 +17,9 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         cargarCompradores();
         cargarRutas();
         cargarPasajeros();
+        actualizarAsientosDisponibles();
+        cargarMediosPago();
+        actualizarCuotas();
     }
 
     private void aplicarEstilos() {
@@ -156,6 +164,288 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         }
     }
 
+    private void actualizarAsientosDisponibles() {
+
+        cbAsiento.removeAllItems();
+
+        modelo.RutaViaje ruta
+                = (modelo.RutaViaje) cbRutaViaje.getSelectedItem();
+
+        modelo.ParadaRecorrido origen
+                = (modelo.ParadaRecorrido) cbOrigen.getSelectedItem();
+
+        modelo.ParadaRecorrido destino
+                = (modelo.ParadaRecorrido) cbDestino.getSelectedItem();
+
+        if (ruta == null || origen == null || destino == null) {
+            return;
+        }
+
+        if (origen.getOrden() >= destino.getOrden()) {
+            return;
+        }
+
+        try {
+            persistencia.AsientoData asientoData
+                    = new persistencia.AsientoData();
+
+            persistencia.PasajeData pasajeData
+                    = new persistencia.PasajeData();
+
+            java.util.List<modelo.Asiento> asientos
+                    = asientoData.listarAsientosPorColectivo(
+                            ruta.getColectivo()
+                    );
+
+            for (modelo.Asiento asiento : asientos) {
+
+                boolean disponible = pasajeData.consultarDisponibilidad(
+                        ruta.getIdRutaViaje(),
+                        asiento.getIdAsiento(),
+                        origen.getOrden(),
+                        destino.getOrden()
+                );
+
+                if (disponible) {
+                    ((javax.swing.JComboBox) cbAsiento).addItem(asiento);
+                }
+            }
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al consultar los asientos disponibles: "
+                    + e.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void actualizarPrecioPasaje() {
+
+        modelo.RutaViaje ruta
+                = (modelo.RutaViaje) cbRutaViaje.getSelectedItem();
+
+        modelo.ParadaRecorrido origen
+                = (modelo.ParadaRecorrido) cbOrigen.getSelectedItem();
+
+        modelo.ParadaRecorrido destino
+                = (modelo.ParadaRecorrido) cbDestino.getSelectedItem();
+
+        txtPrecioPasaje.setText("");
+
+        if (ruta == null || origen == null || destino == null) {
+            return;
+        }
+
+        if (origen.getOrden() >= destino.getOrden()) {
+            return;
+        }
+
+        try {
+            persistencia.PasajeData pasajeData
+                    = new persistencia.PasajeData();
+
+            java.math.BigDecimal precio
+                    = pasajeData.calcularPrecioPasaje(
+                            ruta,
+                            origen,
+                            destino
+                    );
+
+            txtPrecioPasaje.setText(precio.toPlainString());
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al calcular el precio: " + e.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void actualizarImporteTotal() {
+
+        if (listaPasajes.isEmpty()) {
+            lblImporteDestacado.setText("$ 0.00");
+            return;
+        }
+
+        modelo.MedioPago medio
+                = (modelo.MedioPago) cbMedioPago.getSelectedItem();
+
+        if (medio == null) {
+            return;
+        }
+
+        int cuotas = 0;
+
+        if (medio == modelo.MedioPago.CREDITO) {
+
+            Object seleccion = cbCuotas.getSelectedItem();
+
+            if (seleccion == null) {
+                return;
+            }
+
+            cuotas = (Integer) seleccion;
+        }
+
+        try {
+            persistencia.VentaData ventaData
+                    = new persistencia.VentaData();
+
+            BigDecimal total = ventaData.calcularImporteTotal(
+                    listaPasajes, cuotas, medio
+            );
+
+            lblImporteDestacado.setText(
+                    "$ " + total.setScale(2, RoundingMode.HALF_UP)
+                            .toPlainString()
+            );
+
+        } catch (Exception e) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al calcular el importe: " + e.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void agregarPasaje() {
+
+        // Recuperar los objetos seleccionados
+        modelo.Pasajero pasajero
+                = (modelo.Pasajero) cbPasajero.getSelectedItem();
+
+        modelo.RutaViaje ruta
+                = (modelo.RutaViaje) cbRutaViaje.getSelectedItem();
+
+        modelo.ParadaRecorrido origen
+                = (modelo.ParadaRecorrido) cbOrigen.getSelectedItem();
+
+        modelo.ParadaRecorrido destino
+                = (modelo.ParadaRecorrido) cbDestino.getSelectedItem();
+
+        modelo.Asiento asiento
+                = (modelo.Asiento) cbAsiento.getSelectedItem();
+
+        // Validar que todos los datos estén seleccionados
+        if (pasajero == null || ruta == null || origen == null
+                || destino == null || asiento == null) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Completá todos los datos del pasaje.",
+                    "Datos incompletos",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        // Validar el orden de las paradas
+        if (origen.getOrden() >= destino.getOrden()) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "El origen debe ser anterior al destino.",
+                    "Tramo inválido",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        // Validar que el asiento no esté repetido en un tramo superpuesto
+        for (modelo.Pasaje pasaje : listaPasajes) {
+
+            if (pasaje.getRutaViaje().getIdRutaViaje()
+                    == ruta.getIdRutaViaje()
+                    && pasaje.getAsiento().getIdAsiento()
+                    == asiento.getIdAsiento()) {
+
+                boolean seSuperponen
+                        = pasaje.getParadaOrigen().getOrden()
+                        < destino.getOrden()
+                        && pasaje.getParadaDestino().getOrden()
+                        > origen.getOrden();
+
+                if (seSuperponen) {
+
+                    javax.swing.JOptionPane.showMessageDialog(
+                            this,
+                            "Ese asiento ya fue agregado para un tramo superpuesto.",
+                            "Asiento repetido",
+                            javax.swing.JOptionPane.WARNING_MESSAGE
+                    );
+                    return;
+                }
+            }
+        }
+
+        // Recuperar el precio
+        String textoPrecio = txtPrecioPasaje.getText().trim();
+
+        if (textoPrecio.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo obtener el precio del pasaje."
+            );
+            return;
+        }
+
+        try {
+            java.math.BigDecimal precio
+                    = new java.math.BigDecimal(textoPrecio);
+
+            // Crear el objeto Pasaje
+            modelo.Pasaje nuevoPasaje = new modelo.Pasaje(
+                    pasajero,
+                    ruta,
+                    asiento,
+                    origen,
+                    destino,
+                    java.time.LocalDateTime.now(),
+                    precio,
+                    true,
+                    null
+            );
+
+            // Agregar a la lista temporal
+            listaPasajes.add(nuevoPasaje);
+            actualizarImporteTotal();
+
+            // Agregar a la tabla
+            javax.swing.table.DefaultTableModel modeloTabla
+                    = (javax.swing.table.DefaultTableModel) tablaPasajes.getModel();
+
+            modeloTabla.addRow(new Object[]{
+                pasajero.toString(),
+                ruta.getIdRutaViaje(),
+                origen.getNombreLugar(),
+                destino.getNombreLugar(),
+                asiento.toString(),
+                precio
+            });
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Pasaje agregado correctamente."
+            );
+
+        } catch (NumberFormatException e) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "El precio ingresado no tiene un formato válido."
+            );
+        }
+    }
+
     private void cargarRutas() {
 
         try {
@@ -182,18 +472,19 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
     private void cargarParadas() {
 
-        // Limpiar los desplegables
-        cbOrigen.removeAllItems();
-        cbDestino.removeAllItems();
-
-        modelo.RutaViaje rutaSeleccionada
-                = (modelo.RutaViaje) cbRutaViaje.getSelectedItem();
-
-        if (rutaSeleccionada == null) {
-            return;
-        }
+        cargandoParadas = true;
 
         try {
+            cbOrigen.removeAllItems();
+            cbDestino.removeAllItems();
+
+            modelo.RutaViaje rutaSeleccionada
+                    = (modelo.RutaViaje) cbRutaViaje.getSelectedItem();
+
+            if (rutaSeleccionada == null) {
+                return;
+            }
+
             persistencia.ParadaRecorridoData paradaData
                     = new persistencia.ParadaRecorridoData();
 
@@ -214,6 +505,8 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                     "Error",
                     javax.swing.JOptionPane.ERROR_MESSAGE
             );
+        } finally {
+            cargandoParadas = false;
         }
     }
 
@@ -231,6 +524,165 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         encabezado.setPreferredSize(
                 new java.awt.Dimension(0, 30)
         );
+    }
+
+    private void cargarMediosPago() {
+
+        cbMedioPago.removeAllItems();
+
+        for (modelo.MedioPago medio : modelo.MedioPago.values()) {
+            ((javax.swing.JComboBox) cbMedioPago).addItem(medio);
+        }
+    }
+
+    private void actualizarCuotas() {
+
+        modelo.MedioPago medio
+                = (modelo.MedioPago) cbMedioPago.getSelectedItem();
+
+        cbCuotas.removeAllItems();
+
+        if (medio == modelo.MedioPago.CREDITO) {
+
+            cbCuotas.setEnabled(true);
+
+            for (int i = 1; i <= 6; i++) {
+                ((javax.swing.JComboBox) cbCuotas).addItem(i);
+            }
+
+            cbCuotas.setSelectedIndex(0);
+
+        } else {
+
+            cbCuotas.setEnabled(false);
+
+            ((javax.swing.JComboBox) cbCuotas).addItem(0);
+            cbCuotas.setSelectedIndex(0);
+        }
+    }
+
+    private void registrarVentaDesdeFormulario() {
+
+        // Recuperar el comprador
+        modelo.Pasajero comprador
+                = (modelo.Pasajero) cbComprador.getSelectedItem();
+
+        // Recuperar el medio de pago
+        modelo.MedioPago medio
+                = (modelo.MedioPago) cbMedioPago.getSelectedItem();
+
+        // Validar que exista un comprador
+        if (comprador == null) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccioná un comprador.",
+                    "Datos incompletos",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        // Validar que haya pasajes agregados
+        if (listaPasajes.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Agregá al menos un pasaje a la venta.",
+                    "Venta vacía",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        // Validar el medio de pago
+        if (medio == null) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccioná un medio de pago.",
+                    "Datos incompletos",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        // Recuperar la cantidad de cuotas
+        int cuotas = 0;
+
+        if (medio == modelo.MedioPago.CREDITO) {
+
+            Object seleccion = cbCuotas.getSelectedItem();
+
+            if (seleccion == null) {
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "Seleccioná la cantidad de cuotas.",
+                        "Datos incompletos",
+                        javax.swing.JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
+            cuotas = (Integer) seleccion;
+        }
+
+        try {
+
+            // Crear el objeto Venta
+            modelo.Venta venta = new modelo.Venta(
+                    comprador,
+                    java.time.LocalDateTime.now(),
+                    medio,
+                    cuotas,
+                    listaPasajes.size(),
+                    null,
+                    null,
+                    null,
+                    true
+            );
+
+            // Registrar la venta y sus pasajes
+            persistencia.VentaData ventaData
+                    = new persistencia.VentaData();
+
+            boolean registrada = ventaData.registrarVenta(
+                    venta,
+                    listaPasajes
+            );
+
+            if (registrada) {
+
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "Venta registrada correctamente.\n"
+                        + "Número de venta: " + venta.getIdVenta()
+                        + "\nImporte total: $"
+                        + venta.getImporteTotal(),
+                        "Venta exitosa",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE
+                );
+
+                // Limpiar la lista de pasajes
+                listaPasajes.clear();
+
+                // Limpiar la tabla
+                javax.swing.table.DefaultTableModel modeloTabla
+                        = (javax.swing.table.DefaultTableModel) tablaPasajes.getModel();
+
+                modeloTabla.setRowCount(0);
+
+                // Actualizar el importe
+                actualizarImporteTotal();
+            }
+
+        } catch (Exception e) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo registrar la venta:\n"
+                    + e.getMessage(),
+                    "Error al registrar",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -284,7 +736,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         btnRegistrarVenta = new javax.swing.JButton();
         panelImporteTotal = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
+        lblImporteDestacado = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -396,6 +848,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
         cbOrigen.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbOrigen.setForeground(new java.awt.Color(45, 55, 70));
+        cbOrigen.addItemListener(this::cbOrigenItemStateChanged);
 
         jLabel9.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(65, 75, 90));
@@ -403,6 +856,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
         cbDestino.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbDestino.setForeground(new java.awt.Color(45, 55, 70));
+        cbDestino.addItemListener(this::cbDestinoItemStateChanged);
 
         jLabel10.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(65, 75, 90));
@@ -427,6 +881,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         btnAgregarPasaje.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregarPasaje.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Nuevo.png"))); // NOI18N
         btnAgregarPasaje.setText("AGREGAR PASAJE");
+        btnAgregarPasaje.addActionListener(this::btnAgregarPasajeActionPerformed);
 
         txtPrecioPasaje.setEditable(false);
         txtPrecioPasaje.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
@@ -556,6 +1011,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
         cbMedioPago.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbMedioPago.setForeground(new java.awt.Color(45, 55, 70));
+        cbMedioPago.addActionListener(this::cbMedioPagoActionPerformed);
 
         jLabel16.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(65, 75, 90));
@@ -563,6 +1019,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
         cbCuotas.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbCuotas.setForeground(new java.awt.Color(45, 55, 70));
+        cbCuotas.addActionListener(this::cbCuotasActionPerformed);
 
         jLabel17.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(65, 75, 90));
@@ -602,6 +1059,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         btnRegistrarVenta.setForeground(new java.awt.Color(255, 255, 255));
         btnRegistrarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/NuevaVentaI.png"))); // NOI18N
         btnRegistrarVenta.setText("REGISTRAR VENTA ");
+        btnRegistrarVenta.addActionListener(this::btnRegistrarVentaActionPerformed);
 
         panelImporteTotal.setBackground(new java.awt.Color(20, 43, 73));
 
@@ -609,9 +1067,9 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setText("IMPORTE TOTAL DE LA VENTA");
 
-        jLabel21.setFont(new java.awt.Font("Arial", 1, 26)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel21.setText("$ 0,00");
+        lblImporteDestacado.setFont(new java.awt.Font("Arial", 1, 26)); // NOI18N
+        lblImporteDestacado.setForeground(new java.awt.Color(255, 255, 255));
+        lblImporteDestacado.setText("$ 0,00");
 
         javax.swing.GroupLayout panelImporteTotalLayout = new javax.swing.GroupLayout(panelImporteTotal);
         panelImporteTotal.setLayout(panelImporteTotalLayout);
@@ -620,7 +1078,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
             .addGroup(panelImporteTotalLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(panelImporteTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblImporteDestacado, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
@@ -630,7 +1088,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblImporteDestacado, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -747,7 +1205,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
     }//GEN-LAST:event_txtNumeroComprobanteActionPerformed
 
     private void btnCancelarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarVentaActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnCancelarVentaActionPerformed
 
     private void cbRutaViajeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbRutaViajeItemStateChanged
@@ -756,6 +1214,41 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
             cargarAsientos();
         }
     }//GEN-LAST:event_cbRutaViajeItemStateChanged
+
+    private void cbOrigenItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbOrigenItemStateChanged
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED
+                && !cargandoParadas) {
+
+            actualizarAsientosDisponibles();
+            actualizarPrecioPasaje();
+        }
+    }//GEN-LAST:event_cbOrigenItemStateChanged
+
+    private void cbDestinoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbDestinoItemStateChanged
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED
+                && !cargandoParadas) {
+
+            actualizarAsientosDisponibles();
+            actualizarPrecioPasaje();
+        }
+    }//GEN-LAST:event_cbDestinoItemStateChanged
+
+    private void btnAgregarPasajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPasajeActionPerformed
+        agregarPasaje();
+    }//GEN-LAST:event_btnAgregarPasajeActionPerformed
+
+    private void cbMedioPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMedioPagoActionPerformed
+        actualizarCuotas();
+        actualizarImporteTotal();
+    }//GEN-LAST:event_cbMedioPagoActionPerformed
+
+    private void cbCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCuotasActionPerformed
+        actualizarImporteTotal();
+    }//GEN-LAST:event_cbCuotasActionPerformed
+
+    private void btnRegistrarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarVentaActionPerformed
+        registrarVentaDesdeFormulario();
+    }//GEN-LAST:event_btnRegistrarVentaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -784,7 +1277,6 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -795,6 +1287,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblImporteDestacado;
     private javax.swing.JPanel panelContenido;
     private javax.swing.JPanel panelDatosventa;
     private javax.swing.JPanel panelDetallePasajes;
