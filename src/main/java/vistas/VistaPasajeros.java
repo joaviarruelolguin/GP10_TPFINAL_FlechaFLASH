@@ -137,29 +137,29 @@ public class VistaPasajeros extends javax.swing.JPanel {
         tituloCrudPanel.setText("Gestión");
 
         labelNombre.setBackground(new java.awt.Color(20, 43, 73));
-        labelNombre.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        labelNombre.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         labelNombre.setForeground(new java.awt.Color(51, 51, 51));
         labelNombre.setText("NOMBRE");
 
         labelApellido.setBackground(new java.awt.Color(20, 43, 73));
-        labelApellido.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        labelApellido.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         labelApellido.setForeground(new java.awt.Color(51, 51, 51));
         labelApellido.setText("APELLIDO");
 
         labelCorreo.setBackground(new java.awt.Color(20, 43, 73));
-        labelCorreo.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        labelCorreo.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         labelCorreo.setForeground(new java.awt.Color(51, 51, 51));
         labelCorreo.setText("CORREO");
 
         tipoPasajeroComboBox.addActionListener(this::tipoPasajeroComboBoxActionPerformed);
 
         labelTelefono.setBackground(new java.awt.Color(20, 43, 73));
-        labelTelefono.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        labelTelefono.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         labelTelefono.setForeground(new java.awt.Color(51, 51, 51));
         labelTelefono.setText("TELEFONO");
 
         labelDNI.setBackground(new java.awt.Color(20, 43, 73));
-        labelDNI.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        labelDNI.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         labelDNI.setForeground(new java.awt.Color(51, 51, 51));
         labelDNI.setText("DNI");
 
@@ -190,7 +190,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
         btnLimpiar.setText("Limpiar campos");
         btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
 
-        labelTipoPasajero.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        labelTipoPasajero.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         labelTipoPasajero.setForeground(new java.awt.Color(51, 51, 51));
         labelTipoPasajero.setText("TIPO PASAJERO");
 
@@ -283,6 +283,8 @@ public class VistaPasajeros extends javax.swing.JPanel {
         tituloConsultaPanel.setForeground(new java.awt.Color(23, 47, 77));
         tituloConsultaPanel.setText("Lista de pasajeros");
 
+        labelID.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        labelID.setForeground(new java.awt.Color(50, 50, 50));
         labelID.setText("ID");
 
         idTextField.addKeyListener(new java.awt.event.KeyAdapter() {

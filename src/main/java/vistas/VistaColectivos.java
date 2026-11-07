@@ -81,27 +81,27 @@ public class VistaColectivos extends javax.swing.JPanel {
         tituloSeccionCrud.setForeground(new java.awt.Color(23, 47, 77));
         tituloSeccionCrud.setText("Datos del colectivo");
 
-        labelMatricula.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        labelMatricula.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
         labelMatricula.setForeground(new java.awt.Color(51, 51, 51));
         labelMatricula.setText("MATRICULA");
 
-        labelMarca.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        labelMarca.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
         labelMarca.setForeground(new java.awt.Color(51, 51, 51));
         labelMarca.setText("MARCA");
 
-        labelModelo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        labelModelo.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
         labelModelo.setForeground(new java.awt.Color(51, 51, 51));
         labelModelo.setText("MODELO");
 
-        labelChofer.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        labelChofer.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
         labelChofer.setForeground(new java.awt.Color(51, 51, 51));
         labelChofer.setText("CHOFER");
 
-        labelCapacidad.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        labelCapacidad.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
         labelCapacidad.setForeground(new java.awt.Color(51, 51, 51));
         labelCapacidad.setText("CAPACIDAD");
 
-        labelCaducidad.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        labelCaducidad.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
         labelCaducidad.setForeground(new java.awt.Color(51, 51, 51));
         labelCaducidad.setText("CADUCIDAD");
 
