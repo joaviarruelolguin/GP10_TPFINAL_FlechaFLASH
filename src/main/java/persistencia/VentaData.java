@@ -20,6 +20,13 @@ public class VentaData {
     public VentaData() {
         con = Conexion.getInstancia().getConnection();
     }
+    private static final String PUNTO_VENTA = "0001";
+
+    private String generarNumeroComprobante(int idVenta) {
+
+        return PUNTO_VENTA + "-"
+                + String.format(java.util.Locale.ROOT, "%08d", idVenta);
+    }
 
     // Comprueba que todos los pasajes tengan los datos necesarios
     // antes de comenzar a registrar la venta en la base de datos.
@@ -343,7 +350,36 @@ public class VentaData {
                         }
 
                         // Guardamos el ID generado en el objeto Venta.
+                        // Guardamos el ID generado por MariaDB.
                         venta.setIdVenta(rs.getInt(1));
+
+// Generamos el número del comprobante interno.
+                        String numeroComprobante
+                                = generarNumeroComprobante(venta.getIdVenta());
+
+// Establecemos el tipo y número de comprobante en el objeto.
+                        venta.setTipoComprobante("TICKET");
+                        venta.setNumeroComprobante(numeroComprobante);
+
+// Actualizamos los datos del comprobante en la base de datos.
+                        String sqlComprobante
+                                = "UPDATE venta SET tipoComprobante = ?, "
+                                + "numeroComprobante = ? WHERE idVenta = ?";
+
+                        try (PreparedStatement psComprobante
+                                = con.prepareStatement(sqlComprobante)) {
+
+                            psComprobante.setString(1, venta.getTipoComprobante());
+                            psComprobante.setString(2, venta.getNumeroComprobante());
+                            psComprobante.setInt(3, venta.getIdVenta());
+
+                            int filasActualizadas = psComprobante.executeUpdate();
+
+                            if (filasActualizadas != 1) {
+                                throw new SQLException(
+                                        "No se pudo guardar el comprobante de la venta.");
+                            }
+                        }
                     }
                 }
                 // Creamos el objeto que permite comprobar la disponibilidad de los asientos.
@@ -390,7 +426,6 @@ public class VentaData {
                             throw new IllegalArgumentException(
                                     "El asiento no está disponible para el tramo seleccionado.");
                         }
-
 
                         // Ejecutamos la inserción del pasaje.
                         pasaje.setEstado(true);

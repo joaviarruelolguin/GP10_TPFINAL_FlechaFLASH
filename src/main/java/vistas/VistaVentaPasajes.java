@@ -13,6 +13,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
     public VistaVentaPasajes() {
         initComponents();
         aplicarEstilos();
+        actualizarDatosVenta();
         estilizarTabla();
         cargarCompradores();
         cargarRutas();
@@ -20,6 +21,11 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         actualizarAsientosDisponibles();
         cargarMediosPago();
         actualizarCuotas();
+        cbTipoComprobante.removeAllItems();
+        cbTipoComprobante.addItem("TICKET");
+        cbTipoComprobante.setSelectedIndex(0);
+        cbTipoComprobante.setEnabled(false);
+
     }
 
     private void aplicarEstilos() {
@@ -93,6 +99,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                     : pasajeroData.listarPasajeros()) {
 
                 ((javax.swing.JComboBox) cbComprador).addItem(pasajero);
+                cbComprador.setSelectedIndex(-1);
             }
 
         } catch (Exception e) {
@@ -103,6 +110,21 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                     javax.swing.JOptionPane.ERROR_MESSAGE
             );
         }
+    }
+
+    private void actualizarDatosVenta() {
+
+        java.time.LocalDateTime ahora
+                = java.time.LocalDateTime.now();
+
+        java.time.format.DateTimeFormatter formato
+                = java.time.format.DateTimeFormatter.ofPattern(
+                        "dd/MM/yyyy HH:mm"
+                );
+
+        txtFechaVenta.setText(ahora.format(formato));
+
+        txtEstadoVenta.setText("EN PREPARACIÓN");
     }
 
     private void cargarPasajeros() {
@@ -117,6 +139,8 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                     : pasajeroData.listarPasajeros()) {
 
                 ((javax.swing.JComboBox) cbPasajero).addItem(pasajero);
+                cbPasajero.setSelectedIndex(-1);
+
             }
 
         } catch (Exception e) {
@@ -654,25 +678,17 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                         this,
                         "Venta registrada correctamente.\n"
                         + "Número de venta: " + venta.getIdVenta()
+                        + "\nComprobante interno: "
+                        + venta.getNumeroComprobante()
                         + "\nImporte total: $"
                         + venta.getImporteTotal(),
                         "Venta exitosa",
                         javax.swing.JOptionPane.INFORMATION_MESSAGE
                 );
 
-                // Limpiar la lista de pasajes
-                listaPasajes.clear();
-
-                // Limpiar la tabla
-                javax.swing.table.DefaultTableModel modeloTabla
-                        = (javax.swing.table.DefaultTableModel) tablaPasajes.getModel();
-
-                modeloTabla.setRowCount(0);
-
-                // Actualizar el importe
-                actualizarImporteTotal();
+                // Preparar el formulario para una nueva venta
+                limpiarFormularioVenta();
             }
-
         } catch (Exception e) {
 
             javax.swing.JOptionPane.showMessageDialog(
@@ -683,6 +699,38 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                     javax.swing.JOptionPane.ERROR_MESSAGE
             );
         }
+    }
+
+    private void limpiarFormularioVenta() {
+
+        // Limpiar la lista temporal de pasajes
+        listaPasajes.clear();
+
+        // Limpiar la tabla
+        javax.swing.table.DefaultTableModel modeloTabla
+                = (javax.swing.table.DefaultTableModel) tablaPasajes.getModel();
+
+        modeloTabla.setRowCount(0);
+
+        // Limpiar las selecciones
+        cbComprador.setSelectedIndex(-1);
+        cbPasajero.setSelectedIndex(-1);
+        cbRutaViaje.setSelectedIndex(-1);
+
+        // Limpiar las paradas y los asientos
+        cbOrigen.removeAllItems();
+        cbDestino.removeAllItems();
+        cbAsiento.removeAllItems();
+
+        // Limpiar los campos de texto
+        txtPrecioPasaje.setText("");
+        txtNumeroComprobante.setText("");
+
+        // Limpiar el tipo de comprobante
+        cbTipoComprobante.setSelectedIndex(0);
+
+        // Restablecer el importe total
+        actualizarImporteTotal();
     }
 
     @SuppressWarnings("unchecked")
@@ -985,18 +1033,20 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
             .addGroup(panelDetallePasajesLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(panelDetallePasajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(97, Short.MAX_VALUE))
+                    .addGroup(panelDetallePasajesLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 743, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel13))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         panelDetallePasajesLayout.setVerticalGroup(
             panelDetallePasajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDetallePasajesLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel13)
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                .addGap(21, 21, 21))
         );
 
         panelPago.setBackground(new java.awt.Color(255, 255, 255));
@@ -1205,7 +1255,54 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
     }//GEN-LAST:event_txtNumeroComprobanteActionPerformed
 
     private void btnCancelarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarVentaActionPerformed
-        
+        // Verificar que haya una fila seleccionada
+        int filaSeleccionada = tablaPasajes.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccioná el pasaje que querés quitar de la venta.",
+                    "Ningún pasaje seleccionado",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        // Confirmar la eliminación del pasaje
+        int respuesta = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "¿Estás seguro de que querés quitar este pasaje de la venta?",
+                "Confirmar eliminación",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (respuesta != javax.swing.JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Convertir el índice de la fila al índice del modelo
+        int indiceModelo = tablaPasajes.convertRowIndexToModel(filaSeleccionada);
+
+        // Quitar el pasaje de la lista temporal
+        listaPasajes.remove(indiceModelo);
+
+        // Quitar la fila de la tabla
+        javax.swing.table.DefaultTableModel modeloTabla
+                = (javax.swing.table.DefaultTableModel) tablaPasajes.getModel();
+
+        modeloTabla.removeRow(indiceModelo);
+
+        // Actualizar el importe total
+        actualizarImporteTotal();
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "El pasaje fue quitado de la venta.",
+                "Operación realizada",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+
     }//GEN-LAST:event_btnCancelarVentaActionPerformed
 
     private void cbRutaViajeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbRutaViajeItemStateChanged
