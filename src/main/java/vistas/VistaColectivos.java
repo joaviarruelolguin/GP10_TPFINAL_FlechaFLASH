@@ -17,6 +17,8 @@ import persistencia.ColectivoData;
 
 public class VistaColectivos extends javax.swing.JPanel {
 
+    private static final int CAPACIDAD_MAXIMA = 60;
+
     private ColectivoData colectivoData = new ColectivoData();
     private List<Colectivo> listaColectivos = new ArrayList<>();
 
@@ -407,6 +409,11 @@ public class VistaColectivos extends javax.swing.JPanel {
             return;
         }
 
+        if (capacidad > CAPACIDAD_MAXIMA) {
+            JOptionPane.showMessageDialog(this, "La capacidad no puede superar los " + CAPACIDAD_MAXIMA + " asientos.");
+            return;
+        }
+
         Colectivo nuevo = new Colectivo(
                 txtMatricula.getText().trim().toUpperCase(),
                 txtMarca.getText().trim(),
@@ -629,6 +636,7 @@ public class VistaColectivos extends javax.swing.JPanel {
     private void modoNuevo() {
         vaciarCampos(panelCrud);
         tblColectivos.clearSelection();
+        btnGuardar.setEnabled(true);
         btnEliminar.setEnabled(false);
         btnActualizar.setEnabled(false);
         btnActivar.setEnabled(false);
