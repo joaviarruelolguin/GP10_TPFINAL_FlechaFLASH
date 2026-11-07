@@ -1,6 +1,8 @@
 package vistas;
 
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import modelo.Colectivo;
 import persistencia.ColectivoData;
 
 public class VistaColectivos extends javax.swing.JPanel {
@@ -16,6 +18,7 @@ public class VistaColectivos extends javax.swing.JPanel {
     public VistaColectivos() {
         initComponents();
         armarCabecera();
+        cargarColectivos();
     }
 
     public void armarCabecera() {
@@ -28,6 +31,24 @@ public class VistaColectivos extends javax.swing.JPanel {
         modelo.addColumn("Caducidad");
 
         tblColectivos.setModel(modelo);
+    }
+    
+    public void cargarColectivos(){
+        modelo.setRowCount(0);
+        
+        List<Colectivo> listaColectivos = colectivoData.listarColectivos();
+        
+        for(Colectivo lista: listaColectivos){
+            modelo.addRow(new Object[]{
+            lista.getIdColectivo(),
+                lista.getMatricula(),
+                lista.getMarca(),
+                lista.getModelo(),
+                lista.getCapacidad(),
+                lista.getChofer(),
+                lista.getCaducidad()    
+            });
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -174,9 +195,9 @@ public class VistaColectivos extends javax.swing.JPanel {
                 .addComponent(tituloSeccionCrud)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelMatricula)
-                        .addComponent(labelMarca))
+                    .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(labelMarca, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(labelMatricula))
                     .addComponent(labelModelo, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCrudLayout.createSequentialGroup()
