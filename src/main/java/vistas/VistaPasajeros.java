@@ -3,7 +3,6 @@ package vistas;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -15,6 +14,7 @@ import modelo.TipoPasajero;
 import persistencia.PasajeroData;
 
 public class VistaPasajeros extends javax.swing.JPanel {
+
     private PasajeroData pasajeroData = new PasajeroData();
 
     DefaultTableModel modelo = new DefaultTableModel() {
@@ -152,8 +152,6 @@ public class VistaPasajeros extends javax.swing.JPanel {
         labelCorreo.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         labelCorreo.setForeground(new java.awt.Color(51, 51, 51));
         labelCorreo.setText("CORREO");
-
-        tipoPasajeroComboBox.addActionListener(this::tipoPasajeroComboBoxActionPerformed);
 
         labelTelefono.setBackground(new java.awt.Color(20, 43, 73));
         labelTelefono.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
@@ -397,16 +395,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
         int fila = pasajerosTabla.getSelectedRow();
 
         if (fila != -1) {
-            idTextField.setText(pasajerosTabla.getValueAt(fila, 0).toString());
-            txtIdOR.setText(pasajerosTabla.getValueAt(fila, 0).toString());
-            nombreTextField.setText(pasajerosTabla.getValueAt(fila, 1).toString());
-            apellidoTextField.setText(pasajerosTabla.getValueAt(fila, 2).toString());
-            dniTextField.setText(pasajerosTabla.getValueAt(fila, 3).toString());
-            correoTextField.setText(pasajerosTabla.getValueAt(fila, 4).toString());
-            telefonoTextField.setText(pasajerosTabla.getValueAt(fila, 5).toString());
-            tipoPasajeroComboBox.setSelectedItem(pasajerosTabla.getValueAt(fila, 6));
-
-            modoSeleccion();
+            cargarFormulario(fila);
         }
     }//GEN-LAST:event_pasajerosTablaMouseClicked
 
@@ -432,9 +421,8 @@ public class VistaPasajeros extends javax.swing.JPanel {
 
                 if (idTabla == p.getIdPasajero()) {
                     pasajerosTabla.setRowSelectionInterval(i, i);
-
                     pasajerosTabla.scrollRectToVisible(pasajerosTabla.getCellRect(i, 0, true));
-
+                    cargarFormulario(i);
                     break;
                 }
             }
@@ -465,11 +453,9 @@ public class VistaPasajeros extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Pasajero borrado correctamente.");
 
                 cargarPasajeros();
-                vaciarCampos(crudPanel);
                 modoNuevo();
-                pasajerosTabla.clearSelection();
             } else {
-                JOptionPane.showMessageDialog(this, "No se pudo borrar el pasajero.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No se pudo borrar el pasajero. Puede tener ventas o pasajes asociados.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnBorrarActionPerformed
@@ -480,11 +466,26 @@ public class VistaPasajeros extends javax.swing.JPanel {
             return;
         }
 
+        String dni = dniTextField.getText().trim();
+        if (!dni.matches("\\d{7,8}")) {
+            JOptionPane.showMessageDialog(this, "El DNI debe tener 7 u 8 dígitos numéricos.");
+            return;
+        }
+
+        String correo = correoTextField.getText().trim();
+        if (!correo.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            JOptionPane.showMessageDialog(this, "El correo no tiene un formato válido.");
+            return;
+        }
+
+        if (!telefonoTextField.getText().trim().matches("[\\d\\s+()-]{6,30}")) {
+            JOptionPane.showMessageDialog(this, "El teléfono solo puede tener números, espacios, +, - y paréntesis.");
+            return;
+        }
+
         int idPasajero = Integer.parseInt(txtIdOR.getText());
         String nombre = nombreTextField.getText().trim();
         String apellido = apellidoTextField.getText().trim();
-        String dni = dniTextField.getText().trim();
-        String correo = correoTextField.getText().trim();
         String telefono = telefonoTextField.getText().trim();
         TipoPasajero tipoPasajero = (TipoPasajero) tipoPasajeroComboBox.getSelectedItem();
 
@@ -501,11 +502,9 @@ public class VistaPasajeros extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Pasajero actualizado correctamente.");
 
             cargarPasajeros();
-            vaciarCampos(crudPanel);
             modoNuevo();
-            pasajerosTabla.clearSelection();
         } else {
-            JOptionPane.showMessageDialog(this, "No se pudo actualizar el pasajero.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar el pasajero. Verifique que el DNI no esté repetido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
@@ -515,10 +514,25 @@ public class VistaPasajeros extends javax.swing.JPanel {
             return;
         }
 
+        String dni = dniTextField.getText().trim();
+        if (!dni.matches("\\d{7,8}")) {
+            JOptionPane.showMessageDialog(this, "El DNI debe tener 7 u 8 dígitos numéricos.");
+            return;
+        }
+
+        String correo = correoTextField.getText().trim();
+        if (!correo.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            JOptionPane.showMessageDialog(this, "El correo no tiene un formato válido.");
+            return;
+        }
+
+        if (!telefonoTextField.getText().trim().matches("[\\d\\s+()-]{6,30}")) {
+            JOptionPane.showMessageDialog(this, "El teléfono solo puede tener números, espacios, +, - y paréntesis.");
+            return;
+        }
+
         String nombre = nombreTextField.getText().trim();
         String apellido = apellidoTextField.getText().trim();
-        String dni = dniTextField.getText().trim();
-        String correo = correoTextField.getText().trim();
         String telefono = telefonoTextField.getText().trim();
         TipoPasajero tipoPasajero = (TipoPasajero) tipoPasajeroComboBox.getSelectedItem();
 
@@ -529,26 +543,15 @@ public class VistaPasajeros extends javax.swing.JPanel {
 
             cargarPasajeros();
 
-            vaciarCampos(crudPanel);
-
             modoNuevo();
-
-            pasajerosTabla.clearSelection();
         } else {
-            JOptionPane.showMessageDialog(this, "No se pudo guardar el pasajero.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se pudo guardar el pasajero. Verifique que el DNI no esté repetido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        vaciarCampos(crudPanel);
-        vaciarCampos(consultaPanel);
         modoNuevo();
-        pasajerosTabla.clearSelection();
     }//GEN-LAST:event_btnLimpiarActionPerformed
-
-    private void tipoPasajeroComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoPasajeroComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tipoPasajeroComboBoxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -609,36 +612,40 @@ public class VistaPasajeros extends javax.swing.JPanel {
     }
 
     public void vaciarCampos(JPanel jPanel) {
-        JComboBox combo = null;
         for (Component c : jPanel.getComponents()) {
-            if (c instanceof JTextField && c == idTextField) {
-                JTextField caja = (JTextField) c;
-                caja.setText("");
+            if (c instanceof JTextField) {
+                ((JTextField) c).setText("");
+            } else if (c instanceof JComboBox) {
+                ((JComboBox<?>) c).setSelectedIndex(-1);
             }
-        }
-        for (int i = 0; i < jPanel.getComponents().length; i++) {
-            if (jPanel.getComponents()[i] instanceof JTextField) {
-                JTextField caja = (JTextField) jPanel.getComponents()[i];
-                caja.setText("");
-            }
-            if (jPanel.getComponents()[i] instanceof JComboBox) {
-                combo = (JComboBox) jPanel.getComponents()[i];
-                combo.setSelectedIndex(-1);
-            }
-
         }
     }
 
     private void modoNuevo() {
+        vaciarCampos(crudPanel);
+        vaciarCampos(consultaPanel);
+        pasajerosTabla.clearSelection();
         btnGuardar.setEnabled(true);
         btnActualizar.setEnabled(false);
         btnBorrar.setEnabled(false);
-        tipoPasajeroComboBox.setSelectedIndex(-1);
     }
 
     private void modoSeleccion() {
         btnGuardar.setEnabled(false);
         btnActualizar.setEnabled(true);
         btnBorrar.setEnabled(true);
+    }
+
+    private void cargarFormulario(int fila) {
+        idTextField.setText(pasajerosTabla.getValueAt(fila, 0).toString());
+        txtIdOR.setText(pasajerosTabla.getValueAt(fila, 0).toString());
+        nombreTextField.setText(pasajerosTabla.getValueAt(fila, 1).toString());
+        apellidoTextField.setText(pasajerosTabla.getValueAt(fila, 2).toString());
+        dniTextField.setText(pasajerosTabla.getValueAt(fila, 3).toString());
+        correoTextField.setText(pasajerosTabla.getValueAt(fila, 4).toString());
+        telefonoTextField.setText(pasajerosTabla.getValueAt(fila, 5).toString());
+        tipoPasajeroComboBox.setSelectedItem(pasajerosTabla.getValueAt(fila, 6));
+
+        modoSeleccion();
     }
 }
