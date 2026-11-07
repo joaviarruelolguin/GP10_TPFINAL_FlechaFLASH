@@ -1,7 +1,10 @@
 package vistas;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import modelo.Colectivo;
@@ -112,6 +115,11 @@ public class VistaColectivos extends javax.swing.JPanel {
 
             }
         ));
+        tblColectivos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblColectivosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblColectivos);
 
         panelCrud.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -368,6 +376,38 @@ public class VistaColectivos extends javax.swing.JPanel {
     private void btnActivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActivarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnActivarActionPerformed
+
+    private void mostrarCaducidad(LocalDate caducidad) {
+        if (caducidad == null) {
+            dcCaducidad.setDate(null);
+        } else {
+            dcCaducidad.setDate(Date.from(caducidad.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        }
+    }
+
+    private LocalDate leerCaducidad() {
+        Date fecha = dcCaducidad.getDate();
+        if (fecha == null) {
+            return null;
+        }
+        return fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    private void tblColectivosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblColectivosMouseClicked
+
+        int fila = tblColectivos.getSelectedRow();
+
+        if (fila != -1) {
+            txtIdOR.setText(tblColectivos.getValueAt(fila, 0).toString());
+            txtMatricula.setText(tblColectivos.getValueAt(fila, 1).toString());
+            txtMarca.setText(tblColectivos.getValueAt(fila, 2).toString());
+            txtModelo.setText(tblColectivos.getValueAt(fila, 3).toString());
+            txtCapacidad.setText(tblColectivos.getValueAt(fila, 4).toString());
+            txtChofer.setText(tblColectivos.getValueAt(fila, 5).toString());
+            mostrarCaducidad(listaColectivos.get(fila).getCaducidad());
+
+        }
+    }//GEN-LAST:event_tblColectivosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
