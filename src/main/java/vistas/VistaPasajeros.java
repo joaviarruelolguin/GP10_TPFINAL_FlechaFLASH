@@ -15,8 +15,6 @@ import modelo.TipoPasajero;
 import persistencia.PasajeroData;
 
 public class VistaPasajeros extends javax.swing.JPanel {
-    private Integer idPasajero;
-
     private PasajeroData pasajeroData = new PasajeroData();
 
     DefaultTableModel modelo = new DefaultTableModel() {
@@ -28,6 +26,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
     public VistaPasajeros() {
         initComponents();
         armarCabecera();
+        txtIdOR.setEditable(false);
         cargarPasajeros();
 
         tipoPasajeroComboBox.setModel(new DefaultComboBoxModel<>(TipoPasajero.values()));
@@ -90,6 +89,8 @@ public class VistaPasajeros extends javax.swing.JPanel {
         btnBorrar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         labelTipoPasajero = new javax.swing.JLabel();
+        idLabel = new javax.swing.JLabel();
+        txtIdOR = new javax.swing.JTextField();
         consultaPanel = new javax.swing.JPanel();
         tituloConsultaPanel = new javax.swing.JLabel();
         labelID = new javax.swing.JLabel();
@@ -195,6 +196,10 @@ public class VistaPasajeros extends javax.swing.JPanel {
         labelTipoPasajero.setForeground(new java.awt.Color(51, 51, 51));
         labelTipoPasajero.setText("TIPO PASAJERO");
 
+        idLabel.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        idLabel.setForeground(new java.awt.Color(50, 50, 50));
+        idLabel.setText("ID");
+
         javax.swing.GroupLayout crudPanelLayout = new javax.swing.GroupLayout(crudPanel);
         crudPanel.setLayout(crudPanelLayout);
         crudPanelLayout.setHorizontalGroup(
@@ -202,18 +207,22 @@ public class VistaPasajeros extends javax.swing.JPanel {
             .addGroup(crudPanelLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(crudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(crudPanelLayout.createSequentialGroup()
+                        .addComponent(idLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, crudPanelLayout.createSequentialGroup()
                         .addGroup(crudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(crudPanelLayout.createSequentialGroup()
-                                .addGroup(crudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelCorreo)
-                                    .addComponent(labelNombre)
-                                    .addComponent(nombreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 27, Short.MAX_VALUE))
-                            .addGroup(crudPanelLayout.createSequentialGroup()
                                 .addComponent(btnLimpiar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(crudPanelLayout.createSequentialGroup()
+                                .addGroup(crudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtIdOR)
+                                    .addComponent(labelCorreo, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelNombre, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(nombreTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                                    .addComponent(correoTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE))
+                                .addGap(0, 27, Short.MAX_VALUE)))
                         .addGroup(crudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, crudPanelLayout.createSequentialGroup()
                                 .addComponent(labelApellido)
@@ -268,13 +277,17 @@ public class VistaPasajeros extends javax.swing.JPanel {
                     .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(telefonoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tipoPasajeroComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(idLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtIdOR, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(crudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39))
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
         );
 
         consultaPanel.setBackground(new java.awt.Color(242, 239, 239));
@@ -382,9 +395,10 @@ public class VistaPasajeros extends javax.swing.JPanel {
 
     private void pasajerosTablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pasajerosTablaMouseClicked
         int fila = pasajerosTabla.getSelectedRow();
-        
+
         if (fila != -1) {
             idTextField.setText(pasajerosTabla.getValueAt(fila, 0).toString());
+            txtIdOR.setText(pasajerosTabla.getValueAt(fila, 0).toString());
             nombreTextField.setText(pasajerosTabla.getValueAt(fila, 1).toString());
             apellidoTextField.setText(pasajerosTabla.getValueAt(fila, 2).toString());
             dniTextField.setText(pasajerosTabla.getValueAt(fila, 3).toString());
@@ -436,7 +450,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
     }//GEN-LAST:event_idTextFieldKeyPressed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        String idPasajero = idTextField.getText().trim();
+        String idPasajero = txtIdOR.getText().trim();
         if (idPasajero.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione o busque un pasajero.");
             return;
@@ -466,7 +480,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
             return;
         }
 
-        int idPasajero = Integer.parseInt(idTextField.getText());
+        int idPasajero = Integer.parseInt(txtIdOR.getText());
         String nombre = nombreTextField.getText().trim();
         String apellido = apellidoTextField.getText().trim();
         String dni = dniTextField.getText().trim();
@@ -527,6 +541,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         vaciarCampos(crudPanel);
+        vaciarCampos(consultaPanel);
         modoNuevo();
         pasajerosTabla.clearSelection();
     }//GEN-LAST:event_btnLimpiarActionPerformed
@@ -549,6 +564,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
     private javax.swing.JTextField dniTextField;
     private javax.swing.JPanel headerVista;
     private javax.swing.JLabel iconoVista;
+    private javax.swing.JLabel idLabel;
     private javax.swing.JTextField idTextField;
     private javax.swing.JLabel labelApellido;
     private javax.swing.JLabel labelCorreo;
@@ -565,12 +581,13 @@ public class VistaPasajeros extends javax.swing.JPanel {
     private javax.swing.JLabel tituloConsultaPanel;
     private javax.swing.JLabel tituloCrudPanel;
     private javax.swing.JLabel tituloVista;
+    private javax.swing.JTextField txtIdOR;
     // End of variables declaration//GEN-END:variables
 
     public boolean validarCamposVacios(JPanel jPanel) {
 
         for (Component c : jPanel.getComponents()) {
-            if (c instanceof JTextField) {
+            if (c instanceof JTextField && c != txtIdOR) {
                 JTextField caja = (JTextField) c;
 
                 if (caja.getText().trim().isEmpty()) {

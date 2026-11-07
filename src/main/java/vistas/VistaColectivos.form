@@ -34,7 +34,7 @@
                       <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="107" max="32767" attributes="0"/>
+              <EmptySpace pref="93" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -56,7 +56,7 @@
               </Group>
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               <Component id="panelCrud" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="52" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -115,38 +115,50 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="tituloSeccionCrud" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtMatricula" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
-                              <Component id="labelMatricula" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelCapacidad" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCapacidad" alignment="1" min="-2" pref="225" max="-2" attributes="0"/>
+                              <Component id="tituloSeccionCrud" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtMatricula" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
+                                      <Component id="labelMatricula" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="labelCapacidad" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtCapacidad" alignment="1" min="-2" pref="225" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="labelChofer" min="-2" max="-2" attributes="0"/>
+                                      <Component id="labelMarca" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtMarca" min="-2" pref="225" max="-2" attributes="0"/>
+                                      <Component id="txtChofer" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="labelCaducidad" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="labelModelo" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtModelo" max="32767" attributes="0"/>
+                                      <Component id="dcCaducidad" alignment="0" pref="225" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="labelChofer" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelMarca" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtMarca" min="-2" pref="225" max="-2" attributes="0"/>
-                              <Component id="txtChofer" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="labelCaducidad" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelModelo" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtModelo" max="32767" attributes="0"/>
-                              <Component id="dcCaducidad" alignment="0" pref="225" max="32767" attributes="0"/>
-                          </Group>
+                          <EmptySpace pref="28" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="btnLimpiar" min="-2" pref="158" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="332" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="btnActualizar" min="-2" pref="99" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnGuardar" min="-2" pref="108" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="labelID" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtIdOR" min="-2" pref="225" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="28" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -191,15 +203,17 @@
                       </Group>
                       <Component id="dcCaducidad" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnGuardar" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
-                          <Component id="btnActualizar" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="btnLimpiar" alignment="0" min="-2" pref="34" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="labelID" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="txtIdOR" pref="36" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btnLimpiar" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                      <Component id="btnActualizar" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                      <Component id="btnGuardar" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="35" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -354,6 +368,19 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnActualizarActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelID">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="10" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="33" red="33" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="ID"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtIdOR">
         </Component>
       </SubComponents>
     </Container>

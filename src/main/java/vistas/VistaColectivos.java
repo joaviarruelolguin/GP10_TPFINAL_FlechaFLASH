@@ -21,6 +21,7 @@ public class VistaColectivos extends javax.swing.JPanel {
     public VistaColectivos() {
         initComponents();
         armarCabecera();
+        txtIdOR.setEditable(false);
         cargarColectivos();
     }
 
@@ -83,6 +84,8 @@ public class VistaColectivos extends javax.swing.JPanel {
         dcCaducidad = new com.toedter.calendar.JDateChooser();
         btnLimpiar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
+        labelID = new javax.swing.JLabel();
+        txtIdOR = new javax.swing.JTextField();
         encabezadoVista = new javax.swing.JPanel();
         tituloVista = new javax.swing.JLabel();
         iconoVista = new javax.swing.JLabel();
@@ -161,6 +164,10 @@ public class VistaColectivos extends javax.swing.JPanel {
         btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 108, 158)));
         btnActualizar.addActionListener(this::btnActualizarActionPerformed);
 
+        labelID.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        labelID.setForeground(new java.awt.Color(51, 51, 51));
+        labelID.setText("ID");
+
         javax.swing.GroupLayout panelCrudLayout = new javax.swing.GroupLayout(panelCrud);
         panelCrud.setLayout(panelCrudLayout);
         panelCrudLayout.setHorizontalGroup(
@@ -168,32 +175,40 @@ public class VistaColectivos extends javax.swing.JPanel {
             .addGroup(panelCrudLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tituloSeccionCrud)
                     .addGroup(panelCrudLayout.createSequentialGroup()
                         .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelMatricula)
-                            .addComponent(labelCapacidad)
-                            .addComponent(txtCapacidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelChofer)
-                            .addComponent(labelMarca)
-                            .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtChofer, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(labelCaducidad)
-                            .addComponent(labelModelo)
-                            .addComponent(txtModelo)
-                            .addComponent(dcCaducidad, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)))
+                            .addComponent(tituloSeccionCrud)
+                            .addGroup(panelCrudLayout.createSequentialGroup()
+                                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelMatricula)
+                                    .addComponent(labelCapacidad)
+                                    .addComponent(txtCapacidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelChofer)
+                                    .addComponent(labelMarca)
+                                    .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtChofer, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(labelCaducidad)
+                                    .addComponent(labelModelo)
+                                    .addComponent(txtModelo)
+                                    .addComponent(dcCaducidad, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE))))
+                        .addContainerGap(28, Short.MAX_VALUE))
                     .addGroup(panelCrudLayout.createSequentialGroup()
                         .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(332, 332, 332)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31))
+                    .addGroup(panelCrudLayout.createSequentialGroup()
+                        .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelID)
+                            .addComponent(txtIdOR, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         panelCrudLayout.setVerticalGroup(
             panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,13 +242,16 @@ public class VistaColectivos extends javax.swing.JPanel {
                         .addComponent(txtChofer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(dcCaducidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelID)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtIdOR, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30))
         );
 
         encabezadoVista.setBackground(new java.awt.Color(20, 43, 73));
@@ -304,7 +322,7 @@ public class VistaColectivos extends javax.swing.JPanel {
                         .addComponent(tituloGestion)
                         .addComponent(panelCrud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1)))
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -323,7 +341,7 @@ public class VistaColectivos extends javax.swing.JPanel {
                     .addComponent(btnActivar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addComponent(panelCrud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -366,6 +384,7 @@ public class VistaColectivos extends javax.swing.JPanel {
     private javax.swing.JLabel labelCaducidad;
     private javax.swing.JLabel labelCapacidad;
     private javax.swing.JLabel labelChofer;
+    private javax.swing.JLabel labelID;
     private javax.swing.JLabel labelMarca;
     private javax.swing.JLabel labelMatricula;
     private javax.swing.JLabel labelModelo;
@@ -377,6 +396,7 @@ public class VistaColectivos extends javax.swing.JPanel {
     private javax.swing.JLabel tituloVista;
     private javax.swing.JTextField txtCapacidad;
     private javax.swing.JTextField txtChofer;
+    private javax.swing.JTextField txtIdOR;
     private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtModelo;

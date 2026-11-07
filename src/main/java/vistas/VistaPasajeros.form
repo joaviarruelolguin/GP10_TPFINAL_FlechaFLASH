@@ -121,23 +121,28 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="idLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="labelCorreo" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="labelNombre" min="-2" max="-2" attributes="0"/>
-                                      <Component id="nombreTextField" min="-2" pref="245" max="-2" attributes="0"/>
-                                      <Component id="correoTextField" alignment="0" min="-2" pref="245" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="0" pref="27" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
                                   <Component id="btnLimpiar" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="txtIdOR" max="32767" attributes="0"/>
+                                      <Component id="labelCorreo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="labelNombre" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="nombreTextField" alignment="1" pref="245" max="32767" attributes="0"/>
+                                      <Component id="correoTextField" alignment="1" pref="245" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="27" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" groupAlignment="1" attributes="0">
@@ -212,14 +217,18 @@
                       <Component id="telefonoTextField" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                       <Component id="tipoPasajeroComboBox" alignment="3" min="-2" pref="39" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="47" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="idLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="txtIdOR" min="-2" pref="33" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btnGuardar" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="btnActualizar" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="btnBorrar" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="btnLimpiar" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                      <Component id="btnBorrar" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                      <Component id="btnActualizar" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                      <Component id="btnGuardar" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -427,6 +436,19 @@
             </Property>
             <Property name="text" type="java.lang.String" value="TIPO PASAJERO"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="idLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="10" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="32" green="32" red="32" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="ID"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtIdOR">
         </Component>
       </SubComponents>
     </Container>
