@@ -1,11 +1,16 @@
 package vistas;
 
+import com.toedter.calendar.JDateChooser;
+import java.awt.Component;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelo.Colectivo;
 import persistencia.ColectivoData;
@@ -25,6 +30,7 @@ public class VistaColectivos extends javax.swing.JPanel {
         initComponents();
         armarCabecera();
         txtIdOR.setEditable(false);
+        modoNuevo();
         cargarColectivos();
     }
 
@@ -56,7 +62,7 @@ public class VistaColectivos extends javax.swing.JPanel {
                 lista.getCapacidad(),
                 lista.getChofer(),
                 lista.getCaducidad() == null ? "-" : lista.getCaducidad().format(formato),
-                lista.isEstado() ? "Activa" : "Inactiva"
+                lista.isEstado() ? "Activo" : "Inactivo"
             }
             );
         }
@@ -354,7 +360,27 @@ public class VistaColectivos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDesactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivarActionPerformed
-        // TODO add your handling code here:
+        String idColectivo = txtIdOR.getText().trim();
+
+        if (idColectivo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Seleccione un colectivo.");
+            return;
+        }
+
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Seguro desea desactivar el colectivo?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.YES_OPTION) {
+            int id = Integer.parseInt(idColectivo);
+
+            if (colectivoData.desactivarColectivo(id)) {
+                JOptionPane.showMessageDialog(this, "Se ha desactivado el colectivo.");
+
+                cargarColectivos();
+                modoNuevo();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo desactivar el colectivo.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnDesactivarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -370,11 +396,37 @@ public class VistaColectivos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        // TODO add your handling code here:
+        modoNuevo();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnActivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActivarActionPerformed
-        // TODO add your handling code here:
+        String idColectivo = txtIdOR.getText().trim();
+
+        if (idColectivo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Seleccione un colectivo.");
+            return;
+        }
+
+        int respuesta = JOptionPane.showConfirmDialog(
+                this,
+                "¿Seguro que desea activar el colectivo?",
+                "Confirmar",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            int id = Integer.parseInt(idColectivo);
+
+            if (colectivoData.activarColectivo(id)) {
+                JOptionPane.showMessageDialog(this, "Se ha activado el colectivo.");
+
+                cargarColectivos();
+                modoNuevo();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo activar el colectivo",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnActivarActionPerformed
 
     private void mostrarCaducidad(LocalDate caducidad) {
@@ -405,7 +457,7 @@ public class VistaColectivos extends javax.swing.JPanel {
             txtCapacidad.setText(tblColectivos.getValueAt(fila, 4).toString());
             txtChofer.setText(tblColectivos.getValueAt(fila, 5).toString());
             mostrarCaducidad(listaColectivos.get(fila).getCaducidad());
-
+            modoSeleccion(listaColectivos.get(fila).isEstado());
         }
     }//GEN-LAST:event_tblColectivosMouseClicked
 
@@ -441,4 +493,47 @@ public class VistaColectivos extends javax.swing.JPanel {
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtModelo;
     // End of variables declaration//GEN-END:variables
+
+    public boolean validarCamposVacios(JPanel jPanel) {
+
+        for (Component c : jPanel.getComponents()) {
+            if (c instanceof JTextField && c != txtIdOR) {
+                JTextField caja = (JTextField) c;
+
+                if (caja.getText().trim().isEmpty()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public void vaciarCampos(JPanel jPanel) {
+
+        for (Component c : jPanel.getComponents()) {
+            if (c instanceof JTextField) {
+                ((JTextField) c).setText("");
+            } else if (c instanceof JDateChooser) {
+                ((JDateChooser) c).setDate(null);
+            }
+        }
+
+    }
+
+    private void modoNuevo() {
+        vaciarCampos(panelCrud);
+        tblColectivos.clearSelection();
+        btnEliminar.setEnabled(false);
+        btnActualizar.setEnabled(false);
+        btnActivar.setEnabled(false);
+        btnDesactivar.setEnabled(false);
+    }
+
+    private void modoSeleccion(boolean activa) {
+        btnEliminar.setEnabled(true);
+        btnActualizar.setEnabled(true);
+        btnActivar.setEnabled(!activa);
+        btnDesactivar.setEnabled(activa);
+    }
 }

@@ -250,6 +250,27 @@ public class ColectivoData {
 
         return false;
     }
+    
+      public boolean activarColectivo(int idColectivo) {
+
+        String sql = "UPDATE colectivo SET estado = TRUE "
+                + "WHERE idColectivo = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, idColectivo);
+
+            int filas = ps.executeUpdate();
+
+            return filas > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error al activar colectivo: " + e.getMessage());
+        }
+
+        return false;
+    }
+    
 
     public boolean desactivarColectivo(int idColectivo) {
 
