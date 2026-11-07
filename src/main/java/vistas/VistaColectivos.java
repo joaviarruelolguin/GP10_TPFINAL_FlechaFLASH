@@ -440,14 +440,12 @@ public class VistaColectivos extends javax.swing.JPanel {
 
         int id = Integer.parseInt(idColectivo);
 
-
         Colectivo original = colectivoData.buscarColectivo(id);
         if (original == null) {
             JOptionPane.showMessageDialog(this, "No se encontró el colectivo.",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
 
         if (!txtCapacidad.getText().trim().equals(String.valueOf(original.getCapacidad()))) {
             JOptionPane.showMessageDialog(this, "La capacidad no se puede modificar porque los asientos ya fueron generados.");
@@ -475,7 +473,31 @@ public class VistaColectivos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        String idColectivo = txtIdOR.getText().trim();
+
+        if (idColectivo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Seleccione un colectivo.");
+            return;
+        }
+
+        int respuesta = JOptionPane.showConfirmDialog(this,
+                "¿Seguro desea eliminar el colectivo y todos sus asientos?",
+                "Confirmar", JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            int id = Integer.parseInt(idColectivo);
+
+            if (colectivoData.eliminarColectivo(id)) {
+                JOptionPane.showMessageDialog(this, "Se ha eliminado el colectivo.");
+                cargarColectivos();
+                modoNuevo();
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "No se pudo eliminar el colectivo. Puede tener salidas o pasajes asociados.\n"
+                        + "Si ya no se usa, puede desactivarlo.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
