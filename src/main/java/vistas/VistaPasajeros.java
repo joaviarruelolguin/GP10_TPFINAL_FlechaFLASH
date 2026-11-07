@@ -15,6 +15,7 @@ import modelo.TipoPasajero;
 import persistencia.PasajeroData;
 
 public class VistaPasajeros extends javax.swing.JPanel {
+    private Integer idPasajero;
 
     private PasajeroData pasajeroData = new PasajeroData();
 
@@ -381,7 +382,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
 
     private void pasajerosTablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pasajerosTablaMouseClicked
         int fila = pasajerosTabla.getSelectedRow();
-
+        
         if (fila != -1) {
             idTextField.setText(pasajerosTabla.getValueAt(fila, 0).toString());
             nombreTextField.setText(pasajerosTabla.getValueAt(fila, 1).toString());

@@ -1,5 +1,7 @@
 package vistas;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import modelo.Colectivo;
@@ -8,6 +10,7 @@ import persistencia.ColectivoData;
 public class VistaColectivos extends javax.swing.JPanel {
 
     private ColectivoData colectivoData = new ColectivoData();
+    private List<Colectivo> listaColectivos = new ArrayList<>();
 
     DefaultTableModel modelo = new DefaultTableModel() {
         public boolean isCellEditable(int f, int c) {
@@ -29,25 +32,29 @@ public class VistaColectivos extends javax.swing.JPanel {
         modelo.addColumn("Capacidad");
         modelo.addColumn("Chofer");
         modelo.addColumn("Caducidad");
+        modelo.addColumn("Estado");
 
         tblColectivos.setModel(modelo);
     }
-    
-    public void cargarColectivos(){
+
+    public void cargarColectivos() {
         modelo.setRowCount(0);
-        
-        List<Colectivo> listaColectivos = colectivoData.listarColectivos();
-        
-        for(Colectivo lista: listaColectivos){
+
+        listaColectivos = colectivoData.listarColectivos();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        for (Colectivo lista : listaColectivos) {
             modelo.addRow(new Object[]{
-            lista.getIdColectivo(),
+                lista.getIdColectivo(),
                 lista.getMatricula(),
                 lista.getMarca(),
                 lista.getModelo(),
                 lista.getCapacidad(),
                 lista.getChofer(),
-                lista.getCaducidad()    
-            });
+                lista.getCaducidad() == null ? "-" : lista.getCaducidad().format(formato),
+                lista.isEstado() ? "Activa" : "Inactiva"
+            }
+            );
         }
     }
 
