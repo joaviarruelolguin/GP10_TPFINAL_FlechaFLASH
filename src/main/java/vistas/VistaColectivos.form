@@ -23,7 +23,7 @@
                   <Group type="102" attributes="0">
                       <Component id="btnEliminar" min="-2" pref="96" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnDesactivar1" min="-2" pref="109" max="-2" attributes="0"/>
+                      <Component id="btnActivar" min="-2" pref="109" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnDesactivar" min="-2" pref="109" max="-2" attributes="0"/>
                   </Group>
@@ -52,7 +52,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnEliminar" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                   <Component id="btnDesactivar" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                  <Component id="btnDesactivar1" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                  <Component id="btnActivar" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               <Component id="panelCrud" min="-2" max="-2" attributes="0"/>
@@ -94,12 +94,7 @@
         <Component class="javax.swing.JTable" name="tblColectivos">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="4">
-                <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                <Column editable="true" title="Title 4" type="java.lang.Object"/>
-              </Table>
+              <Table columnCount="0" rowCount="4"/>
             </Property>
           </Properties>
         </Component>
@@ -123,28 +118,28 @@
                       <Component id="tituloSeccionCrud" min="-2" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jTextField1" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
+                              <Component id="txtMatricula" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
                               <Component id="labelMatricula" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="labelCapacidad" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField7" alignment="1" min="-2" pref="225" max="-2" attributes="0"/>
+                              <Component id="txtCapacidad" alignment="1" min="-2" pref="225" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="labelChofer" min="-2" max="-2" attributes="0"/>
                               <Component id="labelMarca" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField3" min="-2" pref="225" max="-2" attributes="0"/>
-                              <Component id="jTextField4" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
+                              <Component id="txtMarca" min="-2" pref="225" max="-2" attributes="0"/>
+                              <Component id="txtChofer" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="labelCaducidad" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="labelModelo" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField2" max="32767" attributes="0"/>
-                              <Component id="jDateChooser1" alignment="0" pref="225" max="32767" attributes="0"/>
+                              <Component id="txtModelo" max="32767" attributes="0"/>
+                              <Component id="dcCaducidad" alignment="0" pref="225" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="btnNuevo1" min="-2" pref="158" max="-2" attributes="0"/>
+                          <Component id="btnLimpiar" min="-2" pref="158" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="332" max="-2" attributes="0"/>
                           <Component id="btnActualizar" min="-2" pref="99" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -172,8 +167,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTextField1" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                              <Component id="jTextField3" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="txtMatricula" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="txtMarca" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -183,7 +178,7 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Component id="jTextField2" min="-2" pref="36" max="-2" attributes="0"/>
+                          <Component id="txtModelo" min="-2" pref="36" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="labelCaducidad" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -191,10 +186,10 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jTextField4" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                          <Component id="jTextField7" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                          <Component id="txtChofer" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                          <Component id="txtCapacidad" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jDateChooser1" max="32767" attributes="0"/>
+                      <Component id="dcCaducidad" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -202,7 +197,7 @@
                           <Component id="btnGuardar" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                           <Component id="btnActualizar" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="btnNuevo1" alignment="0" min="-2" pref="34" max="-2" attributes="0"/>
+                      <Component id="btnLimpiar" alignment="0" min="-2" pref="34" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="35" max="32767" attributes="0"/>
               </Group>
@@ -287,15 +282,15 @@
             <Property name="text" type="java.lang.String" value="CADUCIDAD"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="txtMatricula">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField2">
+        <Component class="javax.swing.JTextField" name="txtModelo">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField3">
+        <Component class="javax.swing.JTextField" name="txtMarca">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField4">
+        <Component class="javax.swing.JTextField" name="txtChofer">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField7">
+        <Component class="javax.swing.JTextField" name="txtCapacidad">
         </Component>
         <Component class="javax.swing.JButton" name="btnGuardar">
           <Properties>
@@ -317,9 +312,9 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
           </Events>
         </Component>
-        <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
+        <Component class="com.toedter.calendar.JDateChooser" name="dcCaducidad">
         </Component>
-        <Component class="javax.swing.JButton" name="btnNuevo1">
+        <Component class="javax.swing.JButton" name="btnLimpiar">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="1"/>
@@ -333,7 +328,7 @@
             <Property name="text" type="java.lang.String" value="Limpiar campos"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNuevo1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLimpiarActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnActualizar">
@@ -459,7 +454,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDesactivarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnDesactivar1">
+    <Component class="javax.swing.JButton" name="btnActivar">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="12" style="1"/>
@@ -473,7 +468,7 @@
         <Property name="text" type="java.lang.String" value="Activar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDesactivar1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnActivarActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
