@@ -427,7 +427,51 @@ public class VistaColectivos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        // TODO add your handling code here:
+        String idColectivo = txtIdOR.getText().trim();
+        if (idColectivo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Seleccione un colectivo.");
+            return;
+        }
+
+        if (validarCamposVacios(panelCrud)) {
+            JOptionPane.showMessageDialog(this, "Complete matrícula, marca, modelo, capacidad y chofer.");
+            return;
+        }
+
+        int id = Integer.parseInt(idColectivo);
+
+
+        Colectivo original = colectivoData.buscarColectivo(id);
+        if (original == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró el colectivo.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+
+        if (!txtCapacidad.getText().trim().equals(String.valueOf(original.getCapacidad()))) {
+            JOptionPane.showMessageDialog(this, "La capacidad no se puede modificar porque los asientos ya fueron generados.");
+            return;
+        }
+
+        Colectivo editado = new Colectivo(
+                id,
+                txtMatricula.getText().trim().toUpperCase(),
+                txtMarca.getText().trim(),
+                txtModelo.getText().trim(),
+                original.getCapacidad(),
+                leerCaducidad(),
+                original.isEstado(),
+                txtChofer.getText().trim());
+
+        if (colectivoData.actualizarColectivo(editado)) {
+            JOptionPane.showMessageDialog(this, "Se ha actualizado el colectivo.");
+            cargarColectivos();
+            modoNuevo();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar el colectivo. Verifique que la matrícula no esté repetida.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -570,6 +614,7 @@ public class VistaColectivos extends javax.swing.JPanel {
     }
 
     private void modoSeleccion(boolean activa) {
+        btnGuardar.setEnabled(false);
         btnEliminar.setEnabled(true);
         btnActualizar.setEnabled(true);
         btnActivar.setEnabled(!activa);
