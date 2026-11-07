@@ -384,7 +384,46 @@ public class VistaColectivos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDesactivarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
+        if (!txtIdOR.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Hay un colectivo seleccionado. Use Actualizar, o presione Limpiar campos para cargar uno nuevo.");
+            return;
+        }
+
+        if (validarCamposVacios(panelCrud)) {
+            JOptionPane.showMessageDialog(this, "Complete matrícula, marca, modelo, capacidad y chofer.");
+            return;
+        }
+
+        int capacidad;
+        try {
+            capacidad = Integer.parseInt(txtCapacidad.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La capacidad debe ser un número entero.");
+            return;
+        }
+
+        if (capacidad <= 0) {
+            JOptionPane.showMessageDialog(this, "La capacidad debe ser mayor a cero.");
+            return;
+        }
+
+        Colectivo nuevo = new Colectivo(
+                txtMatricula.getText().trim().toUpperCase(),
+                txtMarca.getText().trim(),
+                txtModelo.getText().trim(),
+                capacidad,
+                leerCaducidad(),
+                true,
+                txtChofer.getText().trim());
+
+        if (colectivoData.guardarColectivo(nuevo)) {
+            JOptionPane.showMessageDialog(this, "Se ha guardado el colectivo con sus " + capacidad + " asientos.");
+            cargarColectivos();
+            modoNuevo();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo guardar el colectivo. Verifique que la matrícula no esté repetida.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
