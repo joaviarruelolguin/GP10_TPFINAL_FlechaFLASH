@@ -129,6 +129,27 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
             );
         }
     }
+    private void ajustarEncabezado() {
+
+    // Mantener la altura de la barra azul
+    jPanel2.setPreferredSize(new java.awt.Dimension(0, 85));
+
+    // Colocar el icono a la derecha del texto
+    jLabel1.setHorizontalTextPosition(
+            javax.swing.SwingConstants.LEFT);
+
+    // Alinear el conjunto a la derecha
+    jLabel1.setHorizontalAlignment(
+            javax.swing.SwingConstants.RIGHT);
+
+    // Separación entre texto e icono
+    jLabel1.setIconTextGap(12);
+
+    // Margen derecho de 27 píxeles
+    jLabel1.setBorder(
+            javax.swing.BorderFactory.createEmptyBorder(
+                    0, 0, 0, 27));
+}
 
     private void actualizarDatosVenta() {
 
