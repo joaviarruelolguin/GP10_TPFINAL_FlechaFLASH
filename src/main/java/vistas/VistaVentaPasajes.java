@@ -2,6 +2,11 @@ package vistas;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import modelo.Asiento;
+import modelo.MedioPago;
+import modelo.ParadaRecorrido;
+import modelo.Pasajero;
+import modelo.RutaViaje;
 
 public class VistaVentaPasajes extends javax.swing.JPanel {
 
@@ -99,7 +104,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
             for (modelo.Pasajero pasajero
                     : pasajeroData.listarPasajeros()) {
 
-                ((javax.swing.JComboBox) cbComprador).addItem(pasajero);
+                cbComprador.addItem(pasajero);
                 cbComprador.setSelectedIndex(-1);
             }
 
@@ -139,7 +144,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
             for (modelo.Pasajero pasajero
                     : pasajeroData.listarPasajeros()) {
 
-                ((javax.swing.JComboBox) cbPasajero).addItem(pasajero);
+                cbPasajero.addItem(pasajero);
                 cbPasajero.setSelectedIndex(-1);
 
             }
@@ -176,7 +181,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                     );
 
             for (modelo.Asiento asiento : asientos) {
-                ((javax.swing.JComboBox) cbAsiento).addItem(asiento);
+                cbAsiento.addItem(asiento);
             }
 
         } catch (Exception e) {
@@ -232,7 +237,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                 );
 
                 if (disponible) {
-                    ((javax.swing.JComboBox) cbAsiento).addItem(asiento);
+                    cbAsiento.addItem(asiento);
                 }
             }
 
@@ -482,7 +487,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
             for (modelo.RutaViaje ruta
                     : rutaData.listarRutasViaje()) {
 
-                ((javax.swing.JComboBox) cbRutaViaje).addItem(ruta);
+                cbRutaViaje.addItem(ruta);
             }
 
         } catch (Exception e) {
@@ -519,8 +524,8 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                     );
 
             for (modelo.ParadaRecorrido parada : paradas) {
-                ((javax.swing.JComboBox) cbOrigen).addItem(parada);
-                ((javax.swing.JComboBox) cbDestino).addItem(parada);
+                cbOrigen.addItem(parada);
+                cbDestino.addItem(parada);
             }
 
         } catch (Exception e) {
@@ -556,7 +561,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         cbMedioPago.removeAllItems();
 
         for (modelo.MedioPago medio : modelo.MedioPago.values()) {
-            ((javax.swing.JComboBox) cbMedioPago).addItem(medio);
+            cbMedioPago.addItem(medio);
         }
     }
 
@@ -572,7 +577,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
             cbCuotas.setEnabled(true);
 
             for (int i = 1; i <= 6; i++) {
-                ((javax.swing.JComboBox) cbCuotas).addItem(i);
+                cbCuotas.addItem(i);
             }
 
             cbCuotas.setSelectedIndex(0);
@@ -581,7 +586,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
             cbCuotas.setEnabled(false);
 
-            ((javax.swing.JComboBox) cbCuotas).addItem(0);
+            cbCuotas.addItem(0);
             cbCuotas.setSelectedIndex(0);
         }
     }
@@ -729,7 +734,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
         // Limpiar los campos de texto
         txtPrecioPasaje.setText("");
-        txtNumeroComprobante.setText("");
+        // txtNumeroComprobante.setText("");
 
         // Limpiar el tipo de comprobante
         cbTipoComprobante.setSelectedIndex(0);
@@ -1108,7 +1113,6 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         btnCancelarVenta.setForeground(new java.awt.Color(38, 54, 74));
         btnCancelarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Desactivar.png"))); // NOI18N
         btnCancelarVenta.setText("CANCELAR ");
-        btnCancelarVenta.setOpaque(false);
         btnCancelarVenta.addActionListener(this::btnCancelarVentaActionPerformed);
 
         btnRegistrarVenta.setBackground(new java.awt.Color(20, 43, 73));
@@ -1359,14 +1363,14 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
     private javax.swing.JButton btnAgregarPasaje;
     private javax.swing.JButton btnCancelarVenta;
     private javax.swing.JButton btnRegistrarVenta;
-    private javax.swing.JComboBox<String> cbAsiento;
-    private javax.swing.JComboBox<String> cbComprador;
-    private javax.swing.JComboBox<String> cbCuotas;
-    private javax.swing.JComboBox<String> cbDestino;
-    private javax.swing.JComboBox<String> cbMedioPago;
-    private javax.swing.JComboBox<String> cbOrigen;
-    private javax.swing.JComboBox<String> cbPasajero;
-    private javax.swing.JComboBox<String> cbRutaViaje;
+    private javax.swing.JComboBox<Asiento> cbAsiento;
+    private javax.swing.JComboBox<Pasajero> cbComprador;
+    private javax.swing.JComboBox<Integer> cbCuotas;
+    private javax.swing.JComboBox<ParadaRecorrido> cbDestino;
+    private javax.swing.JComboBox<MedioPago> cbMedioPago;
+    private javax.swing.JComboBox<ParadaRecorrido> cbOrigen;
+    private javax.swing.JComboBox<Pasajero> cbPasajero;
+    private javax.swing.JComboBox<RutaViaje> cbRutaViaje;
     private javax.swing.JComboBox<String> cbTipoComprobante;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
