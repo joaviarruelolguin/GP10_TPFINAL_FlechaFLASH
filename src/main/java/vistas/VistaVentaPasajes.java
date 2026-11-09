@@ -30,8 +30,20 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         cbTipoComprobante.addItem("TICKET");
         cbTipoComprobante.setSelectedIndex(0);
         cbTipoComprobante.setEnabled(false);
+        configurarColumnasTabla();
 
     }
+    
+     private void configurarColumnasTabla() {
+        javax.swing.table.DefaultTableModel modeloTabla
+                = (javax.swing.table.DefaultTableModel) tablaPasajes.getModel();
+
+        modeloTabla.setColumnIdentifiers(new Object[]{
+            "Pasajero", "DNI", "Ruta", "Fecha y hora de salida",
+            "Origen", "Destino", "Asiento", "Precio"
+        });
+    }
+
 
     private void aplicarEstilos() {
 
@@ -454,8 +466,12 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                     = (javax.swing.table.DefaultTableModel) tablaPasajes.getModel();
 
             modeloTabla.addRow(new Object[]{
-                pasajero.toString(),
+                pasajero.getApellido() + ", " + pasajero.getNombre(),
+                pasajero.getDni(),
                 ruta.getIdRutaViaje(),
+                ruta.getFechaHoraSalida().format(
+                java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+                ),
                 origen.getNombreLugar(),
                 destino.getNombreLugar(),
                 asiento.toString(),
