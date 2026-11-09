@@ -116,7 +116,7 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
         agregarFila(jSeparator1, 3, 10);
         agregarFila(lblAccesosRapidos1, 4, 5);
         agregarFila(pnlAccesosRapidos, 5, 12);
-        agregarFila(jSeparator2, 6, 18);
+        agregarFila(jSeparator2, 6, 40);
         agregarFila(lblProximasSalidas, 7, 5);
         agregarFila(pnlListadoSalidas, 8, 12);
 
