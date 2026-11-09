@@ -516,7 +516,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(20, 43, 73));
-        lblTitulo.setText("Gestión de Recorridos");
+        lblTitulo.setText("Gestión de recorridos");
 
         lblSubtitulo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblSubtitulo.setForeground(new java.awt.Color(100, 116, 139));
