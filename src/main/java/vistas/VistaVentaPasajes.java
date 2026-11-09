@@ -792,22 +792,48 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         actualizarDatosVenta();
     }
 
-    private void sincronizarRutasPendientes() {
+    private void sincronizarRutasPendientes() throws java.sql.SQLException {
 
         persistencia.RutaViajeData rutaData
                 = new persistencia.RutaViajeData();
+        persistencia.AsientoData asientoData
+                = new persistencia.AsientoData();
+        persistencia.ParadaRecorridoData paradaData
+                = new persistencia.ParadaRecorridoData();
+        persistencia.PasajeData pasajeData
+                = new persistencia.PasajeData();
 
         javax.swing.table.DefaultTableModel modeloTabla
                 = (javax.swing.table.DefaultTableModel) tablaPasajes.getModel();
 
-        for (int i = 0; i < listaPasajes.size(); i++) {
+        // Listas temporales: no modificamos los pasajes hasta validar todos.
+        java.util.List<modelo.RutaViaje> rutasActualizadas
+                = new java.util.ArrayList<>();
+        java.util.List<modelo.Asiento> asientosActualizados
+                = new java.util.ArrayList<>();
+        java.util.List<modelo.ParadaRecorrido> origenesActualizados
+                = new java.util.ArrayList<>();
+        java.util.List<modelo.ParadaRecorrido> destinosActualizados
+                = new java.util.ArrayList<>();
 
-            modelo.Pasaje pasaje = listaPasajes.get(i);
+        java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+
+        // PRIMERA ETAPA: VALIDAR TODOS LOS PASAJES.
+        for (modelo.Pasaje pasaje : listaPasajes) {
 
             modelo.RutaViaje rutaAnterior = pasaje.getRutaViaje();
 
+            if (rutaAnterior == null) {
+                throw new IllegalArgumentException(
+                        "Hay un pasaje sin ruta asociada."
+                );
+            }
+
+            // Recuperar la ruta actual.
             modelo.RutaViaje rutaActualizada
-                    = rutaData.buscarRutaViaje(rutaAnterior.getIdRutaViaje());
+                    = rutaData.buscarRutaViaje(
+                            rutaAnterior.getIdRutaViaje()
+                    );
 
             if (rutaActualizada == null) {
                 throw new IllegalArgumentException(
@@ -817,36 +843,299 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                 );
             }
 
-            // Comprobar que el recorrido no haya cambiado.
-            if (rutaActualizada.getRecorrido().getIdRecorrido()
-                    != rutaAnterior.getRecorrido().getIdRecorrido()) {
+            // Comprobar que la ruta siga habilitada.
+            if (!rutaActualizada.isEstado()) {
+                throw new IllegalArgumentException(
+                        "La ruta " + rutaActualizada.getIdRutaViaje()
+                        + " está deshabilitada. No se puede registrar la venta."
+                );
+            }
 
+            // Comprobar que la salida siga siendo futura.
+            if (rutaActualizada.getFechaHoraSalida() == null
+                    || !rutaActualizada.getFechaHoraSalida().isAfter(ahora)) {
+                throw new IllegalArgumentException(
+                        "La salida de la ruta "
+                        + rutaActualizada.getIdRutaViaje()
+                        + " ya no es futura. Quitá y volvé a agregar el pasaje."
+                );
+            }
+
+            // Comprobar que existan recorrido y colectivo.
+            if (rutaActualizada.getRecorrido() == null
+                    || rutaActualizada.getColectivo() == null) {
+                throw new IllegalArgumentException(
+                        "La ruta " + rutaActualizada.getIdRutaViaje()
+                        + " no tiene un recorrido o colectivo asociado."
+                );
+            }
+
+            // Comprobar que el recorrido no haya cambiado.
+            if (rutaAnterior.getRecorrido() == null
+                    || rutaActualizada.getRecorrido().getIdRecorrido()
+                    != rutaAnterior.getRecorrido().getIdRecorrido()) {
                 throw new IllegalArgumentException(
                         "La ruta " + rutaAnterior.getIdRutaViaje()
                         + " cambió de recorrido. Quitá y volvé a agregar ese pasaje."
                 );
             }
 
-            // Comprobar que el colectivo no haya cambiado.
-            if (rutaActualizada.getColectivo().getIdColectivo()
-                    != rutaAnterior.getColectivo().getIdColectivo()) {
+            // Comprobar que el recorrido siga activo.
+            if (!rutaActualizada.getRecorrido().isEstado()) {
+                throw new IllegalArgumentException(
+                        "El recorrido de la ruta "
+                        + rutaActualizada.getIdRutaViaje()
+                        + " está deshabilitado."
+                );
+            }
 
+            // Comprobar que el colectivo no haya cambiado.
+            if (rutaAnterior.getColectivo() == null
+                    || rutaActualizada.getColectivo().getIdColectivo()
+                    != rutaAnterior.getColectivo().getIdColectivo()) {
                 throw new IllegalArgumentException(
                         "La ruta " + rutaAnterior.getIdRutaViaje()
                         + " cambió de colectivo. Quitá y volvé a agregar ese pasaje."
                 );
             }
 
-            // Actualizar la referencia del pasaje.
-            pasaje.setRutaViaje(rutaActualizada);
+            // Comprobar que el colectivo siga activo.
+            if (!rutaActualizada.getColectivo().isEstado()) {
+                throw new IllegalArgumentException(
+                        "El colectivo asignado a la ruta "
+                        + rutaActualizada.getIdRutaViaje()
+                        + " está deshabilitado."
+                );
+            }
 
-            // Actualizar la fecha visible en la tabla.
+            // Recuperar el asiento actual desde la base de datos.
+            if (pasaje.getAsiento() == null) {
+                throw new IllegalArgumentException(
+                        "Hay un pasaje sin asiento asociado."
+                );
+            }
+
+            modelo.Asiento asientoActualizado
+                    = asientoData.buscarAsiento(
+                            pasaje.getAsiento().getIdAsiento()
+                    );
+
+            if (asientoActualizado == null) {
+                throw new IllegalArgumentException(
+                        "No se pudo recuperar el asiento del pasaje. "
+                        + "Quitá y volvé a agregarlo."
+                );
+            }
+
+            // Comprobar que el asiento siga perteneciendo al colectivo.
+            if (asientoActualizado.getColectivo() == null
+                    || asientoActualizado.getColectivo().getIdColectivo()
+                    != rutaActualizada.getColectivo().getIdColectivo()) {
+                throw new IllegalArgumentException(
+                        "El asiento " + asientoActualizado.getNumeroAsiento()
+                        + " ya no pertenece al colectivo asignado a la ruta. "
+                        + "Quitá y volvé a agregar ese pasaje."
+                );
+            }
+
+            // Comprobar que el número de asiento no haya cambiado.
+            if (asientoActualizado.getNumeroAsiento()
+                    != pasaje.getAsiento().getNumeroAsiento()) {
+                throw new IllegalArgumentException(
+                        "El número del asiento fue modificado. "
+                        + "Quitá y volvé a agregar ese pasaje."
+                );
+            }
+
+            // Recuperar las paradas actuales.
+            if (pasaje.getParadaOrigen() == null
+                    || pasaje.getParadaDestino() == null) {
+                throw new IllegalArgumentException(
+                        "Hay un pasaje sin origen o destino."
+                );
+            }
+
+            modelo.ParadaRecorrido origenActualizado
+                    = paradaData.buscarParadaRecorrido(
+                            pasaje.getParadaOrigen().getIdParadaRecorrido()
+                    );
+
+            modelo.ParadaRecorrido destinoActualizado
+                    = paradaData.buscarParadaRecorrido(
+                            pasaje.getParadaDestino().getIdParadaRecorrido()
+                    );
+
+            if (origenActualizado == null || destinoActualizado == null) {
+                throw new IllegalArgumentException(
+                        "El origen o destino de un pasaje ya no existe. "
+                        + "Quitá y volvé a agregar ese pasaje."
+                );
+            }
+
+            // Comprobar que ambas paradas pertenezcan al recorrido actual.
+            if (origenActualizado.getRecorrido() == null
+                    || destinoActualizado.getRecorrido() == null
+                    || origenActualizado.getRecorrido().getIdRecorrido()
+                    != rutaActualizada.getRecorrido().getIdRecorrido()
+                    || destinoActualizado.getRecorrido().getIdRecorrido()
+                    != rutaActualizada.getRecorrido().getIdRecorrido()) {
+                throw new IllegalArgumentException(
+                        "El origen o destino ya no pertenece al recorrido "
+                        + "de la ruta. Quitá y volvé a agregar ese pasaje."
+                );
+            }
+
+            // Comprobar que el orden de las paradas no haya cambiado.
+            if (origenActualizado.getOrden()
+                    != pasaje.getParadaOrigen().getOrden()
+                    || destinoActualizado.getOrden()
+                    != pasaje.getParadaDestino().getOrden()) {
+                throw new IllegalArgumentException(
+                        "Cambió el orden de las paradas de un pasaje. "
+                        + "Quitá y volvé a agregarlo."
+                );
+            }
+
+            // Comprobar que las distancias de origen y destino no hayan cambiado.
+            if (Double.compare(
+                    origenActualizado.getDistanciaAcumuladaKm(),
+                    pasaje.getParadaOrigen().getDistanciaAcumuladaKm()) != 0
+                    || Double.compare(
+                            destinoActualizado.getDistanciaAcumuladaKm(),
+                            pasaje.getParadaDestino().getDistanciaAcumuladaKm()) != 0) {
+                throw new IllegalArgumentException(
+                        "Cambió la distancia acumulada de alguna parada. "
+                        + "Quitá y volvé a agregar ese pasaje."
+                );
+            }
+
+            // Comprobar que el origen siga siendo anterior al destino.
+            if (origenActualizado.getOrden()
+                    >= destinoActualizado.getOrden()) {
+                throw new IllegalArgumentException(
+                        "El tramo de un pasaje dejó de ser válido. "
+                        + "El origen debe ser anterior al destino."
+                );
+            }
+
+            // Consultar nuevamente la disponibilidad en la base de datos.
+            boolean disponible = pasajeData.consultarDisponibilidad(
+                    rutaActualizada.getIdRutaViaje(),
+                    asientoActualizado.getIdAsiento(),
+                    origenActualizado.getOrden(),
+                    destinoActualizado.getOrden()
+            );
+
+            if (!disponible) {
+                throw new IllegalArgumentException(
+                        "El asiento " + asientoActualizado.getNumeroAsiento()
+                        + " ya no está disponible para el tramo "
+                        + origenActualizado.getNombreLugar()
+                        + " - " + destinoActualizado.getNombreLugar() + "."
+                );
+            }
+
+            // Recalcular el precio con los datos actuales.
+            java.math.BigDecimal precioActualizado
+                    = pasajeData.calcularPrecioPasaje(
+                            rutaActualizada,
+                            origenActualizado,
+                            destinoActualizado
+                    );
+
+            if (pasaje.getPrecioFinal() == null
+                    || precioActualizado.compareTo(pasaje.getPrecioFinal()) != 0) {
+                throw new IllegalArgumentException(
+                        "Cambió el precio del pasaje de la ruta "
+                        + rutaActualizada.getIdRutaViaje()
+                        + ". Precio anterior: $"
+                        + pasaje.getPrecioFinal()
+                        + ". Precio actual: $"
+                        + precioActualizado
+                        + ". Quitá y volvé a agregar ese pasaje."
+                );
+            }
+
+            // Guardar las referencias actualizadas temporalmente.
+            rutasActualizadas.add(rutaActualizada);
+            asientosActualizados.add(asientoActualizado);
+            origenesActualizados.add(origenActualizado);
+            destinosActualizados.add(destinoActualizado);
+        }
+
+        // SEGUNDA ETAPA: COMPROBAR SUPERPOSICIONES ENTRE PASAJES PENDIENTES.
+        for (int i = 0; i < listaPasajes.size(); i++) {
+
+            modelo.Pasaje pasajeA = listaPasajes.get(i);
+
+            for (int j = i + 1; j < listaPasajes.size(); j++) {
+
+                modelo.Pasaje pasajeB = listaPasajes.get(j);
+
+                boolean mismaRuta
+                        = rutasActualizadas.get(i).getIdRutaViaje()
+                        == rutasActualizadas.get(j).getIdRutaViaje();
+
+                boolean mismoAsiento
+                        = asientosActualizados.get(i).getIdAsiento()
+                        == asientosActualizados.get(j).getIdAsiento();
+
+                if (mismaRuta && mismoAsiento) {
+
+                    boolean seSuperponen
+                            = origenesActualizados.get(i).getOrden()
+                            < destinosActualizados.get(j).getOrden()
+                            && destinosActualizados.get(i).getOrden()
+                            > origenesActualizados.get(j).getOrden();
+
+                    if (seSuperponen) {
+                        throw new IllegalArgumentException(
+                                "Hay dos pasajes pendientes con el mismo asiento "
+                                + "para tramos superpuestos."
+                        );
+                    }
+                }
+            }
+        }
+
+        // TERCERA ETAPA: ACTUALIZAR LOS OBJETOS Y LA TABLA.
+        java.time.format.DateTimeFormatter formato
+                = java.time.format.DateTimeFormatter.ofPattern(
+                        "dd/MM/yyyy HH:mm"
+                );
+
+        for (int i = 0; i < listaPasajes.size(); i++) {
+
+            modelo.Pasaje pasaje = listaPasajes.get(i);
+
+            pasaje.setRutaViaje(rutasActualizadas.get(i));
+            pasaje.setAsiento(asientosActualizados.get(i));
+            pasaje.setParadaOrigen(origenesActualizados.get(i));
+            pasaje.setParadaDestino(destinosActualizados.get(i));
+
             modeloTabla.setValueAt(
-                    rutaActualizada.getFechaHoraSalida().format(
-                            java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
-                    ),
-                    i,
-                    3
+                    rutasActualizadas.get(i).getFechaHoraSalida().format(formato),
+                    i, 3
+            );
+
+            modeloTabla.setValueAt(
+                    origenesActualizados.get(i).getNombreLugar(),
+                    i, 4
+            );
+
+            modeloTabla.setValueAt(
+                    destinosActualizados.get(i).getNombreLugar(),
+                    i, 5
+            );
+
+            modeloTabla.setValueAt(
+                    asientosActualizados.get(i).toString(),
+                    i, 6
+            );
+
+            modeloTabla.setValueAt(
+                    pasaje.getPrecioFinal(),
+                    i, 7
             );
         }
     }
