@@ -332,6 +332,8 @@ public class VistaColectivos extends javax.swing.JPanel {
         idLabelBusqueda.setForeground(new java.awt.Color(51, 51, 51));
         idLabelBusqueda.setText("ID");
 
+        txtIdBusqueda.addActionListener(this::txtIdBusquedaActionPerformed);
+
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnBuscar.setForeground(new java.awt.Color(0, 108, 158));
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
@@ -368,22 +370,19 @@ public class VistaColectivos extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(idLabelBusqueda)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtIdBusqueda)
-                                    .addGap(27, 27, 27)))
+                                .addComponent(idLabelBusqueda)
+                                .addComponent(txtIdBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(idLabelBusqueda1)
-                                .addComponent(txtBusquedaMatricula1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(37, 37, 37)
+                                .addComponent(txtBusquedaMatricula1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(56, 56, 56)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(idLabelBusqueda2)
                                     .addGap(173, 173, 173))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtBusquedaMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtBusquedaMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -703,6 +702,10 @@ public class VistaColectivos extends javax.swing.JPanel {
     private void txtBusquedaMatricula1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBusquedaMatricula1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBusquedaMatricula1ActionPerformed
+
+    private void txtIdBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdBusquedaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdBusquedaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
