@@ -82,13 +82,13 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="btnVentasPasajes" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnPasajeros" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnVentasRealizadas" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnVentasPasajes" alignment="0" pref="173" max="32767" attributes="0"/>
+                                  <Component id="btnPasajeros" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="btnVentasRealizadas" alignment="0" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="66" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="jSeparator2" max="32767" attributes="0"/>
@@ -105,21 +105,28 @@
                           <Group type="102" attributes="0">
                               <EmptySpace min="25" pref="25" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnRecorridos" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
-                                  <Component id="btnColectivos" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnAsientos" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
-                                  <Component id="btnSalidasHorarios" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnInicio" min="-2" pref="90" max="-2" attributes="0"/>
-                                  <Component id="jLabel1" min="-2" pref="69" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jLabel3" min="-2" pref="37" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="lblNombreSistema" pref="196" max="32767" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                      <Component id="lblSubtitulo" min="-2" pref="145" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel1" min="-2" pref="69" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                                              <Component id="lblSubtitulo" min="-2" pref="145" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="btnInicio" alignment="0" min="-2" pref="173" max="-2" attributes="0"/>
+                                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="btnRecorridos" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="btnColectivos" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="btnAsientos" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="btnSalidasHorarios" alignment="0" pref="173" max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
