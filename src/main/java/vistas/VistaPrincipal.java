@@ -36,6 +36,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
         // Registrar paneles agregando las instancias y asignar identificadores.   
         inicio = new VistaInicio();
+        inicio.addPropertyChangeListener("navegar", e -> mostrarPantalla((String) e.getNewValue()));
         agregarVistaConScroll(inicio, "INICIO");
 
         recorridos = new VistaRecorridos();

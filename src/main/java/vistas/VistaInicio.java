@@ -717,19 +717,23 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblProximasSalidas)
-                            .addComponent(lblAccesosRapidos1))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(lblAccesosRapidos1)
+                        .addGap(0, 471, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pnlListadoSalidas, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(pnlEstadisticas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(pnlAccesosRapidos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addContainerGap(50, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnlEstadisticas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pnlAccesosRapidos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(51, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblProximasSalidas)
+                        .addGap(416, 416, 416))
+                    .addComponent(pnlListadoSalidas, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -746,28 +750,24 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
                 .addComponent(lblAccesosRapidos1)
                 .addGap(18, 18, 18)
                 .addComponent(pnlAccesosRapidos, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(45, 45, 45)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(30, 30, 30)
                 .addComponent(lblProximasSalidas)
                 .addGap(18, 18, 18)
                 .addComponent(pnlListadoSalidas, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void pnlNuevaVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlNuevaVentaMouseClicked
-        
-        
-        
-        
+       
+         firePropertyChange("navegar", null, "VENTAPASAJES");        
     }//GEN-LAST:event_pnlNuevaVentaMouseClicked
 
     private void pnlNuevaSalidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlNuevaSalidaMouseClicked
-        
-        
-        
-        
+
+        firePropertyChange("navegar", null, "SALIDASHORARIOS");
     }//GEN-LAST:event_pnlNuevaSalidaMouseClicked
 
     private void pnlSalida1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlSalida1MouseClicked
