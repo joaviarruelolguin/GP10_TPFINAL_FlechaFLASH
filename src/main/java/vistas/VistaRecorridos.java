@@ -20,7 +20,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
     public VistaRecorridos() {
         initComponents();
 
-        pnlParadas.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 8, 8));
+        pnlParadas.setLayout(new javax.swing.BoxLayout(pnlParadas, javax.swing.BoxLayout.Y_AXIS));
         pnlParadas.setBackground(java.awt.Color.WHITE);
 
         configurarTablaRecorridos();
@@ -222,16 +222,27 @@ public class VistaRecorridos extends javax.swing.JPanel {
     private void agregarFilaParada() {
         int orden = camposNombreParada.size() + 1;
 
-        javax.swing.JPanel fila = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 8, 5));
+        javax.swing.JPanel fila = new javax.swing.JPanel();
+        fila.setLayout(new javax.swing.BoxLayout(fila, javax.swing.BoxLayout.X_AXIS));
+        fila.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+        fila.setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, 40));
         fila.setBackground(java.awt.Color.WHITE);
 
         javax.swing.JLabel lblOrden = new javax.swing.JLabel(String.valueOf(orden));
-        lblOrden.setPreferredSize(new java.awt.Dimension(20, 25));
+        lblOrden.setPreferredSize(new java.awt.Dimension(25, 28));
+        lblOrden.setMinimumSize(new java.awt.Dimension(25, 28));
+        lblOrden.setMaximumSize(new java.awt.Dimension(25, 28));
 
         javax.swing.JTextField txtNombre = new javax.swing.JTextField(14);
+        txtNombre.setPreferredSize(new java.awt.Dimension(320, 28));
+        txtNombre.setMinimumSize(new java.awt.Dimension(320, 28));
+        txtNombre.setMaximumSize(new java.awt.Dimension(320, 28));
         txtNombre.setToolTipText("Nombre de la parada");
 
         javax.swing.JTextField txtDistancia = new javax.swing.JTextField(6);
+        txtDistancia.setPreferredSize(new java.awt.Dimension(90, 28));
+        txtDistancia.setMinimumSize(new java.awt.Dimension(90, 28));
+        txtDistancia.setMaximumSize(new java.awt.Dimension(90, 28));
         txtDistancia.setToolTipText("Distancia acumulada en km");
 
         if (orden == 1) {
@@ -240,6 +251,9 @@ public class VistaRecorridos extends javax.swing.JPanel {
         }
 
         javax.swing.JButton btnEliminarFila = new javax.swing.JButton("X");
+        btnEliminarFila.setPreferredSize(new java.awt.Dimension(50, 28));
+        btnEliminarFila.setMinimumSize(new java.awt.Dimension(50, 28));
+        btnEliminarFila.setMaximumSize(new java.awt.Dimension(50, 28));
 
         btnEliminarFila.addActionListener(e -> {
             int indice = camposNombreParada.indexOf(txtNombre);
