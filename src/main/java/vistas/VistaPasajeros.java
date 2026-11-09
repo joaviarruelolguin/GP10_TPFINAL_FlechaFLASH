@@ -358,9 +358,11 @@ public class VistaPasajeros extends javax.swing.JPanel {
         pasajerosTablaScroll.setViewportView(pasajerosTabla);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(50, 50, 50));
         jLabel1.setText("DNI");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(50, 50, 50));
         jLabel2.setText("APELLIDO");
 
         txtBusquedaID.addActionListener(this::txtBusquedaIDActionPerformed);
