@@ -25,7 +25,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
         javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(vista);
         scroll.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scroll.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setHorizontalScrollBarPolicy(
+                javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         pnlContenido.add(scroll, nombre);
 
     }

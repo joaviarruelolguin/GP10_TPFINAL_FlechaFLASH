@@ -23,9 +23,122 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
 
     public VistaInicio() {
         initComponents();
+        configurarAccesosRapidos();
+        configurarDisenoAdaptable();
+        configurarTarjetasSalidas();
         NotificadorCambios.agregarListener(this);
         sincronizarDatos();
     }
+
+    private void configurarAccesosRapidos() {
+        configurarTarjeta(pnlNuevaVenta, icono1, lblVenta, jLabel2, jLabel4);
+        configurarTarjeta(pnlNuevaSalida, icono2, jLabel1, jLabel3, jLabel5);
+    }
+
+    private void configurarTarjeta(javax.swing.JPanel tarjeta, javax.swing.JLabel icono, javax.swing.JLabel titulo, javax.swing.JLabel descripcion, javax.swing.JLabel flecha) {
+        tarjeta.removeAll();
+        tarjeta.setLayout(new java.awt.GridBagLayout());
+
+        javax.swing.JPanel textos = new javax.swing.JPanel();
+        textos.setOpaque(false);
+        textos.setLayout(new javax.swing.BoxLayout(textos, javax.swing.BoxLayout.Y_AXIS));
+        textos.add(titulo);
+        textos.add(descripcion);
+
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.gridy = 0;
+        gbc.insets = new java.awt.Insets(10, 12, 10, 12);
+
+        gbc.gridx = 0;
+        gbc.weightx = 0;
+        gbc.fill = java.awt.GridBagConstraints.NONE;
+        tarjeta.add(icono, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 1;
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        tarjeta.add(textos, gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 0;
+        gbc.fill = java.awt.GridBagConstraints.NONE;
+        tarjeta.add(flecha, gbc);
+
+        tarjeta.revalidate();
+        tarjeta.repaint();
+    }
+
+    private void configurarTarjetasSalidas() {
+        configurarTarjetaSalida(pnlSalida1, lblHorario1, lblDestino1, lblColectivo1, lblTiempo1);
+        configurarTarjetaSalida(pnlSalida2, lblHorario2, lblDestino2, lblColectivo2, lblTiempo2);
+        configurarTarjetaSalida(pnlSalida3, lblHorario3, lblDestino3, lblColectivo3, lblTiempo3);
+    }
+
+    private void configurarTarjetaSalida(javax.swing.JPanel tarjeta, javax.swing.JLabel horario, javax.swing.JLabel destino, javax.swing.JLabel colectivo, javax.swing.JLabel estado) {
+        tarjeta.removeAll();
+        tarjeta.setLayout(new java.awt.GridBagLayout());
+
+        javax.swing.JPanel informacion = new javax.swing.JPanel();
+        informacion.setOpaque(false);
+        informacion.setLayout(new javax.swing.BoxLayout(informacion, javax.swing.BoxLayout.Y_AXIS));
+        informacion.add(destino);
+        informacion.add(colectivo);
+
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.gridy = 0;
+        gbc.insets = new java.awt.Insets(10, 12, 10, 12);
+
+        gbc.gridx = 0;
+        gbc.weightx = 0;
+        gbc.fill = java.awt.GridBagConstraints.NONE;
+        tarjeta.add(horario, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 1;
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        tarjeta.add(informacion, gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 0;
+        gbc.fill = java.awt.GridBagConstraints.NONE;
+        tarjeta.add(estado, gbc);
+    }
+
+
+    
+    private void configurarDisenoAdaptable() {
+        removeAll();
+        setLayout(new java.awt.GridBagLayout());
+
+        agregarFila(lblTituloPrincipal, 0, 22);
+        agregarFila(lblSubtitulo, 1, 5);
+        agregarFila(pnlEstadisticas, 2, 55);
+        agregarFila(jSeparator1, 3, 10);
+        agregarFila(lblAccesosRapidos1, 4, 5);
+        agregarFila(pnlAccesosRapidos, 5, 12);
+        agregarFila(jSeparator2, 6, 18);
+        agregarFila(lblProximasSalidas, 7, 5);
+        agregarFila(pnlListadoSalidas, 8, 12);
+
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        gbc.weighty = 1;
+        gbc.fill = java.awt.GridBagConstraints.VERTICAL;
+        add(javax.swing.Box.createVerticalGlue(), gbc);
+    }
+
+    private void agregarFila(java.awt.Component componente, int fila, int espacioSuperior) {
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = fila;
+        gbc.weightx = 1;
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gbc.anchor = java.awt.GridBagConstraints.WEST;
+        gbc.insets = new java.awt.Insets(espacioSuperior, 50, 0, 50);
+        add(componente, gbc);
+    }
+
 
     private void sincronizarDatos() {
         cargarEstadisticas();
