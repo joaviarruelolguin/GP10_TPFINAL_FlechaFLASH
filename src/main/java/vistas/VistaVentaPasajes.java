@@ -55,6 +55,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         txtFechaVenta.setEditable(false);
         txtEstadoVenta.setEditable(false);
         txtPrecioPasaje.setEditable(false);
+        txtNumeroComprobante.setEditable(false);
         txtImporteTotal.setEditable(false);
 
         // Botones
@@ -674,6 +675,10 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
             if (registrada) {
 
+                // Agrego esta línea para que cuando VentaData termine de registrar la venta correctamente, 
+                // el número generado se coloque automáticamente en el campo en vez de forma manual.
+                txtNumeroComprobante.setText(venta.getNumeroComprobante());
+                
                 javax.swing.JOptionPane.showMessageDialog(
                         this,
                         "Venta registrada correctamente.\n"
@@ -731,6 +736,8 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
         // Restablecer el importe total
         actualizarImporteTotal();
+        
+        actualizarDatosVenta();
     }
 
     @SuppressWarnings("unchecked")

@@ -922,7 +922,6 @@
                       <Image iconType="3" name="/iconos/Desactivar.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="CANCELAR "/>
-                    <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarVentaActionPerformed"/>
