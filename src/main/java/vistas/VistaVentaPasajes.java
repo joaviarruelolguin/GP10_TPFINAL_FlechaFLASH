@@ -888,6 +888,8 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
         jPanel2.setBackground(new java.awt.Color(20, 43, 73));
+        jPanel2.setMaximumSize(new java.awt.Dimension(0, 0));
+        jPanel2.setMinimumSize(new java.awt.Dimension(0, 0));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setBackground(new java.awt.Color(20, 43, 73));
