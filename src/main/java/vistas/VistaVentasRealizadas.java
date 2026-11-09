@@ -1,5 +1,6 @@
 package vistas;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
     private VentaData ventaData = new VentaData();
     private List<Venta> listaVentas = new ArrayList<>();
 
-    // Formato argentino: $2.625,00
+    // Formato argentino
     private final DecimalFormat formatoImporte = new DecimalFormat("$#,##0.00",
             DecimalFormatSymbols.getInstance(Locale.forLanguageTag("es-AR")));
 
@@ -48,13 +49,20 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
     private void llenarTabla(List<Venta> ventas) {
         modelo.setRowCount(0);
 
+        BigDecimal total = BigDecimal.ZERO;
+
         for (Venta v : ventas) {
             modelo.addRow(new Object[]{
                 v.getNumeroComprobante() == null ? "-" : v.getNumeroComprobante(),
                 textoComprador(v.getPasajeroComprador()),
                 formatoImporte.format(v.getImporteTotal())
             });
+
+            total = total.add(v.getImporteTotal());
         }
+
+        lblCantidadVentas.setText(String.valueOf(ventas.size()));
+        lblImporteAcumulado.setText(formatoImporte.format(total));
     }
 
     private String textoComprador(Pasajero p) {
