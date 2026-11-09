@@ -734,10 +734,17 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
         // Limpiar los campos de texto
         txtPrecioPasaje.setText("");
-        // txtNumeroComprobante.setText("");
+        txtNumeroComprobante.setText("");
+        
+        // Restablecer el medio de pago y las cuotas
+        cbMedioPago.setSelectedIndex(0);
+        actualizarCuotas();
+        
+        // Mantener el tipo de comprobante predeterminado
+        cbTipoComprobante.setSelectedIndex(0);
 
         // Limpiar el tipo de comprobante
-        cbTipoComprobante.setSelectedIndex(0);
+        // cbTipoComprobante.setSelectedIndex(0);
 
         // Restablecer el importe total
         actualizarImporteTotal();
