@@ -13,8 +13,12 @@ import modelo.Colectivo;
 import persistencia.AsientoData;
 import persistencia.ColectivoData;
 
+import controlador.NotificadorCambios;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class VistaAsientos extends javax.swing.JPanel {
+
+public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeListener {
 
     
     private AsientoData asientoData = new AsientoData();
@@ -28,8 +32,60 @@ public class VistaAsientos extends javax.swing.JPanel {
 
     public VistaAsientos() {
         initComponents();
+        NotificadorCambios.agregarListener(this);
         armarTabla();
         cargarColectivos();
+    }
+    
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (NotificadorCambios.COLECTIVOS.equals(evt.getNewValue())
+                || NotificadorCambios.ASIENTOS.equals(evt.getNewValue())) {
+            sincronizarColectivos();
+        }
+    }
+
+    private void sincronizarColectivos() {
+        Colectivo seleccionado = (Colectivo) cbColectivo.getSelectedItem();
+        Integer idSeleccionado = seleccionado != null ? seleccionado.getIdColectivo() : null;
+
+        cargarColectivos();
+
+        if (idSeleccionado != null) {
+            for (int i = 0; i < cbColectivo.getItemCount(); i++) {
+                Colectivo colectivo = cbColectivo.getItemAt(i);
+
+                if (colectivo.getIdColectivo() == idSeleccionado) {
+                    cbColectivo.setSelectedIndex(i);
+                    cargarAsientos(colectivo);
+                    return;
+                }
+            }
+        }
+
+        limpiarConsulta();
+    }
+
+    private ArrayList<Asiento> cargarAsientos(Colectivo colectivo) {
+        ArrayList<Asiento> asientos = asientoData.listarAsientosPorColectivo(colectivo);
+
+        modelo.setRowCount(0);
+
+        for (Asiento asiento : asientos) {
+            String estado = colectivo.isEstado() ? "Activo" : "Inactivo";
+            modelo.addRow(new Object[]{asiento.getNumeroAsiento(), asiento.getIdAsiento(), estado});
+        }
+
+        lblCantidadAsientos.setText(String.valueOf(colectivo.getCapacidad()));
+        lblMatricula.setText(colectivo.getMatricula());
+
+        return asientos;
+    }
+
+    private void limpiarConsulta() {
+        modelo.setRowCount(0);
+        lblCantidadAsientos.setText("—");
+        lblMatricula.setText("—");
     }
 
     private void armarTabla() {
@@ -254,6 +310,8 @@ public class VistaAsientos extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void btConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConsultarActionPerformed
         Colectivo colectivo = (Colectivo) cbColectivo.getSelectedItem();
 
@@ -262,22 +320,7 @@ public class VistaAsientos extends javax.swing.JPanel {
             return;
         }
 
-        ArrayList<Asiento> asientos = asientoData.listarAsientosPorColectivo(colectivo);
-
-        modelo.setRowCount(0);
-
-        for (Asiento asiento : asientos) {
-            String estado = colectivo.isEstado() ? "Activo" : "Inactivo";
-
-            modelo.addRow(new Object[]{
-                asiento.getNumeroAsiento(),
-                asiento.getIdAsiento(),
-                estado
-            });
-        }
-
-        lblCantidadAsientos.setText(String.valueOf(colectivo.getCapacidad()));
-        lblMatricula.setText(colectivo.getMatricula());
+        ArrayList<Asiento> asientos = cargarAsientos(colectivo);
 
         if (asientos.isEmpty()) {
             JOptionPane.showMessageDialog(this, "El colectivo no tiene asientos registrados.");

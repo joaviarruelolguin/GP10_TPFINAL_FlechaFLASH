@@ -41,14 +41,16 @@
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="pnlEstadisticas" alignment="1" min="-2" pref="413" max="-2" attributes="0"/>
-                          <Component id="pnlListadoSalidas" alignment="1" min="-2" pref="437" max="-2" attributes="0"/>
-                      </Group>
+                      <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                      <Component id="pnlEstadisticas" min="-2" pref="413" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="30" max="32767" attributes="0"/>
+              <EmptySpace pref="121" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="pnlListadoSalidas" min="-2" pref="466" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -573,8 +575,8 @@
                           <Component id="lblDestino1" min="-2" max="-2" attributes="0"/>
                           <Component id="lblColectivo1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="84" max="32767" attributes="0"/>
-                      <Component id="lblTiempo1" min="-2" pref="74" max="-2" attributes="0"/>
+                      <EmptySpace pref="78" max="32767" attributes="0"/>
+                      <Component id="lblTiempo1" min="-2" pref="109" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -672,8 +674,8 @@
                           <Component id="lblDestino2" min="-2" max="-2" attributes="0"/>
                           <Component id="lblColectivo2" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="88" max="32767" attributes="0"/>
-                      <Component id="lblTiempo2" min="-2" pref="74" max="-2" attributes="0"/>
+                      <EmptySpace pref="81" max="32767" attributes="0"/>
+                      <Component id="lblTiempo2" min="-2" pref="110" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -767,8 +769,8 @@
                           <Component id="lblDestino3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblColectivo3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="91" max="32767" attributes="0"/>
-                      <Component id="lblTiempo3" min="-2" pref="74" max="-2" attributes="0"/>
+                      <EmptySpace pref="86" max="32767" attributes="0"/>
+                      <Component id="lblTiempo3" min="-2" pref="108" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   </Group>
               </Group>

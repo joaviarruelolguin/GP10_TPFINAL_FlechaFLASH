@@ -15,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Colectivo;
 import persistencia.ColectivoData;
 
+import controlador.NotificadorCambios;
+
 public class VistaColectivos extends javax.swing.JPanel {
 
     private static final int CAPACIDAD_MAXIMA = 60;
@@ -438,6 +440,7 @@ public class VistaColectivos extends javax.swing.JPanel {
 
                 cargarColectivos();
                 modoNuevo();
+                NotificadorCambios.notificarCambio(NotificadorCambios.COLECTIVOS);
             } else {
                 JOptionPane.showMessageDialog(this, "No se pudo desactivar el colectivo.",
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -487,6 +490,8 @@ public class VistaColectivos extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Se ha guardado el colectivo con sus " + capacidad + " asientos.");
             cargarColectivos();
             modoNuevo();
+            NotificadorCambios.notificarCambio(NotificadorCambios.COLECTIVOS);
+            NotificadorCambios.notificarCambio(NotificadorCambios.ASIENTOS);
         } else {
             JOptionPane.showMessageDialog(this, "No se pudo guardar el colectivo. Verifique que la matrícula no esté repetida.",
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -533,6 +538,7 @@ public class VistaColectivos extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Se ha actualizado el colectivo.");
             cargarColectivos();
             modoNuevo();
+            NotificadorCambios.notificarCambio(NotificadorCambios.COLECTIVOS);
         } else {
             JOptionPane.showMessageDialog(this, "No se pudo actualizar el colectivo. Verifique que la matrícula no esté repetida.",
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -558,6 +564,8 @@ public class VistaColectivos extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Se ha eliminado el colectivo.");
                 cargarColectivos();
                 modoNuevo();
+                NotificadorCambios.notificarCambio(NotificadorCambios.COLECTIVOS);
+                NotificadorCambios.notificarCambio(NotificadorCambios.ASIENTOS);
             } else {
                 JOptionPane.showMessageDialog(this,
                         "No se pudo eliminar el colectivo. Puede tener salidas o pasajes asociados.\n"
@@ -594,6 +602,7 @@ public class VistaColectivos extends javax.swing.JPanel {
 
                 cargarColectivos();
                 modoNuevo();
+                NotificadorCambios.notificarCambio(NotificadorCambios.COLECTIVOS);
             } else {
                 JOptionPane.showMessageDialog(this, "No se pudo activar el colectivo",
                         "Error", JOptionPane.ERROR_MESSAGE);

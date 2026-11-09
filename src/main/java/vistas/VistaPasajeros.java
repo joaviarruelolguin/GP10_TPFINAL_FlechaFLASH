@@ -1,5 +1,7 @@
 package vistas;
 
+import controlador.NotificadorCambios;
+
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -64,6 +66,29 @@ public class VistaPasajeros extends javax.swing.JPanel {
         }
     }
 
+    public void sincronizarPasajeros() {
+
+        // Evitar actualizar si el formulario contiene datos.
+        if (!nombreTextField.getText().trim().isEmpty()
+                || !apellidoTextField.getText().trim().isEmpty()
+                || !dniTextField.getText().trim().isEmpty()
+                || !correoTextField.getText().trim().isEmpty()
+                || !telefonoTextField.getText().trim().isEmpty()
+                || !txtIdOR.getText().trim().isEmpty()) {
+            return;
+        }
+
+        // Conservar el texto de búsqueda.
+        String idBuscado = idTextField.getText().trim();
+
+        // Actualizar la tabla.
+        cargarPasajeros();
+
+        // Restaurar el texto de búsqueda.
+        idTextField.setText(idBuscado);
+    }
+
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -454,6 +479,8 @@ public class VistaPasajeros extends javax.swing.JPanel {
 
                 cargarPasajeros();
                 modoNuevo();
+                
+                NotificadorCambios.notificarCambio(NotificadorCambios.PASAJEROS);
             } else {
                 JOptionPane.showMessageDialog(this, "No se pudo borrar el pasajero. Puede tener ventas o pasajes asociados.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -503,6 +530,9 @@ public class VistaPasajeros extends javax.swing.JPanel {
 
             cargarPasajeros();
             modoNuevo();
+            
+            NotificadorCambios.notificarCambio(NotificadorCambios.PASAJEROS);
+
         } else {
             JOptionPane.showMessageDialog(this, "No se pudo actualizar el pasajero. Verifique que el DNI no esté repetido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -544,6 +574,8 @@ public class VistaPasajeros extends javax.swing.JPanel {
             cargarPasajeros();
 
             modoNuevo();
+            
+            NotificadorCambios.notificarCambio(NotificadorCambios.PASAJEROS);
         } else {
             JOptionPane.showMessageDialog(this, "No se pudo guardar el pasajero. Verifique que el DNI no esté repetido.", "Error", JOptionPane.ERROR_MESSAGE);
         }

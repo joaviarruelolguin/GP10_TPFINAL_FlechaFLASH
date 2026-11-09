@@ -1,15 +1,107 @@
 
 package vistas;
 
+import controlador.NotificadorCambios;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import modelo.RutaViaje;
+import persistencia.RutaViajeData;
+import persistencia.PasajeData;
+import persistencia.ColectivoData;
+import persistencia.PasajeroData;
 
-public class VistaInicio extends javax.swing.JPanel {
+public class VistaInicio extends javax.swing.JPanel implements PropertyChangeListener {
 
-    
+    private RutaViajeData rutaData = new RutaViajeData();
+    private PasajeData pasajeData = new PasajeData();
+    private ColectivoData colectivoData = new ColectivoData();
+    private PasajeroData pasajeroData = new PasajeroData();
+
     public VistaInicio() {
         initComponents();
+        NotificadorCambios.agregarListener(this);
+        sincronizarDatos();
     }
 
-   
+    private void sincronizarDatos() {
+        cargarEstadisticas();
+        cargarProximasSalidas();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (NotificadorCambios.PASAJEROS.equals(evt.getNewValue())
+                || NotificadorCambios.VENTAS.equals(evt.getNewValue())
+                || NotificadorCambios.SALIDAS.equals(evt.getNewValue())
+                || NotificadorCambios.RECORRIDOS.equals(evt.getNewValue())
+                || NotificadorCambios.COLECTIVOS.equals(evt.getNewValue())) {
+            sincronizarDatos();
+        }
+    }
+
+    private void cargarEstadisticas() {
+        List<RutaViaje> rutas = rutaData.listarRutasViaje();
+        LocalDate hoy = LocalDate.now();
+
+        long salidasHoy = rutas.stream()
+                .filter(r -> r.isEstado())
+                .filter(r -> r.getFechaHoraSalida().toLocalDate().equals(hoy))
+                .count();
+
+        lblCantidadSalidas.setText(String.valueOf(salidasHoy));
+        lblCantidadPasajesV.setText(String.valueOf(pasajeData.contarPasajesEmitidos()));
+        lblCantidadColectivosA.setText(String.valueOf(colectivoData.listarColectivosActivos().size()));
+        lblCantidadPasajerosA.setText(String.valueOf(pasajeroData.listarPasajeros().size()));
+    }
+
+    
+    private void cargarProximasSalidas() {
+        List<RutaViaje> rutas = rutaData.listarRutasViaje();
+
+        List<RutaViaje> proximas = rutas.stream()
+                .filter(r -> r.isEstado())
+                .filter(r -> r.getFechaHoraSalida().isAfter(LocalDateTime.now()))
+                .filter(r -> r.getColectivo().isEstado())
+                .filter(r -> r.getRecorrido().isEstado())
+                .limit(3)
+                .toList();
+
+        javax.swing.JLabel[] horarios = {lblHorario1, lblHorario2, lblHorario3};
+        javax.swing.JLabel[] destinos = {lblDestino1, lblDestino2, lblDestino3};
+        javax.swing.JLabel[] colectivos = {lblColectivo1, lblColectivo2, lblColectivo3};
+        javax.swing.JLabel[] tiempos = {lblTiempo1, lblTiempo2, lblTiempo3};
+        javax.swing.JPanel[] paneles = {pnlSalida1, pnlSalida2, pnlSalida3};
+
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+
+        for (int i = 0; i < 3; i++) {
+            if (i < proximas.size()) {
+                RutaViaje ruta = proximas.get(i);
+
+                horarios[i].setText(ruta.getFechaHoraSalida().format(formatoHora));
+                destinos[i].setText(ruta.getRecorrido().getDescripcion());
+
+                colectivos[i].setText(
+                        ruta.getColectivo().getMarca() + " — "
+                        + ruta.getColectivo().getModelo() + " — "
+                        + ruta.getColectivo().getMatricula()
+                );
+
+                tiempos[i].setText("Programada");
+                paneles[i].setVisible(true);
+            } else {
+                paneles[i].setVisible(false);
+            }
+        }
+
+        pnlListadoSalidas.revalidate();
+        pnlListadoSalidas.repaint();
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -361,8 +453,8 @@ public class VistaInicio extends javax.swing.JPanel {
                 .addGroup(pnlSalida1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDestino1)
                     .addComponent(lblColectivo1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
-                .addComponent(lblTiempo1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addComponent(lblTiempo1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
         pnlSalida1Layout.setVerticalGroup(
@@ -420,8 +512,8 @@ public class VistaInicio extends javax.swing.JPanel {
                 .addGroup(pnlSalida2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDestino2)
                     .addComponent(lblColectivo2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
-                .addComponent(lblTiempo2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                .addComponent(lblTiempo2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
         );
         pnlSalida2Layout.setVerticalGroup(
@@ -477,8 +569,8 @@ public class VistaInicio extends javax.swing.JPanel {
                 .addGroup(pnlSalida3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDestino3)
                     .addComponent(lblColectivo3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
-                .addComponent(lblTiempo3, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addComponent(lblTiempo3, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
         pnlSalida3Layout.setVerticalGroup(
@@ -522,11 +614,13 @@ public class VistaInicio extends javax.swing.JPanel {
                                 .addGap(6, 6, 6)
                                 .addComponent(lblAccesosRapidos1))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pnlEstadisticas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pnlListadoSalidas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(30, Short.MAX_VALUE))
+                        .addGap(54, 54, 54)
+                        .addComponent(pnlEstadisticas, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(121, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(pnlListadoSalidas, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

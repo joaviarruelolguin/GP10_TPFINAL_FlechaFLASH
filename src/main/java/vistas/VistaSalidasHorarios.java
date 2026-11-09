@@ -26,28 +26,33 @@ import persistencia.RutaViajeData;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-public class VistaSalidasHorarios extends javax.swing.JPanel {
+import controlador.NotificadorCambios;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class VistaSalidasHorarios extends javax.swing.JPanel implements PropertyChangeListener {
 
     private RecorridoData recorridoData = new RecorridoData();
     private ColectivoData colectivoData = new ColectivoData();
     private RutaViajeData rutaViajeData = new RutaViajeData();
-    
+
     private CalculadorTiempos calculadorTiempos = new CalculadorTiempos();
-    
+
     private List<RutaViaje> listaRutas;
-    
+
     private RutaViaje rutaEnEdicion = null;
-    
+
     public VistaSalidasHorarios() {
         initComponents();
+        NotificadorCambios.agregarListener(this);
         tblSalidasRegistradas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        
+
         tblSalidasRegistradas.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 actualizarBotonEstado();
             }
         });
-     
+
         tblSalidasRegistradas.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && !btnGuardar.isEnabled()) {
                 mostrarHorariosSalidaSeleccionada();
@@ -55,21 +60,58 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
         });
 
         configurarHoraSalida();
-  
+
         spnHoraSalida.addChangeListener(e -> {
             Recorrido recorrido = (Recorrido) cmbRecorrido.getSelectedItem();
             if (recorrido != null) {
                 cargarParadas(recorrido);
             }
         });
-        
+
         configurarTablaHorarios();
         cargarComboBox();
         cargarTablaSalidas();
         habilitarFormulario(false);
     }
 
-      private void actualizarBotonEstado() {
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        String entidad = (String) evt.getNewValue();
+
+        if (NotificadorCambios.RECORRIDOS.equals(entidad)
+                || NotificadorCambios.COLECTIVOS.equals(entidad)) {
+            sincronizarCombos();
+        }
+    }
+
+    private void sincronizarCombos() {
+        Recorrido recorridoSeleccionado = (Recorrido) cmbRecorrido.getSelectedItem();
+        Colectivo colectivoSeleccionado = (Colectivo) cmbColectivo.getSelectedItem();
+
+        Integer idRecorrido = recorridoSeleccionado == null ? null : recorridoSeleccionado.getIdRecorrido();
+        Integer idColectivo = colectivoSeleccionado == null ? null : colectivoSeleccionado.getIdColectivo();
+
+        cargarComboBox();
+
+        cmbRecorrido.setSelectedIndex(-1);
+        cmbColectivo.setSelectedIndex(-1);
+
+        for (int i = 0; i < cmbRecorrido.getItemCount(); i++) {
+            if (idRecorrido != null && cmbRecorrido.getItemAt(i).getIdRecorrido() == idRecorrido) {
+                cmbRecorrido.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        for (int i = 0; i < cmbColectivo.getItemCount(); i++) {
+            if (idColectivo != null && cmbColectivo.getItemAt(i).getIdColectivo() == idColectivo) {
+                cmbColectivo.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
+
+    private void actualizarBotonEstado() {
         int fila = tblSalidasRegistradas.getSelectedRow();
 
         if (fila == -1) {
@@ -82,8 +124,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
 
         btnDesactivar.setText(estado.equalsIgnoreCase("Activa") ? "Desactivar" : "Activar");
     }
-    
-   
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -462,7 +503,6 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
         }
     }
 
-    
     private void habilitarFormulario(boolean habilitar) {
         cmbRecorrido.setEnabled(habilitar);
         cmbColectivo.setEnabled(habilitar);
@@ -478,9 +518,9 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
         btnDesactivar.setEnabled(!habilitar);
         btnEliminar.setEnabled(!habilitar);
     }
-    
-        private void cargarTablaSalidas() {
-            
+
+    private void cargarTablaSalidas() {
+
         DefaultTableModel modelo = (DefaultTableModel) tblSalidasRegistradas.getModel();
         modelo.setRowCount(0);
 
@@ -498,11 +538,10 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
             });
         }
     }
-    
-    
+
 
     private void cmbRecorridoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRecorridoActionPerformed
-       
+
     }//GEN-LAST:event_cmbRecorridoActionPerformed
 
     private void limpiarFormulario() {
@@ -519,8 +558,8 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
 
         modelo.setRowCount(0);
     }
-    
-    
+
+
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
 
         rutaEnEdicion = null;
@@ -529,10 +568,8 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnNuevoActionPerformed
 
-    
-    
     private void cargarParadas(Recorrido recorrido) {
-        
+
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tblHorariosEstimados.getModel();
         modelo.setRowCount(0);
         java.util.List<ParadaRecorrido> paradas = recorrido.getParadas();
@@ -561,7 +598,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
         }
     }
 
-    
+
     private void cmbRecorridoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbRecorridoItemStateChanged
 
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
@@ -708,6 +745,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
 
             rutaEnEdicion = null;
             cargarTablaSalidas();
+            NotificadorCambios.notificarCambio(NotificadorCambios.SALIDAS);
             limpiarFormulario();
             habilitarFormulario(false);
         } else {
@@ -716,7 +754,6 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    
     private RutaViaje obtenerRutaSeleccionada() {
         int fila = tblSalidasRegistradas.getSelectedRow();
 
@@ -731,7 +768,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
         return rutaViajeData.buscarRutaViaje(idRuta);
     }
 
-       private void cargarRutaEnFormulario(RutaViaje ruta) {
+    private void cargarRutaEnFormulario(RutaViaje ruta) {
         habilitarFormulario(true);
 
         // Seleccionar el recorrido correspondiente.
@@ -789,8 +826,8 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
             });
         }
     }
-    
-    
+
+
     private void txtPrecioBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioBaseActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrecioBaseActionPerformed
@@ -808,7 +845,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnEditarActionPerformed
 
-    
+
     private void btnDesactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivarActionPerformed
 
         RutaViaje ruta = obtenerRutaSeleccionada();
@@ -840,6 +877,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
                 limpiarFormulario();
                 habilitarFormulario(false);
                 cargarTablaSalidas();
+                NotificadorCambios.notificarCambio(NotificadorCambios.SALIDAS);
             } else {
                 JOptionPane.showMessageDialog(this,
                         activar ? "No se pudo activar la salida." : "No se pudo desactivar la salida.");
@@ -870,6 +908,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
                 limpiarFormulario();
                 habilitarFormulario(false);
                 cargarTablaSalidas();
+                NotificadorCambios.notificarCambio(NotificadorCambios.SALIDAS);
             } else {
                 JOptionPane.showMessageDialog(this, "No se pudo eliminar la salida.");
             }
@@ -877,7 +916,6 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    
     private void mostrarHorariosSalidaSeleccionada() {
         int fila = tblSalidasRegistradas.getSelectedRow();
         DefaultTableModel modelo = (DefaultTableModel) tblHorariosEstimados.getModel();
@@ -905,8 +943,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel {
             modelo.addRow(new Object[]{parada.getOrden(), parada.getNombreLugar(), parada.getDistanciaAcumuladaKm(), llegada, salida});
         }
     }
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

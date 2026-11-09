@@ -4,6 +4,7 @@ import modelo.Recorrido;
 import java.util.List;
 import java.util.ArrayList;
 import modelo.ParadaRecorrido;
+import controlador.NotificadorCambios;
 
 public class VistaRecorridos extends javax.swing.JPanel {
 
@@ -194,6 +195,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
                     nuevoEstado ? "Recorrido reactivado correctamente." : "Recorrido desactivado correctamente.");
 
             cargarRecorridos();
+            NotificadorCambios.notificarCambio(NotificadorCambios.RECORRIDOS);
             btnDesactivar.setText("Desactivar");
             idRecorridoSeleccionado = -1;
         } else {
@@ -407,6 +409,8 @@ public class VistaRecorridos extends javax.swing.JPanel {
         if (resultado) {
             javax.swing.JOptionPane.showMessageDialog(this, modoEdicion ? "Recorrido actualizado correctamente." : "Recorrido guardado correctamente.");
             cancelarFormulario();
+            NotificadorCambios.notificarCambio(NotificadorCambios.RECORRIDOS);
+            
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "No se pudo guardar el recorrido.");
         }
@@ -443,6 +447,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
         if (resultado) {
             javax.swing.JOptionPane.showMessageDialog(this, "Recorrido eliminado correctamente.");
             cargarRecorridos();
+            NotificadorCambios.notificarCambio(NotificadorCambios.RECORRIDOS);
             idRecorridoSeleccionado = -1;
             btnDesactivar.setText("Desactivar");
         } else {

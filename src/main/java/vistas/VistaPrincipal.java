@@ -6,49 +6,56 @@ public class VistaPrincipal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaPrincipal.class.getName());
 
-   
-    public VistaPrincipal() {
+    private VistaInicio inicio;
+    private VistaRecorridos recorridos;
+    private VistaColectivos colectivos;
+    private VistaAsientos asientos;
+    private VistaSalidasHorarios salidasHorarios;
+    private VistaVentaPasajes ventaPasajes;
+    private VistaPasajeros pasajeros;
+
+       public VistaPrincipal() {
         initComponents();
-        configurarNavegacion();
+        configurarNavegacion();   
         mostrarPantalla("INICIO");
     }
 
-      private void agregarVistaConScroll(javax.swing.JPanel vista, String nombre) {
-          
+   
+   
+    private void agregarVistaConScroll(javax.swing.JPanel vista, String nombre) {
+
         javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(vista);
         scroll.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scroll.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         pnlContenido.add(scroll, nombre);
-        
+
     }
 
     // Se crea un objeto de cada clase/vista y se los agrega como contenedor al pnlContenido para luego poder hacerlos visibles.
     private void configurarNavegacion() {
 
         // Registrar paneles agregando las instancias y asignar identificadores.   
-        VistaInicio inicio = new VistaInicio();
+        inicio = new VistaInicio();
         agregarVistaConScroll(inicio, "INICIO");
 
-        VistaRecorridos recorridos = new VistaRecorridos();
+        recorridos = new VistaRecorridos();
         agregarVistaConScroll(recorridos, "RECORRIDOS");
 
-        VistaColectivos colectivos = new VistaColectivos();
+        colectivos = new VistaColectivos();
         agregarVistaConScroll(colectivos, "COLECTIVOS");
 
-        VistaAsientos asientos = new VistaAsientos();
+        asientos = new VistaAsientos();
         agregarVistaConScroll(asientos, "ASIENTOS");
 
-        VistaSalidasHorarios salidasHorarios = new VistaSalidasHorarios();
+        salidasHorarios = new VistaSalidasHorarios();
         agregarVistaConScroll(salidasHorarios, "SALIDASHORARIOS");
 
-        VistaVentaPasajes ventaPasajes = new VistaVentaPasajes();
+        ventaPasajes = new VistaVentaPasajes();
         agregarVistaConScroll(ventaPasajes, "VENTAPASAJES");
 
-        VistaPasajeros pasajeros = new VistaPasajeros();
+        pasajeros = new VistaPasajeros();
         agregarVistaConScroll(pasajeros, "PASAJEROS");
 
-        VistaVentasRealizadas ventasRealizadas = new VistaVentasRealizadas();
-        agregarVistaConScroll(ventasRealizadas, "VENTASREALIZADAS");
     }
 
     // Método para indicar a Java que al abrir el sistema muestre VistaInicio

@@ -194,41 +194,58 @@ public class PasajeData {
         }
     }
     //consulta la disponibilidad sin bloquear el asiento ni exigir una transacción.
-public boolean consultarDisponibilidad(
-        int idRutaViaje,
-        int idAsiento,
-        int ordenOrigen,
-        int ordenDestino) throws SQLException {
 
-    if (ordenOrigen >= ordenDestino) {
-        throw new IllegalArgumentException(
-                "El origen debe ser anterior al destino.");
-    }
+    public boolean consultarDisponibilidad(
+            int idRutaViaje,
+            int idAsiento,
+            int ordenOrigen,
+            int ordenDestino) throws SQLException {
 
-    String sql = "SELECT COUNT(*) "
-            + "FROM pasaje p "
-            + "INNER JOIN paradarecorrido origen "
-            + "ON p.idParadaOrigen = origen.idParadaRecorrido "
-            + "INNER JOIN paradarecorrido destino "
-            + "ON p.idParadaDestino = destino.idParadaRecorrido "
-            + "WHERE p.idRutaViaje = ? "
-            + "AND p.idAsiento = ? "
-            + "AND p.estado = 1 "
-            + "AND origen.orden < ? "
-            + "AND destino.orden > ?";
+        if (ordenOrigen >= ordenDestino) {
+            throw new IllegalArgumentException(
+                    "El origen debe ser anterior al destino.");
+        }
 
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "SELECT COUNT(*) "
+                + "FROM pasaje p "
+                + "INNER JOIN paradarecorrido origen "
+                + "ON p.idParadaOrigen = origen.idParadaRecorrido "
+                + "INNER JOIN paradarecorrido destino "
+                + "ON p.idParadaDestino = destino.idParadaRecorrido "
+                + "WHERE p.idRutaViaje = ? "
+                + "AND p.idAsiento = ? "
+                + "AND p.estado = 1 "
+                + "AND origen.orden < ? "
+                + "AND destino.orden > ?";
 
-        ps.setInt(1, idRutaViaje);
-        ps.setInt(2, idAsiento);
-        ps.setInt(3, ordenDestino);
-        ps.setInt(4, ordenOrigen);
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
 
-        try (ResultSet rs = ps.executeQuery()) {
-            rs.next();
-            return rs.getInt(1) == 0;
+            ps.setInt(1, idRutaViaje);
+            ps.setInt(2, idAsiento);
+            ps.setInt(3, ordenDestino);
+            ps.setInt(4, ordenOrigen);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getInt(1) == 0;
+            }
         }
     }
-}
+
+    public int contarPasajesEmitidos() {
+        String sql = "SELECT COUNT(*) FROM pasaje WHERE estado = TRUE";
+
+        try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al contar pasajes: " + e.getMessage());
+        }
+
+        return 0;
+    }
 
 }

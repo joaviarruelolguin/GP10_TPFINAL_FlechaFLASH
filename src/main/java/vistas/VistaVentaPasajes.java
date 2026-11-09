@@ -8,7 +8,12 @@ import modelo.ParadaRecorrido;
 import modelo.Pasajero;
 import modelo.RutaViaje;
 
-public class VistaVentaPasajes extends javax.swing.JPanel {
+import controlador.NotificadorCambios;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.JComboBox;
+
+public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyChangeListener {
 
     private java.util.List<modelo.Pasaje> listaPasajes
             = new java.util.ArrayList<>();
@@ -17,6 +22,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
     public VistaVentaPasajes() {
         initComponents();
+        NotificadorCambios.agregarListener(this);
         aplicarEstilos();
         actualizarDatosVenta();
         estilizarTabla();
@@ -33,8 +39,49 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         configurarColumnasTabla();
 
     }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        String entidad = (String) evt.getNewValue();
+
+        if (NotificadorCambios.PASAJEROS.equals(entidad)) {
+            sincronizarPasajeros();
+        }
+    }
+
+    private void sincronizarPasajeros() {
+        Integer idComprador = obtenerIdSeleccionado(cbComprador);
+        Integer idPasajero = obtenerIdSeleccionado(cbPasajero);
+
+        cargarCompradores();
+        cargarPasajeros();
+
+        seleccionarPorId(cbComprador, idComprador);
+        seleccionarPorId(cbPasajero, idPasajero);
+    }
+
+    private Integer obtenerIdSeleccionado(JComboBox<Pasajero> combo) {
+        Pasajero seleccionado = (Pasajero) combo.getSelectedItem();
+        return seleccionado == null ? null : seleccionado.getIdPasajero();
+    }
+
+    private void seleccionarPorId(JComboBox<Pasajero> combo, Integer id) {
+        combo.setSelectedIndex(-1);
+
+        if (id == null) {
+            return;
+        }
+
+        for (int i = 0; i < combo.getItemCount(); i++) {
+            if (combo.getItemAt(i).getIdPasajero() == id) {
+                combo.setSelectedIndex(i);
+                return;
+            }
+        }
+    }
+
     
-     private void configurarColumnasTabla() {
+    private void configurarColumnasTabla() {
         javax.swing.table.DefaultTableModel modeloTabla
                 = (javax.swing.table.DefaultTableModel) tablaPasajes.getModel();
 
@@ -117,8 +164,10 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                     : pasajeroData.listarPasajeros()) {
 
                 cbComprador.addItem(pasajero);
-                cbComprador.setSelectedIndex(-1);
+               
             }
+            
+            cbComprador.setSelectedIndex(-1);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(
@@ -178,9 +227,10 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
                     : pasajeroData.listarPasajeros()) {
 
                 cbPasajero.addItem(pasajero);
-                cbPasajero.setSelectedIndex(-1);
 
             }
+            
+            cbPasajero.setSelectedIndex(-1);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(
@@ -720,6 +770,8 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
             if (registrada) {
 
+                NotificadorCambios.notificarCambio(NotificadorCambios.VENTAS);
+               
                 // Agrego esta línea para que cuando VentaData termine de registrar la venta correctamente, 
                 // el número generado se coloque automáticamente en el campo en vez de forma manual.
                 txtNumeroComprobante.setText(venta.getNumeroComprobante());
