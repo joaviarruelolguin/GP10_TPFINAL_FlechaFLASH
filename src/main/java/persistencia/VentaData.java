@@ -7,11 +7,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import modelo.MedioPago;
 import modelo.Venta;
 import modelo.Pasaje;
+import modelo.Pasajero;
+import modelo.TipoPasajero;
 
 public class VentaData {
 
@@ -494,5 +497,56 @@ public class VentaData {
                 }
             }
         }
+    }
+
+    // Devuelve todas las ventas (la más reciente primero), con el comprador cargado.
+    public List<Venta> listarVentas() {
+
+        List<Venta> ventas = new ArrayList<>();
+
+        String sql = "SELECT v.idVenta, v.fechaHoraVenta, v.medioPago, "
+                + "v.cantidadCuotas, v.cantidadPasajes, v.importeTotal, "
+                + "v.tipoComprobante, v.numeroComprobante, v.estado, "
+                + "p.idPasajero, p.dni, p.nombre, p.apellido, "
+                + "p.correo, p.telefono, p.tipoPasajero "
+                + "FROM venta v "
+                + "JOIN pasajero p ON p.idPasajero = v.idPasajeroComprador "
+                + "ORDER BY v.fechaHoraVenta DESC, v.idVenta DESC";
+
+        synchronized (con) {
+            try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    Pasajero comprador = new Pasajero(
+                            rs.getInt("idPasajero"),
+                            rs.getString("dni"),
+                            rs.getString("nombre"),
+                            rs.getString("apellido"),
+                            rs.getString("correo"),
+                            rs.getString("telefono"),
+                            TipoPasajero.desdeCodigo(rs.getInt("tipoPasajero")));
+
+                    Venta venta = new Venta(
+                            rs.getInt("idVenta"),
+                            comprador,
+                            rs.getTimestamp("fechaHoraVenta").toLocalDateTime(),
+                            MedioPago.valueOf(rs.getString("medioPago")),
+                            rs.getInt("cantidadCuotas"),
+                            rs.getInt("cantidadPasajes"),
+                            rs.getBigDecimal("importeTotal"),
+                            rs.getString("tipoComprobante"),
+                            rs.getString("numeroComprobante"),
+                            rs.getBoolean("estado"));
+
+                    ventas.add(venta);
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error al listar ventas: " + e.getMessage());
+            }
+        }
+
+        return ventas;
     }
 }

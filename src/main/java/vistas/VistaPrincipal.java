@@ -1,9 +1,7 @@
-
 package vistas;
 
-
 public class VistaPrincipal extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaPrincipal.class.getName());
 
     private VistaInicio inicio;
@@ -13,11 +11,12 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private VistaSalidasHorarios salidasHorarios;
     private VistaVentaPasajes ventaPasajes;
     private VistaPasajeros pasajeros;
+    private VistaVentasRealizadas ventasRealizadas;
 
-       public VistaPrincipal() {
+    public VistaPrincipal() {
         initComponents();
         setResizable(true);
-        configurarNavegacion();   
+        configurarNavegacion();
         mostrarPantalla("INICIO");
     }
 
@@ -57,18 +56,20 @@ public class VistaPrincipal extends javax.swing.JFrame {
         pasajeros = new VistaPasajeros();
         agregarVistaConScroll(pasajeros, "PASAJEROS");
 
+        ventasRealizadas = new VistaVentasRealizadas();
+        agregarVistaConScroll(ventasRealizadas, "VENTASREALIZADAS");
+
     }
 
     // Método para indicar a Java que al abrir el sistema muestre VistaInicio
     private void mostrarPantalla(String nombre) {
-        
+
         java.awt.CardLayout cl = (java.awt.CardLayout) pnlContenido.getLayout();
         // CardLayout busca de forma automática el panel registrado con determinado identificador y lo muestra.
         cl.show(pnlContenido, nombre);
-        
+
     }
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -356,9 +357,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
         mostrarPantalla("VENTASREALIZADAS");
     }//GEN-LAST:event_btnVentasRealizadasActionPerformed
 
-   
     public static void main(String args[]) {
-        
+
         java.awt.EventQueue.invokeLater(() -> new VistaPrincipal().setVisible(true));
     }
 
