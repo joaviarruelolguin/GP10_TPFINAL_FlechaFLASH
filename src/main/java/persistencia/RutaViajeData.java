@@ -424,6 +424,22 @@ public class RutaViajeData {
 
     }
 
+    // REALIZA EL ALTA LOGICA
+    public boolean activarRutaViaje(int idRutaViaje) {
+        String sql = "UPDATE rutaviaje SET estado = TRUE WHERE idRutaViaje = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idRutaViaje);
+            int filas = ps.executeUpdate();
+            return filas > 0;
+        } catch (SQLException e) {
+            System.out.println("Error al activar la ruta: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+   
     // REALIZA LA BAJA FISICA (solo la que coincida con el ID)
     public boolean eliminarRutaViaje(int idRutaViaje) {
 
