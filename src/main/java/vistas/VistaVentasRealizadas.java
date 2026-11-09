@@ -32,6 +32,7 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
 
     public VistaVentasRealizadas() {
         initComponents();
+        txtNumeroComprobante.addActionListener(e -> filtrarVentas());
         armarCabecera();
         cargarVentas();
     }
@@ -54,47 +55,69 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
         llenarTabla(listaVentas);
     }
 
+    private void filtrarVentas() {
+        String comprobante = txtNumeroComprobante.getText().trim();
 
-private void llenarTabla(List<Venta> ventas) {
-    modelo.setRowCount(0);
+        List<Venta> filtradas = new ArrayList<>();
 
-    BigDecimal total = BigDecimal.ZERO;
+        for (Venta v : listaVentas) {
 
-    for (Venta v : ventas) {
-        modelo.addRow(new Object[]{
-            v.getNumeroComprobante() == null ? "-" : v.getNumeroComprobante(),
-            v.getFechaHoraVenta().format(formatoFecha),
-            nombreComprador(v.getPasajeroComprador()),
-            v.getPasajeroComprador().getDni(),
-            textoMedioPago(v.getMedioPago()),
-            v.getCantidadCuotas() > 0 ? v.getCantidadCuotas() : "-",
-            v.getCantidadPasajes(),
-            formatoImporte.format(v.getImporteTotal())
-        });
+            if (!comprobante.isEmpty()
+                    && (v.getNumeroComprobante() == null
+                    || !v.getNumeroComprobante().contains(comprobante))) {
+                continue;
+            }
 
-        total = total.add(v.getImporteTotal());
+            filtradas.add(v);
+        }
+
+        llenarTabla(filtradas);
     }
 
-    lblCantidadVentas.setText(String.valueOf(ventas.size()));
-    lblImporteAcumulado.setText(formatoImporte.format(total));
-}
+    private void llenarTabla(List<Venta> ventas) {
+        modelo.setRowCount(0);
+
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (Venta v : ventas) {
+            modelo.addRow(new Object[]{
+                v.getNumeroComprobante() == null ? "-" : v.getNumeroComprobante(),
+                v.getFechaHoraVenta().format(formatoFecha),
+                nombreComprador(v.getPasajeroComprador()),
+                v.getPasajeroComprador().getDni(),
+                textoMedioPago(v.getMedioPago()),
+                v.getCantidadCuotas() > 0 ? v.getCantidadCuotas() : "-",
+                v.getCantidadPasajes(),
+                formatoImporte.format(v.getImporteTotal())
+            });
+
+            total = total.add(v.getImporteTotal());
+        }
+
+        lblCantidadVentas.setText(String.valueOf(ventas.size()));
+        lblImporteAcumulado.setText(formatoImporte.format(total));
+    }
 
     private String textoComprador(Pasajero p) {
         return p.getNombre() + " " + p.getApellido() + " (DNI " + p.getDni() + ")";
     }
-    
-    private String nombreComprador(Pasajero p) {
-    return p.getNombre() + " " + p.getApellido();
-}
 
-private String textoMedioPago(MedioPago medio) {
-    return switch (medio) {
-        case CREDITO -> "Crédito";
-        case DEBITO -> "Débito";
-        case EFECTIVO -> "Efectivo";
-        case BILLETERA_VIRTUAL -> "Billetera virtual";
-    };
-}
+    private String nombreComprador(Pasajero p) {
+        return p.getNombre() + " " + p.getApellido();
+    }
+
+    private String textoMedioPago(MedioPago medio) {
+        return switch (medio) {
+            case CREDITO ->
+                "Crédito";
+            case DEBITO ->
+                "Débito";
+            case EFECTIVO ->
+                "Efectivo";
+            case BILLETERA_VIRTUAL ->
+                "Billetera virtual";
+        };
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -212,6 +235,7 @@ private String textoMedioPago(MedioPago medio) {
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
         btnLimpiarFiltros1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clean.png"))); // NOI18N
         btnLimpiarFiltros1.setText("Limpiar");
@@ -310,6 +334,10 @@ private String textoMedioPago(MedioPago medio) {
                 .addGap(28, 28, 28))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        filtrarVentas();
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
