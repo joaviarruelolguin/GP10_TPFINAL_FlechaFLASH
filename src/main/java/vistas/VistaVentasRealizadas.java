@@ -3,6 +3,7 @@ package vistas;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.Normalizer;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
     public VistaVentasRealizadas() {
         initComponents();
         txtNumeroComprobante.addActionListener(e -> filtrarVentas());
+        txtComprador.addActionListener(e -> filtrarVentas());
         armarCabecera();
         cargarVentas();
     }
@@ -57,14 +59,22 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
 
     private void filtrarVentas() {
         String comprobante = txtNumeroComprobante.getText().trim();
+        String comprador = normalizar(txtComprador.getText());
 
         List<Venta> filtradas = new ArrayList<>();
 
         for (Venta v : listaVentas) {
 
+            //filtro comprobante
             if (!comprobante.isEmpty()
                     && (v.getNumeroComprobante() == null
                     || !v.getNumeroComprobante().contains(comprobante))) {
+                continue;
+            }
+
+            //filtro comprador
+            if (!comprador.isEmpty()
+                    && !coincideComprador(v.getPasajeroComprador(), comprador)) {
                 continue;
             }
 
@@ -117,6 +127,23 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
             case BILLETERA_VIRTUAL ->
                 "Billetera virtual";
         };
+    }
+
+    private String normalizar(String texto) {
+        return Normalizer.normalize(texto.trim(), Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase(Locale.ROOT);
+    }
+
+    private boolean coincideComprador(Pasajero p, String busqueda) {
+        String texto = normalizar(p.getNombre() + " " + p.getApellido() + " " + p.getDni());
+
+        for (String palabra : busqueda.split("\\s+")) {
+            if (!texto.contains(palabra)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @SuppressWarnings("unchecked")
