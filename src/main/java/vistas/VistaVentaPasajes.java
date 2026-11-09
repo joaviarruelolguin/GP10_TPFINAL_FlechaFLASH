@@ -810,10 +810,18 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(20, 43, 73));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
+        jLabel1.setBackground(new java.awt.Color(20, 43, 73));
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/venta_pasajes.png"))); // NOI18N
         jLabel1.setText("Venta de Pasajes ");
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 27));
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jLabel1.setIconTextGap(12);
+        jLabel1.setMaximumSize(new java.awt.Dimension(32667, 32667));
+        jLabel1.setPreferredSize(new java.awt.Dimension(0, 85));
         jPanel2.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         add(jPanel2, java.awt.BorderLayout.NORTH);
