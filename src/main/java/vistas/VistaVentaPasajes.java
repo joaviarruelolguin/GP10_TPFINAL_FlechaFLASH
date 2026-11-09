@@ -672,6 +672,9 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
 
         try {
 
+            // Actualizar las rutas desde la base de datos antes de validar la venta.
+            sincronizarRutasPendientes();
+
             // Crear el objeto Venta
             modelo.Venta venta = new modelo.Venta(
                     comprador,
@@ -768,6 +771,67 @@ public class VistaVentaPasajes extends javax.swing.JPanel {
         actualizarDatosVenta();
     }
 
+    private void sincronizarRutasPendientes() {
+
+        persistencia.RutaViajeData rutaData
+                = new persistencia.RutaViajeData();
+
+        javax.swing.table.DefaultTableModel modeloTabla
+                = (javax.swing.table.DefaultTableModel) tablaPasajes.getModel();
+
+        for (int i = 0; i < listaPasajes.size(); i++) {
+
+            modelo.Pasaje pasaje = listaPasajes.get(i);
+
+            modelo.RutaViaje rutaAnterior = pasaje.getRutaViaje();
+
+            modelo.RutaViaje rutaActualizada
+                    = rutaData.buscarRutaViaje(rutaAnterior.getIdRutaViaje());
+
+            if (rutaActualizada == null) {
+                throw new IllegalArgumentException(
+                        "No se pudo recuperar la ruta "
+                        + rutaAnterior.getIdRutaViaje()
+                        + " desde la base de datos."
+                );
+            }
+
+            // Comprobar que el recorrido no haya cambiado.
+            if (rutaActualizada.getRecorrido().getIdRecorrido()
+                    != rutaAnterior.getRecorrido().getIdRecorrido()) {
+
+                throw new IllegalArgumentException(
+                        "La ruta " + rutaAnterior.getIdRutaViaje()
+                        + " cambió de recorrido. Quitá y volvé a agregar ese pasaje."
+                );
+            }
+
+            // Comprobar que el colectivo no haya cambiado.
+            if (rutaActualizada.getColectivo().getIdColectivo()
+                    != rutaAnterior.getColectivo().getIdColectivo()) {
+
+                throw new IllegalArgumentException(
+                        "La ruta " + rutaAnterior.getIdRutaViaje()
+                        + " cambió de colectivo. Quitá y volvé a agregar ese pasaje."
+                );
+            }
+
+            // Actualizar la referencia del pasaje.
+            pasaje.setRutaViaje(rutaActualizada);
+
+            // Actualizar la fecha visible en la tabla.
+            modeloTabla.setValueAt(
+                    rutaActualizada.getFechaHoraSalida().format(
+                            java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+                    ),
+                    i,
+                    3
+            );
+        }
+    }
+
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
