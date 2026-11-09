@@ -1,13 +1,18 @@
 package vistas;
 
+import com.toedter.calendar.JDateChooser;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.Normalizer;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import javax.swing.JOptionPane;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import modelo.MedioPago;
 import modelo.Pasajero;
@@ -60,21 +65,38 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
     private void filtrarVentas() {
         String comprobante = txtNumeroComprobante.getText().trim();
         String comprador = normalizar(txtComprador.getText());
+        LocalDate desde = leerFecha(dcDesde);
+        LocalDate hasta = leerFecha(dcHasta);
+
+        if (desde != null && hasta != null && desde.isAfter(hasta)) {
+            JOptionPane.showMessageDialog(this, "La fecha \"Desde\" no puede ser posterior a \"Hasta\".");
+            return;
+        }
 
         List<Venta> filtradas = new ArrayList<>();
 
         for (Venta v : listaVentas) {
 
-            //filtro comprobante
+            // Filtro por número de comprobante.
             if (!comprobante.isEmpty()
                     && (v.getNumeroComprobante() == null
                     || !v.getNumeroComprobante().contains(comprobante))) {
                 continue;
             }
 
-            //filtro comprador
+            // Filtro por comprador (nombre, apellido o DNI).
             if (!comprador.isEmpty()
                     && !coincideComprador(v.getPasajeroComprador(), comprador)) {
+                continue;
+            }
+
+            // Filtro por rango de fechas (ambos extremos incluidos).
+            LocalDate fechaVenta = v.getFechaHoraVenta().toLocalDate();
+
+            if (desde != null && fechaVenta.isBefore(desde)) {
+                continue;
+            }
+            if (hasta != null && fechaVenta.isAfter(hasta)) {
                 continue;
             }
 
@@ -144,6 +166,15 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
             }
         }
         return true;
+    }
+
+
+    private LocalDate leerFecha(JDateChooser calendario) {
+        Date fecha = calendario.getDate();
+        if (fecha == null) {
+            return null;
+        }
+        return fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     @SuppressWarnings("unchecked")
