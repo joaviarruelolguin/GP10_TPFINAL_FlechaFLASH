@@ -3,10 +3,12 @@ package vistas;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.table.DefaultTableModel;
+import modelo.MedioPago;
 import modelo.Pasajero;
 import modelo.Venta;
 import persistencia.VentaData;
@@ -19,6 +21,8 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
     // Formato argentino
     private final DecimalFormat formatoImporte = new DecimalFormat("$#,##0.00",
             DecimalFormatSymbols.getInstance(Locale.forLanguageTag("es-AR")));
+
+    private final DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     DefaultTableModel modelo = new DefaultTableModel() {
         public boolean isCellEditable(int f, int c) {
@@ -34,7 +38,12 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
 
     public void armarCabecera() {
         modelo.addColumn("Comprobante");
+        modelo.addColumn("Fecha");
         modelo.addColumn("Comprador");
+        modelo.addColumn("DNI");
+        modelo.addColumn("Medio de pago");
+        modelo.addColumn("Cuotas");
+        modelo.addColumn("Pasajes");
         modelo.addColumn("Importe");
 
         tblVentas.setModel(modelo);
@@ -45,29 +54,47 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
         llenarTabla(listaVentas);
     }
 
-// Muestra en la tabla la lista que reciba (todas, o más adelante las filtradas).
-    private void llenarTabla(List<Venta> ventas) {
-        modelo.setRowCount(0);
 
-        BigDecimal total = BigDecimal.ZERO;
+private void llenarTabla(List<Venta> ventas) {
+    modelo.setRowCount(0);
 
-        for (Venta v : ventas) {
-            modelo.addRow(new Object[]{
-                v.getNumeroComprobante() == null ? "-" : v.getNumeroComprobante(),
-                textoComprador(v.getPasajeroComprador()),
-                formatoImporte.format(v.getImporteTotal())
-            });
+    BigDecimal total = BigDecimal.ZERO;
 
-            total = total.add(v.getImporteTotal());
-        }
+    for (Venta v : ventas) {
+        modelo.addRow(new Object[]{
+            v.getNumeroComprobante() == null ? "-" : v.getNumeroComprobante(),
+            v.getFechaHoraVenta().format(formatoFecha),
+            nombreComprador(v.getPasajeroComprador()),
+            v.getPasajeroComprador().getDni(),
+            textoMedioPago(v.getMedioPago()),
+            v.getCantidadCuotas() > 0 ? v.getCantidadCuotas() : "-",
+            v.getCantidadPasajes(),
+            formatoImporte.format(v.getImporteTotal())
+        });
 
-        lblCantidadVentas.setText(String.valueOf(ventas.size()));
-        lblImporteAcumulado.setText(formatoImporte.format(total));
+        total = total.add(v.getImporteTotal());
     }
+
+    lblCantidadVentas.setText(String.valueOf(ventas.size()));
+    lblImporteAcumulado.setText(formatoImporte.format(total));
+}
 
     private String textoComprador(Pasajero p) {
         return p.getNombre() + " " + p.getApellido() + " (DNI " + p.getDni() + ")";
     }
+    
+    private String nombreComprador(Pasajero p) {
+    return p.getNombre() + " " + p.getApellido();
+}
+
+private String textoMedioPago(MedioPago medio) {
+    return switch (medio) {
+        case CREDITO -> "Crédito";
+        case DEBITO -> "Débito";
+        case EFECTIVO -> "Efectivo";
+        case BILLETERA_VIRTUAL -> "Billetera virtual";
+    };
+}
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
