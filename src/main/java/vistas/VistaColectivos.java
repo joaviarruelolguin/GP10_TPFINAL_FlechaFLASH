@@ -106,6 +106,10 @@ public class VistaColectivos extends javax.swing.JPanel {
         idLabelBusqueda = new javax.swing.JLabel();
         txtIdBusqueda = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
+        txtBusquedaMarca = new javax.swing.JTextField();
+        txtBusquedaMatricula1 = new javax.swing.JTextField();
+        idLabelBusqueda1 = new javax.swing.JLabel();
+        idLabelBusqueda2 = new javax.swing.JLabel();
 
         tituloGestion.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         tituloGestion.setForeground(new java.awt.Color(23, 47, 77));
@@ -333,32 +337,54 @@ public class VistaColectivos extends javax.swing.JPanel {
         btnBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 108, 158)));
         btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
+        txtBusquedaMarca.addActionListener(this::txtBusquedaMarcaActionPerformed);
+
+        txtBusquedaMatricula1.addActionListener(this::txtBusquedaMatricula1ActionPerformed);
+
+        idLabelBusqueda1.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        idLabelBusqueda1.setForeground(new java.awt.Color(51, 51, 51));
+        idLabelBusqueda1.setText("Matrícula");
+
+        idLabelBusqueda2.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        idLabelBusqueda2.setForeground(new java.awt.Color(51, 51, 51));
+        idLabelBusqueda2.setText("Marca");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(encabezadoVista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(93, 93, 93)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnActivar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDesactivar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(subtituloGestion)
-                    .addComponent(tituloGestion)
-                    .addComponent(panelCrud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
+                        .addGap(103, 103, 103)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(idLabelBusqueda)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(idLabelBusqueda1)
+                            .addComponent(idLabelBusqueda2)
+                            .addComponent(txtBusquedaMarca, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                            .addComponent(txtBusquedaMatricula1)
                             .addComponent(txtIdBusqueda)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(93, Short.MAX_VALUE))
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(342, 342, 342))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(panelCrud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(subtituloGestion)
+                                    .addComponent(tituloGestion))
+                                .addGap(473, 473, 473))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnActivar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnDesactivar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,21 +394,30 @@ public class VistaColectivos extends javax.swing.JPanel {
                 .addComponent(tituloGestion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(subtituloGestion)
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idLabelBusqueda)
-                    .addComponent(txtIdBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(idLabelBusqueda)
+                .addGap(10, 10, 10)
+                .addComponent(txtIdBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(idLabelBusqueda1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtBusquedaMatricula1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(idLabelBusqueda2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtBusquedaMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDesactivar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnActivar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
+                .addGap(29, 29, 29)
                 .addComponent(panelCrud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -590,36 +625,70 @@ public class VistaColectivos extends javax.swing.JPanel {
     }//GEN-LAST:event_tblColectivosMouseClicked
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
+        Integer id = null;
         String idIngresado = txtIdBusqueda.getText().trim();
 
-        if (idIngresado.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe completar el campo ID.");
-            return;
-        }
+        if (!idIngresado.isEmpty()) {
+            try {
+                id = Integer.parseInt(idIngresado);
 
-        try {
-            int id = Integer.parseInt(idIngresado);
-            Colectivo c = colectivoData.buscarColectivo(id);
+                if (id <= 0) {
+                    JOptionPane.showMessageDialog(this, "El ID debe ser un número mayor a cero.");
+                    return;
+                }
 
-            if (c == null) {
-                JOptionPane.showMessageDialog(this, "Colectivo no encontrado.");
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "El ID debe ser un número entero.");
                 return;
             }
+        }
 
-            for (int i = 0; i < modelo.getRowCount(); i++) {
-                int idTabla = Integer.parseInt(modelo.getValueAt(i, 0).toString());
+        String matricula = txtBusquedaMatricula1.getText().trim();
+        String marca = txtBusquedaMarca.getText().trim();
 
-                if (idTabla == c.getIdColectivo()) {
-                    tblColectivos.setRowSelectionInterval(i, i);
-                    tblColectivos.scrollRectToVisible(tblColectivos.getCellRect(i, 0, true));
-                    cargarFormulario(i);
-                    break;
-                }
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El ID debe ser un número.");
+        listaColectivos = colectivoData.buscarColectivos(id, matricula, marca);
+
+        modelo.setRowCount(0);
+
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        for (Colectivo colectivo : listaColectivos) {
+            modelo.addRow(new Object[]{
+                colectivo.getIdColectivo(),
+                colectivo.getMatricula(),
+                colectivo.getMarca(),
+                colectivo.getModelo(),
+                colectivo.getCapacidad(),
+                colectivo.getChofer(),
+                colectivo.getCaducidad() == null ? "-" : colectivo.getCaducidad().format(formato),
+                colectivo.isEstado() ? "Activo" : "Inactivo"
+            });
+        }
+
+        tblColectivos.clearSelection();
+        vaciarCampos(panelCrud);
+        txtIdOR.setText("");
+
+        btnGuardar.setEnabled(true);
+        btnEliminar.setEnabled(false);
+        btnActualizar.setEnabled(false);
+        btnActivar.setEnabled(false);
+        btnDesactivar.setEnabled(false);
+
+        if (listaColectivos.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "No se encontraron colectivos con los criterios ingresados.");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtBusquedaMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBusquedaMarcaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBusquedaMarcaActionPerformed
+
+    private void txtBusquedaMatricula1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBusquedaMatricula1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBusquedaMatricula1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -634,6 +703,8 @@ public class VistaColectivos extends javax.swing.JPanel {
     private javax.swing.JPanel encabezadoVista;
     private javax.swing.JLabel iconoVista;
     private javax.swing.JLabel idLabelBusqueda;
+    private javax.swing.JLabel idLabelBusqueda1;
+    private javax.swing.JLabel idLabelBusqueda2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelCaducidad;
     private javax.swing.JLabel labelCapacidad;
@@ -648,6 +719,8 @@ public class VistaColectivos extends javax.swing.JPanel {
     private javax.swing.JLabel tituloGestion;
     private javax.swing.JLabel tituloSeccionCrud;
     private javax.swing.JLabel tituloVista;
+    private javax.swing.JTextField txtBusquedaMarca;
+    private javax.swing.JTextField txtBusquedaMatricula1;
     private javax.swing.JTextField txtCapacidad;
     private javax.swing.JTextField txtChofer;
     private javax.swing.JTextField txtIdBusqueda;

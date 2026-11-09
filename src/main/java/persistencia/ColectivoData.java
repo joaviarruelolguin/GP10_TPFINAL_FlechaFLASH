@@ -97,6 +97,7 @@ public class ColectivoData {
         return false;
     }
 
+   
     public List<Colectivo> listarColectivos() {
 
         List<Colectivo> colectivos = new ArrayList<>();
@@ -134,7 +135,68 @@ public class ColectivoData {
 
         return colectivos;
     }
+    
+    
+   
+    // Agrego:
+    public List<Colectivo> buscarColectivos(Integer id, String matricula, String marca) {
+        List<Colectivo> colectivos = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM colectivo WHERE 1=1");
+        List<Object> parametros = new ArrayList<>();
 
+        if (id != null) {
+            sql.append(" AND idColectivo = ?");
+            parametros.add(id);
+        }
+
+        if (matricula != null && !matricula.isEmpty()) {
+            sql.append(" AND UPPER(matricula) LIKE ?");
+            parametros.add("%" + matricula.toUpperCase() + "%");
+        }
+
+        if (marca != null && !marca.isEmpty()) {
+            sql.append(" AND UPPER(marca) LIKE ?");
+            parametros.add("%" + marca.toUpperCase() + "%");
+        }
+
+        sql.append(" ORDER BY idColectivo");
+
+        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            for (int i = 0; i < parametros.size(); i++) {
+                ps.setObject(i + 1, parametros.get(i));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    LocalDate caducidad = null;
+
+                    if (rs.getDate("caducidad") != null) {
+                        caducidad = rs.getDate("caducidad").toLocalDate();
+                    }
+
+                    Colectivo colectivo = new Colectivo(
+                            rs.getInt("idColectivo"),
+                            rs.getString("matricula"),
+                            rs.getString("marca"),
+                            rs.getString("modelo"),
+                            rs.getInt("capacidad"),
+                            caducidad,
+                            rs.getBoolean("estado"),
+                            rs.getString("chofer")
+                    );
+
+                    cargarAsientos(colectivo);
+                    colectivos.add(colectivo);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al buscar colectivos: " + e.getMessage());
+        }
+
+        return colectivos;
+    }
+
+    
     public List<Colectivo> listarColectivosActivos() {
 
         List<Colectivo> colectivos = new ArrayList<>();
@@ -216,6 +278,8 @@ public class ColectivoData {
         return null;
     }
 
+     
+    
     public boolean actualizarColectivo(Colectivo colectivo) {
 
         String sql = "UPDATE colectivo SET "
