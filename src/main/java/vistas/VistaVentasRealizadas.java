@@ -18,8 +18,11 @@ import modelo.MedioPago;
 import modelo.Pasajero;
 import modelo.Venta;
 import persistencia.VentaData;
+import controlador.NotificadorCambios;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class VistaVentasRealizadas extends javax.swing.JPanel {
+public class VistaVentasRealizadas extends javax.swing.JPanel implements PropertyChangeListener {
 
     private VentaData ventaData = new VentaData();
     private List<Venta> listaVentas = new ArrayList<>();
@@ -38,11 +41,19 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
 
     public VistaVentasRealizadas() {
         initComponents();
+        NotificadorCambios.agregarListener(this);
         txtNumeroComprobante.addActionListener(e -> filtrarVentas());
         txtComprador.addActionListener(e -> filtrarVentas());
         armarCabecera();
         cargarMediosPago();
         cargarVentas();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (NotificadorCambios.VENTAS.equals(evt.getNewValue())) {
+            cargarVentas();
+        }
     }
 
     public void armarCabecera() {
@@ -60,7 +71,7 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
 
     public void cargarVentas() {
         listaVentas = ventaData.listarVentas();
-        llenarTabla(listaVentas);
+        filtrarVentas();
     }
 
     private void cargarMediosPago() {
