@@ -130,9 +130,7 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
         tituloGestion = new javax.swing.JLabel();
         subtituloGestion = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        lblImporteAcumulado = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        lblCantidadVentas = new javax.swing.JLabel();
         tituloGestion1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -149,6 +147,10 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
         cmbMedioPago = new javax.swing.JComboBox<>();
         btnBuscar = new javax.swing.JButton();
         btnLimpiarFiltros1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        lblCantidadVentas = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        lblImporteAcumulado = new javax.swing.JLabel();
 
         jTextField3.setText("jTextField1");
 
@@ -192,15 +194,7 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
 
         jLabel1.setText("Cantidad de ventas");
 
-        lblImporteAcumulado.setBackground(new java.awt.Color(255, 255, 255));
-        lblImporteAcumulado.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblImporteAcumulado.setText("$850.000");
-
         jLabel3.setText("Importe acumulado");
-
-        lblCantidadVentas.setBackground(new java.awt.Color(255, 255, 255));
-        lblCantidadVentas.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblCantidadVentas.setText("125");
 
         tituloGestion1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         tituloGestion1.setForeground(new java.awt.Color(23, 47, 77));
@@ -240,6 +234,54 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
         btnLimpiarFiltros1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clean.png"))); // NOI18N
         btnLimpiarFiltros1.setText("Limpiar");
 
+        jPanel2.setBackground(new java.awt.Color(20, 43, 73));
+
+        lblCantidadVentas.setBackground(new java.awt.Color(255, 255, 255));
+        lblCantidadVentas.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblCantidadVentas.setForeground(new java.awt.Color(255, 255, 255));
+        lblCantidadVentas.setText("125");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblCantidadVentas)
+                .addContainerGap(134, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lblCantidadVentas)
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+
+        jPanel1.setBackground(new java.awt.Color(20, 43, 73));
+
+        lblImporteAcumulado.setBackground(new java.awt.Color(255, 255, 255));
+        lblImporteAcumulado.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblImporteAcumulado.setForeground(new java.awt.Color(255, 255, 255));
+        lblImporteAcumulado.setText("$850.000");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblImporteAcumulado)
+                .addContainerGap(124, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(lblImporteAcumulado)
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -249,46 +291,45 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
                 .addGap(80, 80, 80)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tituloGestion2)
-                    .addComponent(tituloGestion1)
-                    .addComponent(subtituloGestion)
+                    .addComponent(jScrollPane1)
                     .addComponent(tituloGestion)
+                    .addComponent(subtituloGestion)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtNumeroComprobante, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblCantidadVentas, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNumeroComprobante, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tituloGestion1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnLimpiarFiltros1)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnBuscar))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel6)
+                                        .addComponent(txtComprador, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(40, 40, 40)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(dcDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel7))
+                                    .addGap(40, 40, 40)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(dcHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel8))
+                                    .addGap(40, 40, 40)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(cmbMedioPago, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(113, 113, 113)
+                                .addGap(73, 73, 73)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblImporteAcumulado)
-                                    .addComponent(jLabel3)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnLimpiarFiltros1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnBuscar))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtComprador, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel6))
-                                        .addGap(40, 40, 40)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(dcDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel7))
-                                        .addGap(40, 40, 40)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(dcHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel8))
-                                        .addGap(40, 40, 40)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addComponent(cmbMedioPago, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                    .addComponent(jScrollPane1))
-                .addContainerGap(80, Short.MAX_VALUE))
+                                    .addComponent(jLabel3)
+                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -296,17 +337,17 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
                 .addComponent(encabezadoVista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42)
                 .addComponent(tituloGestion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(subtituloGestion)
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblImporteAcumulado)
-                    .addComponent(lblCantidadVentas))
-                .addGap(46, 46, 46)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addComponent(tituloGestion1)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -355,6 +396,8 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel lblCantidadVentas;
