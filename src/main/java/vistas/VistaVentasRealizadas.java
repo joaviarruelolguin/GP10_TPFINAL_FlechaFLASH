@@ -41,6 +41,7 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
         txtNumeroComprobante.addActionListener(e -> filtrarVentas());
         txtComprador.addActionListener(e -> filtrarVentas());
         armarCabecera();
+        cargarMediosPago();
         cargarVentas();
     }
 
@@ -62,9 +63,19 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
         llenarTabla(listaVentas);
     }
 
+    private void cargarMediosPago() {
+        cmbMedioPago.removeAllItems();
+        cmbMedioPago.addItem("Todos los medios");
+
+        for (MedioPago m : MedioPago.values()) {
+            cmbMedioPago.addItem(textoMedioPago(m));
+        }
+    }
+
     private void filtrarVentas() {
         String comprobante = txtNumeroComprobante.getText().trim();
         String comprador = normalizar(txtComprador.getText());
+        int medioSeleccionado = cmbMedioPago.getSelectedIndex();
         LocalDate desde = leerFecha(dcDesde);
         LocalDate hasta = leerFecha(dcHasta);
 
@@ -97,6 +108,10 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
                 continue;
             }
             if (hasta != null && fechaVenta.isAfter(hasta)) {
+                continue;
+            }
+            if (medioSeleccionado > 0
+                    && !textoMedioPago(v.getMedioPago()).equals(cmbMedioPago.getSelectedItem())) {
                 continue;
             }
 
@@ -167,7 +182,6 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
         }
         return true;
     }
-
 
     private LocalDate leerFecha(JDateChooser calendario) {
         Date fecha = calendario.getDate();
@@ -285,12 +299,18 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
 
         jLabel2.setText("Medios de pago");
 
+        btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnBuscar.setForeground(new java.awt.Color(0, 108, 158));
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
         btnBuscar.setText("Buscar");
+        btnBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 108, 158)));
         btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
+        btnLimpiarFiltros1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLimpiarFiltros1.setForeground(new java.awt.Color(51, 51, 51));
         btnLimpiarFiltros1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clean.png"))); // NOI18N
         btnLimpiarFiltros1.setText("Limpiar");
+        btnLimpiarFiltros1.addActionListener(this::btnLimpiarFiltros1ActionPerformed);
 
         jPanel2.setBackground(new java.awt.Color(20, 43, 73));
 
@@ -364,8 +384,8 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(btnLimpiarFiltros1)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btnBuscar))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel6)
@@ -437,6 +457,16 @@ public class VistaVentasRealizadas extends javax.swing.JPanel {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         filtrarVentas();
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnLimpiarFiltros1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarFiltros1ActionPerformed
+        txtNumeroComprobante.setText("");
+        txtComprador.setText("");
+        dcDesde.setDate(null);
+        dcHasta.setDate(null);
+        cmbMedioPago.setSelectedIndex(0);
+
+        cargarVentas();
+    }//GEN-LAST:event_btnLimpiarFiltros1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
