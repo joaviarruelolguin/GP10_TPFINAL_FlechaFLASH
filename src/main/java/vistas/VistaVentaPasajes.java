@@ -1563,7 +1563,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         cbAsiento.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbAsiento.setForeground(new java.awt.Color(45, 55, 70));
 
-        jLabel12.setText("Precio: ");
+        jLabel12.setText("Precio");
 
         btnAgregarPasaje.setBackground(new java.awt.Color(20, 43, 73));
         btnAgregarPasaje.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N

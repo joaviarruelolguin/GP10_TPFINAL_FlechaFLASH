@@ -481,7 +481,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel12">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Precio: "/>
+                    <Property name="text" type="java.lang.String" value="Precio"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnAgregarPasaje">
