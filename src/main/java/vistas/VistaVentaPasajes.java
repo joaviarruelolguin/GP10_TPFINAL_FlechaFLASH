@@ -80,7 +80,6 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         }
     }
 
-    
     private void configurarColumnasTabla() {
         javax.swing.table.DefaultTableModel modeloTabla
                 = (javax.swing.table.DefaultTableModel) tablaPasajes.getModel();
@@ -90,7 +89,6 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
             "Origen", "Destino", "Asiento", "Precio"
         });
     }
-
 
     private void aplicarEstilos() {
 
@@ -164,9 +162,9 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
                     : pasajeroData.listarPasajeros()) {
 
                 cbComprador.addItem(pasajero);
-               
+
             }
-            
+
             cbComprador.setSelectedIndex(-1);
 
         } catch (Exception e) {
@@ -178,27 +176,28 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
             );
         }
     }
+
     private void ajustarEncabezado() {
 
-    // Mantener la altura de la barra azul
-    jPanel2.setPreferredSize(new java.awt.Dimension(0, 85));
+        // Mantener la altura de la barra azul
+        jPanel2.setPreferredSize(new java.awt.Dimension(0, 85));
 
-    // Colocar el icono a la derecha del texto
-    jLabel1.setHorizontalTextPosition(
-            javax.swing.SwingConstants.LEFT);
+        // Colocar el icono a la derecha del texto
+        jLabel1.setHorizontalTextPosition(
+                javax.swing.SwingConstants.LEFT);
 
-    // Alinear el conjunto a la derecha
-    jLabel1.setHorizontalAlignment(
-            javax.swing.SwingConstants.RIGHT);
+        // Alinear el conjunto a la derecha
+        jLabel1.setHorizontalAlignment(
+                javax.swing.SwingConstants.RIGHT);
 
-    // Separación entre texto e icono
-    jLabel1.setIconTextGap(12);
+        // Separación entre texto e icono
+        jLabel1.setIconTextGap(12);
 
-    // Margen derecho de 27 píxeles
-    jLabel1.setBorder(
-            javax.swing.BorderFactory.createEmptyBorder(
-                    0, 0, 0, 27));
-}
+        // Margen derecho de 27 píxeles
+        jLabel1.setBorder(
+                javax.swing.BorderFactory.createEmptyBorder(
+                        0, 0, 0, 27));
+    }
 
     private void actualizarDatosVenta() {
 
@@ -229,7 +228,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
                 cbPasajero.addItem(pasajero);
 
             }
-            
+
             cbPasajero.setSelectedIndex(-1);
 
         } catch (Exception e) {
@@ -771,11 +770,30 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
             if (registrada) {
 
                 NotificadorCambios.notificarCambio(NotificadorCambios.VENTAS);
-               
+
+// Generar un boleto PDF independiente por cada pasaje.
+                servicios.GeneradorBoletoPDF generador
+                        = new servicios.GeneradorBoletoPDF();
+
+                boolean todosLosBoletosGenerados = true;
+
+                for (modelo.Pasaje pasaje : listaPasajes) {
+
+                    boolean generado = generador.generarBoleto(venta, pasaje);
+
+                    if (!generado) {
+                        todosLosBoletosGenerados = false;
+
+                        System.out.println(
+                                "No se pudo generar el boleto del pasaje "
+                                + pasaje.getIdPasaje());
+                    }
+                }
+
                 // Agrego esta línea para que cuando VentaData termine de registrar la venta correctamente, 
                 // el número generado se coloque automáticamente en el campo en vez de forma manual.
                 txtNumeroComprobante.setText(venta.getNumeroComprobante());
-                
+
                 javax.swing.JOptionPane.showMessageDialog(
                         this,
                         "Venta registrada correctamente.\n"
@@ -787,6 +805,16 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
                         "Venta exitosa",
                         javax.swing.JOptionPane.INFORMATION_MESSAGE
                 );
+                if (!todosLosBoletosGenerados) {
+
+                    javax.swing.JOptionPane.showMessageDialog(
+                            this,
+                            "La venta se registró correctamente, "
+                            + "pero hubo problemas al generar uno o más boletos PDF.",
+                            "Aviso de generación",
+                            javax.swing.JOptionPane.WARNING_MESSAGE
+                    );
+                }
 
                 // Preparar el formulario para una nueva venta
                 limpiarFormularioVenta();
@@ -827,20 +855,19 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         // Limpiar los campos de texto
         txtPrecioPasaje.setText("");
         txtNumeroComprobante.setText("");
-        
+
         // Restablecer el medio de pago y las cuotas
         cbMedioPago.setSelectedIndex(0);
         actualizarCuotas();
-        
+
         // Mantener el tipo de comprobante predeterminado
         cbTipoComprobante.setSelectedIndex(0);
 
         // Limpiar el tipo de comprobante
         // cbTipoComprobante.setSelectedIndex(0);
-
         // Restablecer el importe total
         actualizarImporteTotal();
-        
+
         actualizarDatosVenta();
     }
 
@@ -1192,8 +1219,6 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         }
     }
 
-    
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

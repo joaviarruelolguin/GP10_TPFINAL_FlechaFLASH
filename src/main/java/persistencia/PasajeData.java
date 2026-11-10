@@ -9,6 +9,14 @@ import java.sql.SQLException;
 
 import modelo.RutaViaje;
 import modelo.ParadaRecorrido;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.Timestamp;
+
+import modelo.Pasaje;
+import modelo.Pasajero;
+import modelo.Asiento;
+import modelo.Venta;
 
 public class PasajeData {
 
@@ -246,6 +254,88 @@ public class PasajeData {
         }
 
         return 0;
+    }
+
+    // Recupera todos los pasajes asociados a una venta.
+    public List<Pasaje> listarPasajesPorVenta(int idVenta)
+            throws SQLException {
+
+        List<Pasaje> lista = new ArrayList<>();
+
+        if (idVenta <= 0) {
+            throw new IllegalArgumentException(
+                    "El número de venta no es válido.");
+        }
+
+        String sql = "SELECT idPasaje, idPasajero, idRutaViaje, "
+                + "idAsiento, idParadaOrigen, idParadaDestino, "
+                + "fechaHoraVenta, precioFinal, estado "
+                + "FROM pasaje "
+                + "WHERE idVenta = ? "
+                + "ORDER BY idPasaje";
+
+        // Crear los objetos Data necesarios para recuperar las referencias.
+        PasajeroData pasajeroData = new PasajeroData();
+        AsientoData asientoData = new AsientoData();
+        ParadaRecorridoData paradaData = new ParadaRecorridoData();
+        RutaViajeData rutaData = new RutaViajeData();
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idVenta);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    // Recuperar los objetos relacionados con el pasaje.
+                    Pasajero pasajero = pasajeroData.buscarPasajero(
+                            rs.getInt("idPasajero"));
+
+                    RutaViaje ruta = rutaData.buscarRutaViaje(
+                            rs.getInt("idRutaViaje"));
+
+                    Asiento asiento = asientoData.buscarAsiento(
+                            rs.getInt("idAsiento"));
+
+                    ParadaRecorrido origen = paradaData.buscarParadaRecorrido(
+                            rs.getInt("idParadaOrigen"));
+
+                    ParadaRecorrido destino = paradaData.buscarParadaRecorrido(
+                            rs.getInt("idParadaDestino"));
+
+                    // Verificar que se hayan recuperado todas las referencias.
+                    if (pasajero == null || ruta == null
+                            || asiento == null || origen == null
+                            || destino == null) {
+
+                        throw new SQLException(
+                                "No se pudieron recuperar todos los datos "
+                                + "del pasaje " + rs.getInt("idPasaje"));
+                    }
+
+                    Timestamp fechaSQL = rs.getTimestamp("fechaHoraVenta");
+
+                    // Reconstruir el objeto Pasaje.
+                    Pasaje pasaje = new Pasaje(
+                            rs.getInt("idPasaje"),
+                            pasajero,
+                            ruta,
+                            asiento,
+                            origen,
+                            destino,
+                            fechaSQL.toLocalDateTime(),
+                            rs.getBigDecimal("precioFinal"),
+                            rs.getBoolean("estado"),
+                            null
+                    );
+
+                    lista.add(pasaje);
+                }
+            }
+        }
+
+        return lista;
     }
 
 }
