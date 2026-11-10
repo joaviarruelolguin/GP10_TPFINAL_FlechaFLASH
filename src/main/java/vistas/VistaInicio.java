@@ -28,6 +28,9 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
         configurarTarjetasSalidas();
         NotificadorCambios.agregarListener(this);
         sincronizarDatos();
+
+        jLabel2.setForeground(new java.awt.Color(100, 116, 139));
+        jLabel3.setForeground(new java.awt.Color(100, 116, 139));
     }
 
     private void configurarAccesosRapidos() {
