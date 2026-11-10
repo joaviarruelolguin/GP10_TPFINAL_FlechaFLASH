@@ -21,188 +21,191 @@ import persistencia.VentaData;
 import controlador.NotificadorCambios;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import javax.swing.SwingUtilities;
 
-public class VistaVentasRealizadas extends javax.swing.JPanel implements PropertyChangeListener {
+  
 
-    private VentaData ventaData = new VentaData();
-    private List<Venta> listaVentas = new ArrayList<>();
+    public class VistaVentasRealizadas extends javax.swing.JPanel implements PropertyChangeListener {
 
-    // Formato argentino
-    private final DecimalFormat formatoImporte = new DecimalFormat("$#,##0.00",
-            DecimalFormatSymbols.getInstance(Locale.forLanguageTag("es-AR")));
+        private VentaData ventaData = new VentaData();
+        private List<Venta> listaVentas = new ArrayList<>();
 
-    private final DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        // Formato argentino
+        private final DecimalFormat formatoImporte = new DecimalFormat("$#,##0.00",
+                DecimalFormatSymbols.getInstance(Locale.forLanguageTag("es-AR")));
 
-    DefaultTableModel modelo = new DefaultTableModel() {
-        public boolean isCellEditable(int f, int c) {
-            return false;
-        }
-    };
+        private final DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    public VistaVentasRealizadas() {
-        initComponents();
-        NotificadorCambios.agregarListener(this);
-        txtNumeroComprobante.addActionListener(e -> filtrarVentas());
-        txtComprador.addActionListener(e -> filtrarVentas());
-        armarCabecera();
-        cargarMediosPago();
-        cargarVentas();
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (NotificadorCambios.VENTAS.equals(evt.getNewValue())) {
-            cargarVentas();
-        }
-    }
-
-    public void armarCabecera() {
-        modelo.addColumn("Comprobante");
-        modelo.addColumn("Fecha");
-        modelo.addColumn("Comprador");
-        modelo.addColumn("DNI");
-        modelo.addColumn("Medio de pago");
-        modelo.addColumn("Cuotas");
-        modelo.addColumn("Pasajes");
-        modelo.addColumn("Importe");
-
-        tblVentas.setModel(modelo);
-    }
-
-    public void cargarVentas() {
-        listaVentas = ventaData.listarVentas();
-        filtrarVentas();
-    }
-
-    private void cargarMediosPago() {
-        cmbMedioPago.removeAllItems();
-        cmbMedioPago.addItem("Todos los medios");
-
-        for (MedioPago m : MedioPago.values()) {
-            cmbMedioPago.addItem(textoMedioPago(m));
-        }
-    }
-
-    private void filtrarVentas() {
-        String comprobante = txtNumeroComprobante.getText().trim();
-        String comprador = normalizar(txtComprador.getText());
-        int medioSeleccionado = cmbMedioPago.getSelectedIndex();
-        LocalDate desde = leerFecha(dcDesde);
-        LocalDate hasta = leerFecha(dcHasta);
-
-        if (desde != null && hasta != null && desde.isAfter(hasta)) {
-            JOptionPane.showMessageDialog(this, "La fecha \"Desde\" no puede ser posterior a \"Hasta\".");
-            return;
-        }
-
-        List<Venta> filtradas = new ArrayList<>();
-
-        for (Venta v : listaVentas) {
-
-            // Filtro por número de comprobante.
-            if (!comprobante.isEmpty()
-                    && (v.getNumeroComprobante() == null
-                    || !v.getNumeroComprobante().contains(comprobante))) {
-                continue;
-            }
-
-            // Filtro por comprador (nombre, apellido o DNI).
-            if (!comprador.isEmpty()
-                    && !coincideComprador(v.getPasajeroComprador(), comprador)) {
-                continue;
-            }
-
-            // Filtro por rango de fechas (ambos extremos incluidos).
-            LocalDate fechaVenta = v.getFechaHoraVenta().toLocalDate();
-
-            if (desde != null && fechaVenta.isBefore(desde)) {
-                continue;
-            }
-            if (hasta != null && fechaVenta.isAfter(hasta)) {
-                continue;
-            }
-            if (medioSeleccionado > 0
-                    && !textoMedioPago(v.getMedioPago()).equals(cmbMedioPago.getSelectedItem())) {
-                continue;
-            }
-
-            filtradas.add(v);
-        }
-
-        llenarTabla(filtradas);
-    }
-
-    private void llenarTabla(List<Venta> ventas) {
-        modelo.setRowCount(0);
-
-        BigDecimal total = BigDecimal.ZERO;
-
-        for (Venta v : ventas) {
-            modelo.addRow(new Object[]{
-                v.getNumeroComprobante() == null ? "-" : v.getNumeroComprobante(),
-                v.getFechaHoraVenta().format(formatoFecha),
-                nombreComprador(v.getPasajeroComprador()),
-                v.getPasajeroComprador().getDni(),
-                textoMedioPago(v.getMedioPago()),
-                v.getCantidadCuotas() > 0 ? v.getCantidadCuotas() : "-",
-                v.getCantidadPasajes(),
-                formatoImporte.format(v.getImporteTotal())
-            });
-
-            total = total.add(v.getImporteTotal());
-        }
-
-        lblCantidadVentas.setText(String.valueOf(ventas.size()));
-        lblImporteAcumulado.setText(formatoImporte.format(total));
-    }
-
-    private String textoComprador(Pasajero p) {
-        return p.getNombre() + " " + p.getApellido() + " (DNI " + p.getDni() + ")";
-    }
-
-    private String nombreComprador(Pasajero p) {
-        return p.getNombre() + " " + p.getApellido();
-    }
-
-    private String textoMedioPago(MedioPago medio) {
-        return switch (medio) {
-            case CREDITO ->
-                "Crédito";
-            case DEBITO ->
-                "Débito";
-            case EFECTIVO ->
-                "Efectivo";
-            case BILLETERA_VIRTUAL ->
-                "Billetera virtual";
-        };
-    }
-
-    private String normalizar(String texto) {
-        return Normalizer.normalize(texto.trim(), Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "")
-                .toLowerCase(Locale.ROOT);
-    }
-
-    private boolean coincideComprador(Pasajero p, String busqueda) {
-        String texto = normalizar(p.getNombre() + " " + p.getApellido() + " " + p.getDni());
-
-        for (String palabra : busqueda.split("\\s+")) {
-            if (!texto.contains(palabra)) {
+        DefaultTableModel modelo = new DefaultTableModel() {
+            public boolean isCellEditable(int f, int c) {
                 return false;
             }
-        }
-        return true;
-    }
+        };
 
-    private LocalDate leerFecha(JDateChooser calendario) {
-        Date fecha = calendario.getDate();
-        if (fecha == null) {
-            return null;
+        public VistaVentasRealizadas() {
+            initComponents();
+            NotificadorCambios.agregarListener(this);
+            txtNumeroComprobante.addActionListener(e -> filtrarVentas());
+            txtComprador.addActionListener(e -> filtrarVentas());
+            armarCabecera();
+            cargarMediosPago();
+            cargarVentas();
         }
-        return fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    }
 
-    @SuppressWarnings("unchecked")
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (NotificadorCambios.VENTAS.equals(evt.getNewValue())) {
+                cargarVentas();
+            }
+        }
+
+        public void armarCabecera() {
+            modelo.addColumn("Comprobante");
+            modelo.addColumn("Fecha");
+            modelo.addColumn("Comprador");
+            modelo.addColumn("DNI");
+            modelo.addColumn("Medio de pago");
+            modelo.addColumn("Cuotas");
+            modelo.addColumn("Pasajes");
+            modelo.addColumn("Importe");
+
+            tblVentas.setModel(modelo);
+        }
+
+        public void cargarVentas() {
+            listaVentas = ventaData.listarVentas();
+            filtrarVentas();
+        }
+
+        private void cargarMediosPago() {
+            cmbMedioPago.removeAllItems();
+            cmbMedioPago.addItem("Todos los medios");
+
+            for (MedioPago m : MedioPago.values()) {
+                cmbMedioPago.addItem(textoMedioPago(m));
+            }
+        }
+
+        private void filtrarVentas() {
+            String comprobante = txtNumeroComprobante.getText().trim();
+            String comprador = normalizar(txtComprador.getText());
+            int medioSeleccionado = cmbMedioPago.getSelectedIndex();
+            LocalDate desde = leerFecha(dcDesde);
+            LocalDate hasta = leerFecha(dcHasta);
+
+            if (desde != null && hasta != null && desde.isAfter(hasta)) {
+                JOptionPane.showMessageDialog(this, "La fecha \"Desde\" no puede ser posterior a \"Hasta\".");
+                return;
+            }
+
+            List<Venta> filtradas = new ArrayList<>();
+
+            for (Venta v : listaVentas) {
+
+                // Filtro por número de comprobante.
+                if (!comprobante.isEmpty()
+                        && (v.getNumeroComprobante() == null
+                        || !v.getNumeroComprobante().contains(comprobante))) {
+                    continue;
+                }
+
+                // Filtro por comprador (nombre, apellido o DNI).
+                if (!comprador.isEmpty()
+                        && !coincideComprador(v.getPasajeroComprador(), comprador)) {
+                    continue;
+                }
+
+                // Filtro por rango de fechas (ambos extremos incluidos).
+                LocalDate fechaVenta = v.getFechaHoraVenta().toLocalDate();
+
+                if (desde != null && fechaVenta.isBefore(desde)) {
+                    continue;
+                }
+                if (hasta != null && fechaVenta.isAfter(hasta)) {
+                    continue;
+                }
+                if (medioSeleccionado > 0
+                        && !textoMedioPago(v.getMedioPago()).equals(cmbMedioPago.getSelectedItem())) {
+                    continue;
+                }
+
+                filtradas.add(v);
+            }
+
+            llenarTabla(filtradas);
+        }
+
+        private void llenarTabla(List<Venta> ventas) {
+            modelo.setRowCount(0);
+
+            BigDecimal total = BigDecimal.ZERO;
+
+            for (Venta v : ventas) {
+                modelo.addRow(new Object[]{
+                    v.getNumeroComprobante() == null ? "-" : v.getNumeroComprobante(),
+                    v.getFechaHoraVenta().format(formatoFecha),
+                    nombreComprador(v.getPasajeroComprador()),
+                    v.getPasajeroComprador().getDni(),
+                    textoMedioPago(v.getMedioPago()),
+                    v.getCantidadCuotas() > 0 ? v.getCantidadCuotas() : "-",
+                    v.getCantidadPasajes(),
+                    formatoImporte.format(v.getImporteTotal())
+                });
+
+                total = total.add(v.getImporteTotal());
+            }
+
+            lblCantidadVentas.setText(String.valueOf(ventas.size()));
+            lblImporteAcumulado.setText(formatoImporte.format(total));
+        }
+
+        private String textoComprador(Pasajero p) {
+            return p.getNombre() + " " + p.getApellido() + " (DNI " + p.getDni() + ")";
+        }
+
+        private String nombreComprador(Pasajero p) {
+            return p.getNombre() + " " + p.getApellido();
+        }
+
+        private String textoMedioPago(MedioPago medio) {
+            return switch (medio) {
+                case CREDITO ->
+                    "Crédito";
+                case DEBITO ->
+                    "Débito";
+                case EFECTIVO ->
+                    "Efectivo";
+                case BILLETERA_VIRTUAL ->
+                    "Billetera virtual";
+            };
+        }
+
+        private String normalizar(String texto) {
+            return Normalizer.normalize(texto.trim(), Normalizer.Form.NFD)
+                    .replaceAll("\\p{M}", "")
+                    .toLowerCase(Locale.ROOT);
+        }
+
+        private boolean coincideComprador(Pasajero p, String busqueda) {
+            String texto = normalizar(p.getNombre() + " " + p.getApellido() + " " + p.getDni());
+
+            for (String palabra : busqueda.split("\\s+")) {
+                if (!texto.contains(palabra)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private LocalDate leerFecha(JDateChooser calendario) {
+            Date fecha = calendario.getDate();
+            if (fecha == null) {
+                return null;
+            }
+            return fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+
+        @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -234,6 +237,7 @@ public class VistaVentasRealizadas extends javax.swing.JPanel implements Propert
         lblCantidadVentas = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         lblImporteAcumulado = new javax.swing.JLabel();
+        btnVerPasajes = new javax.swing.JButton();
 
         jTextField3.setText("jTextField1");
 
@@ -373,6 +377,9 @@ public class VistaVentasRealizadas extends javax.swing.JPanel implements Propert
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
+        btnVerPasajes.setText("VER PASAJES");
+        btnVerPasajes.addActionListener(this::btnVerPasajesActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -380,46 +387,48 @@ public class VistaVentasRealizadas extends javax.swing.JPanel implements Propert
             .addComponent(encabezadoVista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(80, 80, 80)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tituloGestion2)
-                    .addComponent(jScrollPane1)
-                    .addComponent(tituloGestion)
-                    .addComponent(subtituloGestion)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtNumeroComprobante, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(tituloGestion1))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnVerPasajes)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(tituloGestion2)
+                        .addComponent(jScrollPane1)
+                        .addComponent(tituloGestion)
+                        .addComponent(subtituloGestion)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNumeroComprobante, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(tituloGestion1))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnLimpiarFiltros1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(txtComprador, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(40, 40, 40)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(dcDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel7))
+                                        .addGap(40, 40, 40)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(dcHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel8))
+                                        .addGap(40, 40, 40)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(cmbMedioPago, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btnLimpiarFiltros1)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(73, 73, 73)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel6)
-                                        .addComponent(txtComprador, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(40, 40, 40)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(dcDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel7))
-                                    .addGap(40, 40, 40)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(dcHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel8))
-                                    .addGap(40, 40, 40)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(cmbMedioPago, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(73, 73, 73)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(jLabel3)
+                                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(59, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -449,10 +458,10 @@ public class VistaVentasRealizadas extends javax.swing.JPanel implements Propert
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(dcHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtComprador, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtNumeroComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(dcHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtNumeroComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(dcDesde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cmbMedioPago))
                 .addGap(18, 18, 18)
@@ -462,8 +471,10 @@ public class VistaVentasRealizadas extends javax.swing.JPanel implements Propert
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(tituloGestion2)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(btnVerPasajes)
+                .addGap(185, 185, 185))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -481,10 +492,83 @@ public class VistaVentasRealizadas extends javax.swing.JPanel implements Propert
         cargarVentas();
     }//GEN-LAST:event_btnLimpiarFiltros1ActionPerformed
 
+    private void btnVerPasajesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPasajesActionPerformed
+
+
+            // Verificar que se haya seleccionado una venta.
+            int fila = tblVentas.getSelectedRow();
+
+            if (fila == -1) {
+                JOptionPane.showMessageDialog(this,
+                        "Seleccioná una venta para consultar sus pasajes.",
+                        "Consulta de ventas",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Convertir la fila seleccionada al índice del modelo.
+            fila = tblVentas.convertRowIndexToModel(fila);
+
+            // Recuperar la venta correspondiente.
+            Venta ventaSeleccionada = null;
+
+            String numeroComprobante = modelo.getValueAt(fila, 0).toString();
+
+            for (Venta v : listaVentas) {
+                if (v.getNumeroComprobante() != null
+                        && v.getNumeroComprobante().equals(numeroComprobante)) {
+                    ventaSeleccionada = v;
+                    break;
+                }
+            }
+
+            if (ventaSeleccionada == null) {
+                JOptionPane.showMessageDialog(this,
+                        "No se pudo identificar la venta seleccionada.");
+                return;
+            }
+
+            // Recuperar los pasajes asociados a la venta.
+            try {
+                persistencia.PasajeData pasajeData
+                        = new persistencia.PasajeData();
+
+                List<modelo.Pasaje> pasajes
+                        = pasajeData.listarPasajesPorVenta(
+                                ventaSeleccionada.getIdVenta());
+
+                if (pasajes.isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Esta venta no tiene pasajes registrados.");
+                    return;
+                }
+
+                // Abrir la ventana con el detalle de los pasajes.
+                java.awt.Window ventanaPadre
+                        = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+                VistaDetalleVenta detalle = new VistaDetalleVenta(
+                        ventanaPadre,
+                        ventaSeleccionada,
+                        pasajes
+                );
+
+                detalle.setVisible(true);
+
+            } catch (java.sql.SQLException e) {
+                JOptionPane.showMessageDialog(this,
+                        "Error al recuperar los pasajes: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+    }//GEN-LAST:event_btnVerPasajesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnLimpiarFiltros1;
+    private javax.swing.JButton btnVerPasajes;
     private javax.swing.JComboBox<String> cmbMedioPago;
     private com.toedter.calendar.JDateChooser dcDesde;
     private com.toedter.calendar.JDateChooser dcHasta;
@@ -512,4 +596,5 @@ public class VistaVentasRealizadas extends javax.swing.JPanel implements Propert
     private javax.swing.JTextField txtComprador;
     private javax.swing.JTextField txtNumeroComprobante;
     // End of variables declaration//GEN-END:variables
-}
+    }
+

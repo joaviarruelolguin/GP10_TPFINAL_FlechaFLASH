@@ -12,8 +12,11 @@ import controlador.NotificadorCambios;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyChangeListener {
+
+    private int idUltimaVentaRegistrada = -1;
 
     private java.util.List<modelo.Pasaje> listaPasajes
             = new java.util.ArrayList<>();
@@ -768,6 +771,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
             );
 
             if (registrada) {
+                idUltimaVentaRegistrada = venta.getIdVenta();
 
                 NotificadorCambios.notificarCambio(NotificadorCambios.VENTAS);
 
@@ -1254,6 +1258,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         jLabel13 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPasajes = new javax.swing.JTable();
+        btnVerUltimaVenta = new javax.swing.JButton();
         panelPago = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -1522,6 +1527,9 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         tablaPasajes.setSelectionForeground(new java.awt.Color(20, 43, 73));
         jScrollPane1.setViewportView(tablaPasajes);
 
+        btnVerUltimaVenta.setText("VER / IMPRIMIR ÚLTIMA VENTA");
+        btnVerUltimaVenta.addActionListener(this::btnVerUltimaVentaActionPerformed);
+
         javax.swing.GroupLayout panelDetallePasajesLayout = new javax.swing.GroupLayout(panelDetallePasajes);
         panelDetallePasajes.setLayout(panelDetallePasajesLayout);
         panelDetallePasajesLayout.setHorizontalGroup(
@@ -1529,10 +1537,12 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
             .addGroup(panelDetallePasajesLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(panelDetallePasajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
                     .addGroup(panelDetallePasajesLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 743, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel13))
+                        .addGroup(panelDetallePasajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnVerUltimaVenta)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 743, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         panelDetallePasajesLayout.setVerticalGroup(
@@ -1541,8 +1551,9 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
                 .addGap(20, 20, 20)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-                .addGap(21, 21, 21))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVerUltimaVenta))
         );
 
         panelPago.setBackground(new java.awt.Color(255, 255, 255));
@@ -1735,7 +1746,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
                 .addComponent(panelSeccionPasajes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(panelDetallePasajes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(36, Short.MAX_VALUE))
         );
@@ -1842,11 +1853,48 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         registrarVentaDesdeFormulario();
     }//GEN-LAST:event_btnRegistrarVentaActionPerformed
 
+    private void btnVerUltimaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerUltimaVentaActionPerformed
+        if (idUltimaVentaRegistrada == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Todavía no se ha registrado ninguna venta.",
+                    "Consultar última venta",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        try {
+            persistencia.PasajeData pasajeData
+                    = new persistencia.PasajeData();
+
+            java.util.List<modelo.Pasaje> pasajes
+                    = pasajeData.listarPasajesPorVenta(idUltimaVentaRegistrada);
+
+            if (pasajes.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "La última venta no tiene pasajes registrados.");
+                return;
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    "Se recuperaron " + pasajes.size()
+                    + " pasaje(s) de la última venta.",
+                    "Consulta realizada",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (java.sql.SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al recuperar los pasajes: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnVerUltimaVentaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarPasaje;
     private javax.swing.JButton btnCancelarVenta;
     private javax.swing.JButton btnRegistrarVenta;
+    private javax.swing.JButton btnVerUltimaVenta;
     private javax.swing.JComboBox<Asiento> cbAsiento;
     private javax.swing.JComboBox<Pasajero> cbComprador;
     private javax.swing.JComboBox<Integer> cbCuotas;
