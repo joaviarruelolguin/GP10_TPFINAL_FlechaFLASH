@@ -69,6 +69,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         });
 
         configurarTablaHorarios();
+        configurarTablaSalidas();
         cargarComboBox();
         cargarTablaSalidas();
         habilitarFormulario(false);
@@ -204,10 +205,15 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         lblParadasHorarios.setForeground(new java.awt.Color(23, 47, 77));
         lblParadasHorarios.setText("Paradas y horarios estimados");
 
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+
         tblHorariosEstimados.setBackground(new java.awt.Color(230, 233, 237));
         tblHorariosEstimados.setForeground(new java.awt.Color(82, 100, 125));
         tblHorariosEstimados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -265,7 +271,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
 
         pnlDatosSalida.setBackground(new java.awt.Color(255, 255, 255));
         pnlDatosSalida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        pnlDatosSalida.setForeground(new java.awt.Color(200, 200, 200));
+        pnlDatosSalida.setForeground(new java.awt.Color(255, 255, 255));
 
         lblRecorrido.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblRecorrido.setForeground(new java.awt.Color(82, 100, 125));
@@ -302,30 +308,27 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         pnlDatosSalidaLayout.setHorizontalGroup(
             pnlDatosSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlDatosSalidaLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(pnlDatosSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cmbRecorrido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblRecorrido))
-                .addGap(47, 47, 47)
-                .addGroup(pnlDatosSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblColectivo1)
-                    .addComponent(cmbColectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addGroup(pnlDatosSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDatosSalidaLayout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addComponent(lblFecha))
-                    .addGroup(pnlDatosSalidaLayout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(dtChFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(58, 58, 58)
+                    .addComponent(lblRecorrido)
+                    .addComponent(cmbRecorrido, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addGroup(pnlDatosSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblColectivo1)
+                    .addComponent(cmbColectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addGroup(pnlDatosSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblFecha)
+                    .addComponent(dtChFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
                 .addGroup(pnlDatosSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(spnHoraSalida)
                     .addComponent(lblHoraSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(58, 58, 58)
+                .addGap(50, 50, 50)
                 .addGroup(pnlDatosSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblPrecioBase)
                     .addComponent(txtPrecioBase, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         pnlDatosSalidaLayout.setVerticalGroup(
             pnlDatosSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,46 +373,36 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(headerVista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pnlDatosSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblDatosSalidas)
-                                    .addComponent(btnNuevo))
-                                .addGap(35, 35, 35)
-                                .addComponent(btnEditar)
-                                .addGap(35, 35, 35)
-                                .addComponent(btnDesactivar)
-                                .addGap(35, 35, 35)
-                                .addComponent(btnEliminar)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblSubtitulo)
-                                    .addComponent(lblTitulo)
-                                    .addComponent(lblParadasHorarios))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(70, 70, 70)
+                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(69, 69, 69)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblDatosSalidas)
+                            .addComponent(lblParadasHorarios)
+                            .addComponent(lblSalidasRegistradas1)
+                            .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSubtitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(pnlDatosSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(30, 30, 30))
             .addGroup(layout.createSequentialGroup()
-                .addGap(123, 123, 123)
-                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(45, 45, 45)
-                    .addComponent(lblSalidasRegistradas1)
-                    .addContainerGap(601, Short.MAX_VALUE)))
+                .addGap(170, 170, 170)
+                .addComponent(btnNuevo)
+                .addGap(35, 35, 35)
+                .addComponent(btnEditar)
+                .addGap(35, 35, 35)
+                .addComponent(btnDesactivar)
+                .addGap(35, 35, 35)
+                .addComponent(btnEliminar)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -419,15 +412,17 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
                 .addComponent(lblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSubtitulo)
-                .addGap(83, 83, 83)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(lblSalidasRegistradas1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDesactivar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51)
+                .addGap(58, 58, 58)
                 .addComponent(lblDatosSalidas)
                 .addGap(18, 18, 18)
                 .addComponent(pnlDatosSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -435,16 +430,11 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addGap(57, 57, 57)
                 .addComponent(lblParadasHorarios)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(238, 238, 238)
-                    .addComponent(lblSalidasRegistradas1)
-                    .addContainerGap(749, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -454,29 +444,45 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
 
     private void configurarTablaHorarios() {
 
+        java.awt.Color celesteSeleccion = new java.awt.Color(190, 225, 242);
+        java.awt.Color celesteHorarios = new java.awt.Color(190, 228, 248);
+        java.awt.Color azulTexto = new java.awt.Color(23, 47, 77);
+
         javax.swing.table.DefaultTableCellRenderer automatico = new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setBackground(new java.awt.Color(230, 233, 237));
-                setForeground(new java.awt.Color(100, 100, 100));
-                setFont(new java.awt.Font("Segoe UI", java.awt.Font.ITALIC, 14));
+                setBackground(isSelected ? celesteSeleccion : java.awt.Color.WHITE);
+                setForeground(azulTexto);
+                setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
                 setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
                 return this;
             }
         };
 
-        javax.swing.table.DefaultTableCellRenderer kilometros = new javax.swing.table.DefaultTableCellRenderer();
-        kilometros.setBackground(java.awt.Color.WHITE);
-        kilometros.setForeground(new java.awt.Color(23, 47, 77));
-        kilometros.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
-        kilometros.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        javax.swing.table.DefaultTableCellRenderer kilometros = new javax.swing.table.DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setBackground(isSelected ? celesteSeleccion : java.awt.Color.WHITE);
+                setForeground(azulTexto);
+                setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+                setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                return this;
+            }
+        };
 
-        javax.swing.table.DefaultTableCellRenderer horarios = new javax.swing.table.DefaultTableCellRenderer();
-        horarios.setBackground(new java.awt.Color(190, 228, 248));
-        horarios.setForeground(new java.awt.Color(23, 47, 77));
-        horarios.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
-        horarios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        javax.swing.table.DefaultTableCellRenderer horarios = new javax.swing.table.DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setBackground(isSelected ? celesteSeleccion : celesteHorarios);
+                setForeground(azulTexto);
+                setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+                setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                return this;
+            }
+        };
 
         tblHorariosEstimados.getColumnModel().getColumn(0).setCellRenderer(automatico);
         tblHorariosEstimados.getColumnModel().getColumn(1).setCellRenderer(automatico);
@@ -485,10 +491,42 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         tblHorariosEstimados.getColumnModel().getColumn(4).setCellRenderer(horarios);
 
         tblHorariosEstimados.setGridColor(new java.awt.Color(215, 220, 225));
-        tblHorariosEstimados.setIntercellSpacing(new java.awt.Dimension(1, 1));
         tblHorariosEstimados.setShowGrid(true);
+        tblHorariosEstimados.setRowHeight(40);
+        tblHorariosEstimados.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        tblHorariosEstimados.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 28));
+        tblHorariosEstimados.setFillsViewportHeight(true);
+        tblHorariosEstimados.setSelectionBackground(celesteSeleccion);
 
+        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
+        tblHorariosEstimados.setBackground(java.awt.Color.WHITE);
     }
+
+     private void configurarTablaSalidas() {
+
+        tblSalidasRegistradas.setRowHeight(40);
+        tblSalidasRegistradas.setBackground(java.awt.Color.WHITE);
+        tblSalidasRegistradas.setForeground(new java.awt.Color(23, 47, 77));
+        tblSalidasRegistradas.setShowGrid(true);
+        tblSalidasRegistradas.setGridColor(new java.awt.Color(220, 220, 220));
+        tblSalidasRegistradas.setIntercellSpacing(new java.awt.Dimension(1, 3));
+        tblSalidasRegistradas.setFillsViewportHeight(true);
+        tblSalidasRegistradas.setSelectionBackground(new java.awt.Color(190, 225, 242));
+
+        javax.swing.table.DefaultTableCellRenderer centrado = new javax.swing.table.DefaultTableCellRenderer();
+        centrado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        for (int i = 0; i < tblSalidasRegistradas.getColumnCount(); i++) {
+            tblSalidasRegistradas.getColumnModel().getColumn(i).setCellRenderer(centrado);
+        }
+
+        ((javax.swing.table.DefaultTableCellRenderer) tblSalidasRegistradas.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tblSalidasRegistradas.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 28));
+
+        jScrollPane2.getViewport().setBackground(java.awt.Color.WHITE);
+    }
+
+    
 
     private void cargarComboBox() {
         cmbRecorrido.removeAllItems();
