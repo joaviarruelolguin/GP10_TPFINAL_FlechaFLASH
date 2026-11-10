@@ -68,6 +68,46 @@ public class VistaPrincipal extends javax.swing.JFrame {
         // CardLayout busca de forma automática el panel registrado con determinado identificador y lo muestra.
         cl.show(pnlContenido, nombre);
 
+        java.awt.Color colorNormal = new java.awt.Color(30, 58, 95);
+        java.awt.Color colorActivo = new java.awt.Color(55, 100, 150);
+
+        javax.swing.JButton[] botones = {
+            btnInicio, btnRecorridos, btnColectivos, btnAsientos,
+            btnSalidasHorarios, btnVentasPasajes, btnPasajeros,
+            btnVentasRealizadas
+        };
+
+        for (javax.swing.JButton boton : botones) {
+            boton.setBackground(colorNormal);
+        }
+
+        switch (nombre) {
+            case "INICIO":
+                btnInicio.setBackground(colorActivo);
+                break;
+            case "RECORRIDOS":
+                btnRecorridos.setBackground(colorActivo);
+                break;
+            case "COLECTIVOS":
+                btnColectivos.setBackground(colorActivo);
+                break;
+            case "ASIENTOS":
+                btnAsientos.setBackground(colorActivo);
+                break;
+            case "SALIDASHORARIOS":
+                btnSalidasHorarios.setBackground(colorActivo);
+                break;
+            case "VENTAPASAJES":
+                btnVentasPasajes.setBackground(colorActivo);
+                break;
+            case "PASAJEROS":
+                btnPasajeros.setBackground(colorActivo);
+                break;
+            case "VENTASREALIZADAS":
+                btnVentasRealizadas.setBackground(colorActivo);
+                break;
+        }
+
     }
 
     @SuppressWarnings("unchecked")
