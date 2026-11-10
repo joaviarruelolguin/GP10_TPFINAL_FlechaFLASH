@@ -203,7 +203,6 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
         GestionPanel.setBackground(new java.awt.Color(242, 239, 239));
         GestionPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(206, 206, 206)));
 
-        lbidAsiento.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         lbidAsiento.setText("Seleccioná un colectivo");
 
         btConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
@@ -277,7 +276,7 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(20, 43, 73));
         jLabel2.setText("Lista de Asientos por Colectivo");
 
@@ -334,7 +333,7 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
                 .addComponent(GestionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

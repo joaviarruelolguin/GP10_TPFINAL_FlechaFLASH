@@ -1338,19 +1338,15 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
 
         panelDatosventa.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(20, 43, 73));
         jLabel2.setText("DATOS DE LA VENTA");
 
-        jLabel3.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(65, 75, 90));
         jLabel3.setText("Comprador ");
 
         cbComprador.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbComprador.setForeground(new java.awt.Color(45, 55, 70));
 
-        jLabel4.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(65, 75, 90));
         jLabel4.setText("Fecha y Hora ");
 
         txtFechaVenta.setEditable(false);
@@ -1358,8 +1354,6 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         txtFechaVenta.setForeground(new java.awt.Color(45, 55, 70));
         txtFechaVenta.setText("jTextField1");
 
-        jLabel5.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(65, 75, 90));
         jLabel5.setText("Estado ");
 
         txtEstadoVenta.setEditable(false);
@@ -1413,11 +1407,10 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
 
         panelSeccionPasajes.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel6.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(20, 43, 73));
         jLabel6.setText("SELECCION DE PASAJES ");
 
-        jLabel7.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(65, 75, 90));
         jLabel7.setText("Ruta de Viaje ");
 
@@ -1425,42 +1418,32 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         cbRutaViaje.setForeground(new java.awt.Color(45, 55, 70));
         cbRutaViaje.addItemListener(this::cbRutaViajeItemStateChanged);
 
-        jLabel8.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(65, 75, 90));
-        jLabel8.setText("Origen :");
+        jLabel8.setText("Origen");
 
         cbOrigen.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbOrigen.setForeground(new java.awt.Color(45, 55, 70));
         cbOrigen.addItemListener(this::cbOrigenItemStateChanged);
 
-        jLabel9.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(65, 75, 90));
-        jLabel9.setText("Destino:");
+        jLabel9.setText("Destino");
 
         cbDestino.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbDestino.setForeground(new java.awt.Color(45, 55, 70));
         cbDestino.addItemListener(this::cbDestinoItemStateChanged);
 
-        jLabel10.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(65, 75, 90));
         jLabel10.setText("Pasajero");
 
         cbPasajero.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbPasajero.setForeground(new java.awt.Color(45, 55, 70));
 
-        jLabel11.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(65, 75, 90));
         jLabel11.setText("Asiento");
 
         cbAsiento.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbAsiento.setForeground(new java.awt.Color(45, 55, 70));
 
-        jLabel12.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(65, 75, 90));
         jLabel12.setText("Precio: ");
 
         btnAgregarPasaje.setBackground(new java.awt.Color(20, 43, 73));
-        btnAgregarPasaje.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+        btnAgregarPasaje.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnAgregarPasaje.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregarPasaje.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Nuevo.png"))); // NOI18N
         btnAgregarPasaje.setText("AGREGAR PASAJE");
@@ -1542,7 +1525,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
 
         panelDetallePasajes.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel13.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(20, 43, 73));
         jLabel13.setText("DETALLE DE PASAJES ");
 
@@ -1591,31 +1574,23 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         jLabel14.setForeground(new java.awt.Color(20, 43, 73));
         jLabel14.setText("PAGO Y COMPROBANTES");
 
-        jLabel15.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(65, 75, 90));
         jLabel15.setText("Medio de pago");
 
         cbMedioPago.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbMedioPago.setForeground(new java.awt.Color(45, 55, 70));
         cbMedioPago.addActionListener(this::cbMedioPagoActionPerformed);
 
-        jLabel16.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(65, 75, 90));
         jLabel16.setText("Cuotas");
 
         cbCuotas.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbCuotas.setForeground(new java.awt.Color(45, 55, 70));
         cbCuotas.addActionListener(this::cbCuotasActionPerformed);
 
-        jLabel17.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(65, 75, 90));
         jLabel17.setText("Tipo de comprobante");
 
         cbTipoComprobante.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbTipoComprobante.setForeground(new java.awt.Color(45, 55, 70));
 
-        jLabel18.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(65, 75, 90));
         jLabel18.setText("Número de comprobante");
 
         txtNumeroComprobante.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
@@ -1623,9 +1598,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         txtNumeroComprobante.setText("jTextField1");
         txtNumeroComprobante.addActionListener(this::txtNumeroComprobanteActionPerformed);
 
-        jLabel19.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(65, 75, 90));
-        jLabel19.setText("Importe total: ");
+        jLabel19.setText("Importe total ");
 
         txtImporteTotal.setEditable(false);
         txtImporteTotal.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
@@ -1633,14 +1606,14 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         txtImporteTotal.setText("jTextField1");
 
         btnCancelarVenta.setBackground(new java.awt.Color(204, 204, 204));
-        btnCancelarVenta.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+        btnCancelarVenta.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnCancelarVenta.setForeground(new java.awt.Color(38, 54, 74));
         btnCancelarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Desactivar.png"))); // NOI18N
         btnCancelarVenta.setText("CANCELAR ");
         btnCancelarVenta.addActionListener(this::btnCancelarVentaActionPerformed);
 
         btnRegistrarVenta.setBackground(new java.awt.Color(20, 43, 73));
-        btnRegistrarVenta.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+        btnRegistrarVenta.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnRegistrarVenta.setForeground(new java.awt.Color(255, 255, 255));
         btnRegistrarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/NuevaVentaI.png"))); // NOI18N
         btnRegistrarVenta.setText("REGISTRAR VENTA ");
@@ -1648,11 +1621,11 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
 
         panelImporteTotal.setBackground(new java.awt.Color(20, 43, 73));
 
-        jLabel20.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setText("IMPORTE TOTAL DE LA VENTA");
 
-        lblImporteDestacado.setFont(new java.awt.Font("Arial", 1, 26)); // NOI18N
+        lblImporteDestacado.setFont(new java.awt.Font("Segoe UI", 1, 26)); // NOI18N
         lblImporteDestacado.setForeground(new java.awt.Color(255, 255, 255));
         lblImporteDestacado.setText("$ 0,00");
 
