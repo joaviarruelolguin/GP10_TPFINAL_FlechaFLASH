@@ -55,7 +55,11 @@ public class PasajeroData {
                 return false;
             }
         } catch (SQLException e) {
-            System.out.println("No se pudo eliminar el pasajero.");
+            if ("23000".equals(e.getSQLState())) {
+                System.out.println("No se puede eliminar el pasajero porque tiene ventas o pasajes asociados.");
+            } else {
+                System.out.println("Error al eliminar el pasajero: " + e.getMessage());
+            }
             return false;
         }
     }

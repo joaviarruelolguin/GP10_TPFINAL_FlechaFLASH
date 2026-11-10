@@ -370,11 +370,12 @@ public class ColectivoData {
             return filas > 0;
 
         } catch (SQLException e) {
-            System.out.println(
-                    "No se pudo eliminar el colectivo. "
-                    + "Puede tener asientos o rutas de viaje asociados: "
-                    + e.getMessage()
-            );
+            if ("23000".equals(e.getSQLState())) {
+                System.out.println("El colectivo tiene registros asociados. Se realizará la baja lógica.");
+                return desactivarColectivo(idColectivo);
+            } else {
+                System.out.println("Error al eliminar el colectivo: " + e.getMessage());
+            }
         }
 
         return false;

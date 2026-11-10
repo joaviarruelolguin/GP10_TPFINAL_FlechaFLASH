@@ -23,6 +23,11 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
 
     private boolean cargandoParadas = false;
 
+    private final java.util.Set<Integer> asientosOcupados = new java.util.HashSet<>();
+    private modelo.Asiento asientoSeleccionadoAnterior = null;
+    private boolean cambiandoSeleccionAsiento = false;
+
+    
     public VistaVentaPasajes() {
         initComponents();
         NotificadorCambios.agregarListener(this);
@@ -40,9 +45,110 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         cbTipoComprobante.setSelectedIndex(0);
         cbTipoComprobante.setEnabled(false);
         configurarColumnasTabla();
+        
+        configurarRenderersPasajeros();
+        configurarComboAsientos();
+        configurarRendererRuta();
 
     }
+    
+    
+    private void configurarRendererRuta() {
+        cbRutaViaje.setRenderer(new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> lista, Object valor, int indice,
+                    boolean seleccionado, boolean foco) {
 
+                super.getListCellRendererComponent(
+                        lista, valor, indice, seleccionado, foco);
+
+                if (valor instanceof RutaViaje) {
+                    RutaViaje ruta = (RutaViaje) valor;
+                    setText(ruta.getRecorrido().getDescripcion());
+                }
+
+                return this;
+            }
+        });
+    }
+
+    
+    private void configurarComboAsientos() {
+
+        cbAsiento.setRenderer(new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> lista, Object valor, int indice,
+                    boolean seleccionado, boolean foco) {
+
+                super.getListCellRendererComponent(
+                        lista, valor, indice, seleccionado, foco);
+
+                if (valor instanceof modelo.Asiento) {
+                    modelo.Asiento asiento = (modelo.Asiento) valor;
+
+                    if (asientosOcupados.contains(asiento.getIdAsiento())) {
+                        setForeground(java.awt.Color.GRAY);
+                        setText(asiento + " (VENDIDO)");
+                    }
+                }
+
+                return this;
+            }
+        });
+
+        cbAsiento.addActionListener(e -> {
+
+            if (cambiandoSeleccionAsiento) {
+                return;
+            }
+
+            modelo.Asiento seleccionado
+                    = (modelo.Asiento) cbAsiento.getSelectedItem();
+
+            if (seleccionado == null) {
+                return;
+            }
+
+            if (asientosOcupados.contains(seleccionado.getIdAsiento())) {
+                cambiandoSeleccionAsiento = true;
+                cbAsiento.setSelectedItem(asientoSeleccionadoAnterior);
+                cambiandoSeleccionAsiento = false;
+            } else {
+                asientoSeleccionadoAnterior = seleccionado;
+            }
+        });
+    }
+
+    
+    private void configurarRenderersPasajeros() {
+        javax.swing.DefaultListCellRenderer renderer
+                = new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> lista, Object valor, int indice,
+                    boolean seleccionado, boolean foco) {
+
+                super.getListCellRendererComponent(
+                        lista, valor, indice, seleccionado, foco);
+
+                if (valor instanceof Pasajero) {
+                    Pasajero pasajero = (Pasajero) valor;
+                    setText(pasajero.getApellido() + " "
+                            + pasajero.getNombre());
+                }
+
+                return this;
+            }
+        };
+
+        cbComprador.setRenderer(renderer);
+        cbPasajero.setRenderer(renderer);
+    }
+
+
+    
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String entidad = (String) evt.getNewValue();
@@ -281,7 +387,10 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
 
     private void actualizarAsientosDisponibles() {
 
+        cambiandoSeleccionAsiento = true;
         cbAsiento.removeAllItems();
+        asientosOcupados.clear();
+        asientoSeleccionadoAnterior = null;
 
         modelo.RutaViaje ruta
                 = (modelo.RutaViaje) cbRutaViaje.getSelectedItem();
@@ -293,10 +402,12 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
                 = (modelo.ParadaRecorrido) cbDestino.getSelectedItem();
 
         if (ruta == null || origen == null || destino == null) {
+            cambiandoSeleccionAsiento = false;
             return;
         }
 
         if (origen.getOrden() >= destino.getOrden()) {
+            cambiandoSeleccionAsiento = false;
             return;
         }
 
@@ -312,6 +423,8 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
                             ruta.getColectivo()
                     );
 
+            modelo.Asiento primerDisponible = null;
+
             for (modelo.Asiento asiento : asientos) {
 
                 boolean disponible = pasajeData.consultarDisponibilidad(
@@ -321,19 +434,30 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
                         destino.getOrden()
                 );
 
+                cbAsiento.addItem(asiento);
+
                 if (disponible) {
-                    cbAsiento.addItem(asiento);
+                    if (primerDisponible == null) {
+                        primerDisponible = asiento;
+                    }
+                } else {
+                    asientosOcupados.add(asiento.getIdAsiento());
                 }
             }
+
+            asientoSeleccionadoAnterior = primerDisponible;
+            cbAsiento.setSelectedItem(primerDisponible);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(
                     this,
-                    "Error al consultar los asientos disponibles: "
-                    + e.getMessage(),
+                    "Error al consultar los asientos: " + e.getMessage(),
                     "Error",
                     javax.swing.JOptionPane.ERROR_MESSAGE
             );
+        } finally {
+            cambiandoSeleccionAsiento = false;
+            cbAsiento.repaint();
         }
     }
 
@@ -1411,8 +1535,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         jLabel6.setForeground(new java.awt.Color(20, 43, 73));
         jLabel6.setText("SELECCION DE PASAJES ");
 
-        jLabel7.setForeground(new java.awt.Color(65, 75, 90));
-        jLabel7.setText("Ruta de Viaje ");
+        jLabel7.setText("Salida");
 
         cbRutaViaje.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         cbRutaViaje.setForeground(new java.awt.Color(45, 55, 70));
@@ -1816,7 +1939,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
     private void cbRutaViajeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbRutaViajeItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
             cargarParadas();
-            cargarAsientos();
+            actualizarAsientosDisponibles();
         }
     }//GEN-LAST:event_cbRutaViajeItemStateChanged
 

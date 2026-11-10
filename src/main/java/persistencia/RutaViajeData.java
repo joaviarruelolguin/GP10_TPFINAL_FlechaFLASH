@@ -455,8 +455,12 @@ public class RutaViajeData {
             return filas > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error al eliminar la ruta: "
-                    + e.getMessage());
+            if ("23000".equals(e.getSQLState())) {
+                System.out.println("La ruta tiene pasajes asociados. Se realizará la baja lógica.");
+                return desactivarRutaViaje(idRutaViaje);
+            } else {
+                System.out.println("Error al eliminar la ruta: " + e.getMessage());
+            }
         }
 
         return false;

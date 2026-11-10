@@ -84,8 +84,8 @@
                               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnVentasPasajes" alignment="0" pref="173" max="32767" attributes="0"/>
-                                  <Component id="btnPasajeros" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="btnVentasPasajes" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="btnPasajeros" alignment="0" pref="173" max="32767" attributes="0"/>
                                   <Component id="btnVentasRealizadas" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace pref="66" max="32767" attributes="0"/>
@@ -145,7 +145,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblSubtitulo" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="68" max="32767" attributes="0"/>
+                      <EmptySpace pref="51" max="32767" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                       <Component id="btnInicio" min="-2" pref="43" max="-2" attributes="0"/>
@@ -165,11 +165,11 @@
                       <Component id="jSeparator2" min="-2" pref="10" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                      <Component id="btnVentasPasajes" min="-2" pref="49" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Component id="btnPasajeros" min="-2" pref="48" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btnVentasPasajes" min="-2" pref="49" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnVentasRealizadas" min="-2" pref="47" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   </Group>

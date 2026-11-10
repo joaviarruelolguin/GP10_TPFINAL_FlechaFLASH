@@ -137,7 +137,7 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
 
                 if (valor instanceof Colectivo) {
                     Colectivo colectivo = (Colectivo) valor;
-                    setText(colectivo.getMatricula() + " – " + colectivo.getMarca() + " –de  " + colectivo.getModelo());
+                    setText(colectivo.getMarca() + " – " + colectivo.getModelo());
                 }
 
                 return this;
@@ -209,6 +209,8 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
         btConsultar.setText("Consultar");
         btConsultar.addActionListener(this::btConsultarActionPerformed);
 
+        cbColectivo.addActionListener(this::cbColectivoActionPerformed);
+
         lblMatricula.setBackground(new java.awt.Color(255, 255, 255));
         lblMatricula.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblMatricula.setForeground(new java.awt.Color(23, 47, 77));
@@ -230,10 +232,10 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
             .addGroup(GestionPanelLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(GestionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbidAsiento, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbColectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btConsultar, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btConsultar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbidAsiento, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 246, Short.MAX_VALUE)
                 .addGroup(GestionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
@@ -353,6 +355,10 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
             JOptionPane.showMessageDialog(this, "El colectivo no tiene asientos registrados.");
         }
     }//GEN-LAST:event_btConsultarActionPerformed
+
+    private void cbColectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbColectivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbColectivoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

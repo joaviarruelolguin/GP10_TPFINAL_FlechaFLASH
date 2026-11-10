@@ -30,6 +30,9 @@ import controlador.NotificadorCambios;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import java.awt.Component;
+
+
 public class VistaSalidasHorarios extends javax.swing.JPanel implements PropertyChangeListener {
 
     private RecorridoData recorridoData = new RecorridoData();
@@ -375,7 +378,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(headerVista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addContainerGap(55, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -393,7 +396,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
                             .addComponent(lblSubtitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(pnlDatosSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(30, 30, 30))
+                .addContainerGap(55, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(170, 170, 170)
                 .addComponent(btnNuevo)
@@ -513,6 +516,8 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         tblSalidasRegistradas.setIntercellSpacing(new java.awt.Dimension(1, 3));
         tblSalidasRegistradas.setFillsViewportHeight(true);
         tblSalidasRegistradas.setSelectionBackground(new java.awt.Color(190, 225, 242));
+        
+        tblSalidasRegistradas.setDefaultEditor(Object.class, null);
 
         javax.swing.table.DefaultTableCellRenderer centrado = new javax.swing.table.DefaultTableCellRenderer();
         centrado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -540,6 +545,20 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         for (Colectivo colectivo : colectivoData.listarColectivosActivos()) {
             cmbColectivo.addItem(colectivo);
         }
+
+        cmbColectivo.setRenderer(new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(javax.swing.JList<?> lista, Object valor, int indice, boolean seleccionado, boolean foco) {
+                super.getListCellRendererComponent(lista, valor, indice, seleccionado, foco);
+
+                if (valor instanceof Colectivo) {
+                    Colectivo colectivo = (Colectivo) valor;
+                    setText(colectivo.getMarca() + " – " + colectivo.getModelo() + " – " + colectivo.getMatricula());
+                }
+
+                return this;
+            }
+        });
     }
 
     private void habilitarFormulario(boolean habilitar) {
@@ -569,7 +588,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
             modelo.addRow(new Object[]{
                 ruta.getIdRutaViaje(),
                 ruta.getRecorrido().getDescripcion(),
-                ruta.getColectivo().getMatricula(),
+                ruta.getColectivo().getMarca() + " – " + ruta.getColectivo().getModelo(),
                 ruta.getFechaHoraSalida().toLocalDate(),
                 ruta.getFechaHoraSalida().toLocalTime(),
                 ruta.getPrecioBase(),
