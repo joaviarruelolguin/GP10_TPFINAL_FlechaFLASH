@@ -8,14 +8,38 @@ import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import org.openpdf.text.Image;
 
 public class GeneradorBoletoPDF {
 
     public void generarPDFPrueba() {
 
-        Document documento = new Document();
+        Document documento = new Document(
+                org.openpdf.text.PageSize.A4.rotate(),
+                25, 25, 25, 25
+        );
 
         try {
+            // Buscar la imagen dentro de los recursos del proyecto
+            java.net.URL rutaImagen = getClass().getResource(
+                    "/encabezado_flechaflash.png"
+            );
+
+// Comprobar que la imagen exista
+            if (rutaImagen == null) {
+                throw new IllegalStateException(
+                        "No se encontró la imagen del encabezado."
+                );
+            }
+
+// Cargar y ajustar la imagen al documento
+            Image encabezado = Image.getInstance(rutaImagen);
+
+            encabezado.scaleToFit(790, 170);
+            encabezado.setAlignment(Image.ALIGN_CENTER);
+
+// Agregar el encabezado al PDF
+            documento.add(encabezado);
 
             // Crear la carpeta donde guardaremos los boletos
             Path carpetaBoletos = Paths.get("boletos");
