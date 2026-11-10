@@ -630,20 +630,55 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
     }
 
     private void estilizarTabla() {
+        tablaPasajes.setRowHeight(40);
+        tablaPasajes.setBackground(java.awt.Color.WHITE);
+        tablaPasajes.setForeground(new java.awt.Color(23, 47, 77));
+        tablaPasajes.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
 
-        javax.swing.table.JTableHeader encabezado
-                = tablaPasajes.getTableHeader();
+        tablaPasajes.setShowGrid(true);
+        tablaPasajes.setGridColor(new java.awt.Color(220, 220, 220));
+        tablaPasajes.setIntercellSpacing(new java.awt.Dimension(1, 3));
+        tablaPasajes.setSelectionBackground(new java.awt.Color(190, 225, 242));
+        tablaPasajes.setSelectionForeground(new java.awt.Color(23, 47, 77));
+        tablaPasajes.setFillsViewportHeight(true);
 
-        encabezado.setBackground(new java.awt.Color(20, 43, 73));
-        encabezado.setForeground(java.awt.Color.WHITE);
-        encabezado.setFont(
-                new java.awt.Font("Arial", java.awt.Font.BOLD, 12)
-        );
+        javax.swing.table.JTableHeader encabezado = tablaPasajes.getTableHeader();
+        encabezado.setBackground(new java.awt.Color(238, 238, 238));
+        encabezado.setForeground(new java.awt.Color(23, 47, 77));
+        encabezado.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+        encabezado.setPreferredSize(new java.awt.Dimension(0, 28));
 
-        encabezado.setPreferredSize(
-                new java.awt.Dimension(0, 30)
-        );
+        ((javax.swing.table.DefaultTableCellRenderer) encabezado.getDefaultRenderer())
+                .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.table.DefaultTableCellRenderer centrado
+                = new javax.swing.table.DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(
+                    javax.swing.JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+
+                super.getTableCellRendererComponent(
+                        table, value, isSelected, hasFocus, row, column);
+
+                setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+                setForeground(new java.awt.Color(23, 47, 77));
+                setBackground(isSelected
+                        ? new java.awt.Color(190, 225, 242)
+                        : java.awt.Color.WHITE);
+
+                return this;
+            }
+        };
+
+        for (int i = 0; i < tablaPasajes.getColumnCount(); i++) {
+            tablaPasajes.getColumnModel().getColumn(i).setCellRenderer(centrado);
+        }
+
+        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
     }
+
 
     private void cargarMediosPago() {
 
@@ -1299,7 +1334,7 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
 
         add(jPanel2, java.awt.BorderLayout.NORTH);
 
-        panelContenido.setBackground(new java.awt.Color(204, 204, 204));
+        panelContenido.setBackground(new java.awt.Color(238, 238, 238));
 
         panelDatosventa.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1511,7 +1546,8 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         jLabel13.setForeground(new java.awt.Color(20, 43, 73));
         jLabel13.setText("DETALLE DE PASAJES ");
 
-        tablaPasajes.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jScrollPane1.setBorder(null);
+
         tablaPasajes.setForeground(new java.awt.Color(45, 55, 70));
         tablaPasajes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1722,13 +1758,13 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         panelContenidoLayout.setHorizontalGroup(
             panelContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelContenidoLayout.createSequentialGroup()
-                .addGap(59, 59, 59)
+                .addContainerGap(50, Short.MAX_VALUE)
                 .addGroup(panelContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelSeccionPasajes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelDatosventa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelDetallePasajes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(175, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         panelContenidoLayout.setVerticalGroup(
             panelContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1737,9 +1773,9 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
                 .addComponent(panelDatosventa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(panelSeccionPasajes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(panelDetallePasajes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(30, 30, 30)
                 .addComponent(panelPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(36, Short.MAX_VALUE))
         );

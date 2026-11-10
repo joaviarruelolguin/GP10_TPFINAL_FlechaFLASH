@@ -236,6 +236,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         tblHorariosEstimados.setSelectionBackground(new java.awt.Color(210, 225, 238));
         jScrollPane1.setViewportView(tblHorariosEstimados);
 
+        tblSalidasRegistradas.setForeground(new java.awt.Color(45, 55, 70));
         tblSalidasRegistradas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
