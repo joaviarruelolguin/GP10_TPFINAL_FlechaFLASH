@@ -111,7 +111,7 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
         setLayout(new java.awt.GridBagLayout());
 
         agregarFila(lblTituloPrincipal, 0, 22);
-        agregarFila(lblSubtitulo, 1, 5);
+        agregarFila(lblSubtitulo, 1, -13);
         agregarFila(pnlEstadisticas, 2, 55);
         agregarFila(jSeparator1, 3, 10);
         agregarFila(lblAccesosRapidos1, 4, 5);
