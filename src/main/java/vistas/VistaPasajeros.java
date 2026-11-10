@@ -79,13 +79,17 @@ public class VistaPasajeros extends javax.swing.JPanel {
         }
 
         // Conservar el texto de búsqueda.
-        String idBuscado = idTextField.getText().trim();
+        String idBuscado = txtBusquedaID.getText().trim();
+        String dniBuscado = txtBusquedaDNI.getText().trim();
+        String apellidoBuscado = txtBusquedaApellido.getText().trim();
 
         // Actualizar la tabla.
         cargarPasajeros();
 
         // Restaurar el texto de búsqueda.
-        idTextField.setText(idBuscado);
+        txtBusquedaID.setText(idBuscado);
+        txtBusquedaDNI.setText(dniBuscado);
+        txtBusquedaApellido.setText(apellidoBuscado);
     }
 
     
@@ -119,10 +123,14 @@ public class VistaPasajeros extends javax.swing.JPanel {
         consultaPanel = new javax.swing.JPanel();
         tituloConsultaPanel = new javax.swing.JLabel();
         labelID = new javax.swing.JLabel();
-        idTextField = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         pasajerosTablaScroll = new javax.swing.JScrollPane();
         pasajerosTabla = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtBusquedaID = new javax.swing.JTextField();
+        txtBusquedaDNI = new javax.swing.JTextField();
+        txtBusquedaApellido = new javax.swing.JTextField();
 
         headerVista.setBackground(new java.awt.Color(20, 43, 73));
         headerVista.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(20, 43, 73)));
@@ -324,12 +332,6 @@ public class VistaPasajeros extends javax.swing.JPanel {
         labelID.setForeground(new java.awt.Color(50, 50, 50));
         labelID.setText("ID");
 
-        idTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                idTextFieldKeyPressed(evt);
-            }
-        });
-
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnBuscar.setForeground(new java.awt.Color(0, 108, 158));
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
@@ -355,41 +357,71 @@ public class VistaPasajeros extends javax.swing.JPanel {
         });
         pasajerosTablaScroll.setViewportView(pasajerosTabla);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(50, 50, 50));
+        jLabel1.setText("DNI");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(50, 50, 50));
+        jLabel2.setText("APELLIDO");
+
+        txtBusquedaID.addActionListener(this::txtBusquedaIDActionPerformed);
+
+        txtBusquedaDNI.addActionListener(this::txtBusquedaDNIActionPerformed);
+
+        txtBusquedaApellido.addActionListener(this::txtBusquedaApellidoActionPerformed);
+
         javax.swing.GroupLayout consultaPanelLayout = new javax.swing.GroupLayout(consultaPanel);
         consultaPanel.setLayout(consultaPanelLayout);
         consultaPanelLayout.setHorizontalGroup(
             consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, consultaPanelLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, consultaPanelLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(consultaPanelLayout.createSequentialGroup()
                         .addComponent(tituloConsultaPanel)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, consultaPanelLayout.createSequentialGroup()
-                        .addComponent(labelID)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pasajerosTablaScroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, consultaPanelLayout.createSequentialGroup()
+                        .addGroup(consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(consultaPanelLayout.createSequentialGroup()
-                                .addComponent(idTextField)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(29, 29, 29))
+                                .addGroup(consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelID)
+                                    .addComponent(txtBusquedaID, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(80, 80, 80)
+                                .addGroup(consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(txtBusquedaDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                                .addGroup(consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(consultaPanelLayout.createSequentialGroup()
+                                        .addComponent(txtBusquedaApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(80, 80, 80)
+                                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel2)))
+                            .addComponent(pasajerosTablaScroll))
+                        .addGap(30, 30, 30))))
         );
         consultaPanelLayout.setVerticalGroup(
             consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(consultaPanelLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(tituloConsultaPanel)
-                .addGap(18, 18, 18)
-                .addGroup(consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(idTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-                        .addComponent(labelID)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(34, 34, 34)
+                .addGroup(consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(consultaPanelLayout.createSequentialGroup()
+                        .addGroup(consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelID)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(consultaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBusquedaID, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtBusquedaDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtBusquedaApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(pasajerosTablaScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addGap(14, 14, 14))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -398,17 +430,17 @@ public class VistaPasajeros extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(headerVista, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(crudPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(consultaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(crudPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(consultaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(headerVista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
+                .addGap(28, 28, 28)
                 .addComponent(consultaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(crudPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -425,42 +457,36 @@ public class VistaPasajeros extends javax.swing.JPanel {
     }//GEN-LAST:event_pasajerosTablaMouseClicked
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String idIngresado = idTextField.getText().trim();
+        String id = txtBusquedaID.getText().trim();
+        String dni = txtBusquedaDNI.getText().trim();
+        String apellido = txtBusquedaApellido.getText().trim().toLowerCase();
 
-        if (idIngresado.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe completar el campo ID.");
+        if (id.isEmpty() && dni.isEmpty() && apellido.isEmpty()) {
+            cargarPasajeros();
             return;
         }
 
-        try {
-            int idPasajero = Integer.parseInt(idIngresado);
-            Pasajero p = pasajeroData.buscarPasajero(idPasajero);
+        if (!id.isEmpty() && !id.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "El ID debe ser numérico.");
+            return;
+        }
 
-            if (p == null) {
-                JOptionPane.showMessageDialog(this, "Pasajero no encontrado.");
-                return;
+        cargarPasajeros();
+
+        for (int i = modelo.getRowCount() - 1; i >= 0; i--) {
+            boolean coincide = (id.isEmpty() || modelo.getValueAt(i, 0).toString().equals(id))
+                    && (dni.isEmpty() || modelo.getValueAt(i, 3).toString().equals(dni))
+                    && (apellido.isEmpty() || modelo.getValueAt(i, 2).toString().toLowerCase().contains(apellido));
+
+            if (!coincide) {
+                modelo.removeRow(i);
             }
+        }
 
-            for (int i = 0; i < modelo.getRowCount(); i++) {
-                int idTabla = Integer.parseInt(modelo.getValueAt(i, 0).toString());
-
-                if (idTabla == p.getIdPasajero()) {
-                    pasajerosTabla.setRowSelectionInterval(i, i);
-                    pasajerosTabla.scrollRectToVisible(pasajerosTabla.getCellRect(i, 0, true));
-                    cargarFormulario(i);
-                    break;
-                }
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El id debe ser un número.");
+        if (modelo.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No se encontraron pasajeros.");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void idTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_idTextFieldKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            btnBuscarActionPerformed(null);
-        }
-    }//GEN-LAST:event_idTextFieldKeyPressed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         String idPasajero = txtIdOR.getText().trim();
@@ -585,6 +611,18 @@ public class VistaPasajeros extends javax.swing.JPanel {
         modoNuevo();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
+    private void txtBusquedaIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBusquedaIDActionPerformed
+        btnBuscar.doClick();
+    }//GEN-LAST:event_txtBusquedaIDActionPerformed
+
+    private void txtBusquedaDNIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBusquedaDNIActionPerformed
+        btnBuscar.doClick();
+    }//GEN-LAST:event_txtBusquedaDNIActionPerformed
+
+    private void txtBusquedaApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBusquedaApellidoActionPerformed
+        btnBuscar.doClick();
+    }//GEN-LAST:event_txtBusquedaApellidoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoTextField;
@@ -600,7 +638,8 @@ public class VistaPasajeros extends javax.swing.JPanel {
     private javax.swing.JPanel headerVista;
     private javax.swing.JLabel iconoVista;
     private javax.swing.JLabel idLabel;
-    private javax.swing.JTextField idTextField;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel labelApellido;
     private javax.swing.JLabel labelCorreo;
     private javax.swing.JLabel labelDNI;
@@ -616,6 +655,9 @@ public class VistaPasajeros extends javax.swing.JPanel {
     private javax.swing.JLabel tituloConsultaPanel;
     private javax.swing.JLabel tituloCrudPanel;
     private javax.swing.JLabel tituloVista;
+    private javax.swing.JTextField txtBusquedaApellido;
+    private javax.swing.JTextField txtBusquedaDNI;
+    private javax.swing.JTextField txtBusquedaID;
     private javax.swing.JTextField txtIdOR;
     // End of variables declaration//GEN-END:variables
 
@@ -669,7 +711,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
     }
 
     private void cargarFormulario(int fila) {
-        idTextField.setText(pasajerosTabla.getValueAt(fila, 0).toString());
+        //idTextField.setText(pasajerosTabla.getValueAt(fila, 0).toString());
         txtIdOR.setText(pasajerosTabla.getValueAt(fila, 0).toString());
         nombreTextField.setText(pasajerosTabla.getValueAt(fila, 1).toString());
         apellidoTextField.setText(pasajerosTabla.getValueAt(fila, 2).toString());

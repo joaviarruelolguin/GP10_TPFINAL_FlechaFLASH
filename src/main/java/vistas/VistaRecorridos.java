@@ -31,6 +31,8 @@ public class VistaRecorridos extends javax.swing.JPanel {
 
     }
 
+    
+
     private void configurarTablaRecorridos() {
         String[] columnas = {"Descripción", "Cantidad de paradas", "Estado"};
         javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(columnas, 0) {
@@ -485,7 +487,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
         lblParadasRecorrido = new javax.swing.JLabel();
 
         headerVista.setBackground(new java.awt.Color(20, 43, 73));
-        headerVista.setPreferredSize(new java.awt.Dimension(181, 85));
+        headerVista.setPreferredSize(new java.awt.Dimension(181, 114));
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(242, 242, 242));
@@ -508,7 +510,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
         headerVistaLayout.setVerticalGroup(
             headerVistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerVistaLayout.createSequentialGroup()
-                .addContainerGap(29, Short.MAX_VALUE)
+                .addContainerGap(58, Short.MAX_VALUE)
                 .addGroup(headerVistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -559,6 +561,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblRecorridos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         tblRecorridos.setRowHeight(30);
         tblRecorridos.setSelectionBackground(new java.awt.Color(190, 215, 245));
         tblRecorridos.setSelectionForeground(new java.awt.Color(23, 47, 77));

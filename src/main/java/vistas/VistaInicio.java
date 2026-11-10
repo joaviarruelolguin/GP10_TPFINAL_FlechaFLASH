@@ -23,9 +23,122 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
 
     public VistaInicio() {
         initComponents();
+        configurarAccesosRapidos();
+        configurarDisenoAdaptable();
+        configurarTarjetasSalidas();
         NotificadorCambios.agregarListener(this);
         sincronizarDatos();
     }
+
+    private void configurarAccesosRapidos() {
+        configurarTarjeta(pnlNuevaVenta, icono1, lblVenta, jLabel2, jLabel4);
+        configurarTarjeta(pnlNuevaSalida, icono2, jLabel1, jLabel3, jLabel5);
+    }
+
+    private void configurarTarjeta(javax.swing.JPanel tarjeta, javax.swing.JLabel icono, javax.swing.JLabel titulo, javax.swing.JLabel descripcion, javax.swing.JLabel flecha) {
+        tarjeta.removeAll();
+        tarjeta.setLayout(new java.awt.GridBagLayout());
+
+        javax.swing.JPanel textos = new javax.swing.JPanel();
+        textos.setOpaque(false);
+        textos.setLayout(new javax.swing.BoxLayout(textos, javax.swing.BoxLayout.Y_AXIS));
+        textos.add(titulo);
+        textos.add(descripcion);
+
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.gridy = 0;
+        gbc.insets = new java.awt.Insets(10, 12, 10, 12);
+
+        gbc.gridx = 0;
+        gbc.weightx = 0;
+        gbc.fill = java.awt.GridBagConstraints.NONE;
+        tarjeta.add(icono, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 1;
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        tarjeta.add(textos, gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 0;
+        gbc.fill = java.awt.GridBagConstraints.NONE;
+        tarjeta.add(flecha, gbc);
+
+        tarjeta.revalidate();
+        tarjeta.repaint();
+    }
+
+    private void configurarTarjetasSalidas() {
+        configurarTarjetaSalida(pnlSalida1, lblHorario1, lblDestino1, lblColectivo1, lblTiempo1);
+        configurarTarjetaSalida(pnlSalida2, lblHorario2, lblDestino2, lblColectivo2, lblTiempo2);
+        configurarTarjetaSalida(pnlSalida3, lblHorario3, lblDestino3, lblColectivo3, lblTiempo3);
+    }
+
+    private void configurarTarjetaSalida(javax.swing.JPanel tarjeta, javax.swing.JLabel horario, javax.swing.JLabel destino, javax.swing.JLabel colectivo, javax.swing.JLabel estado) {
+        tarjeta.removeAll();
+        tarjeta.setLayout(new java.awt.GridBagLayout());
+
+        javax.swing.JPanel informacion = new javax.swing.JPanel();
+        informacion.setOpaque(false);
+        informacion.setLayout(new javax.swing.BoxLayout(informacion, javax.swing.BoxLayout.Y_AXIS));
+        informacion.add(destino);
+        informacion.add(colectivo);
+
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.gridy = 0;
+        gbc.insets = new java.awt.Insets(10, 12, 10, 12);
+
+        gbc.gridx = 0;
+        gbc.weightx = 0;
+        gbc.fill = java.awt.GridBagConstraints.NONE;
+        tarjeta.add(horario, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 1;
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        tarjeta.add(informacion, gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 0;
+        gbc.fill = java.awt.GridBagConstraints.NONE;
+        tarjeta.add(estado, gbc);
+    }
+
+
+    
+    private void configurarDisenoAdaptable() {
+        removeAll();
+        setLayout(new java.awt.GridBagLayout());
+
+        agregarFila(lblTituloPrincipal, 0, 22);
+        agregarFila(lblSubtitulo, 1, 5);
+        agregarFila(pnlEstadisticas, 2, 55);
+        agregarFila(jSeparator1, 3, 10);
+        agregarFila(lblAccesosRapidos1, 4, 5);
+        agregarFila(pnlAccesosRapidos, 5, 12);
+        agregarFila(jSeparator2, 6, 50);
+        agregarFila(lblProximasSalidas, 7, 5);
+        agregarFila(pnlListadoSalidas, 8, 12);
+
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        gbc.weighty = 1;
+        gbc.fill = java.awt.GridBagConstraints.VERTICAL;
+        add(javax.swing.Box.createVerticalGlue(), gbc);
+    }
+
+    private void agregarFila(java.awt.Component componente, int fila, int espacioSuperior) {
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = fila;
+        gbc.weightx = 1;
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gbc.anchor = java.awt.GridBagConstraints.WEST;
+        gbc.insets = new java.awt.Insets(espacioSuperior, 50, 0, 50);
+        add(componente, gbc);
+    }
+
 
     private void sincronizarDatos() {
         cargarEstadisticas();
@@ -604,19 +717,23 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblProximasSalidas)
-                            .addComponent(lblAccesosRapidos1))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(lblAccesosRapidos1)
+                        .addGap(0, 471, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pnlListadoSalidas, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(pnlEstadisticas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(pnlAccesosRapidos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addContainerGap(50, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnlEstadisticas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pnlAccesosRapidos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(51, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblProximasSalidas)
+                        .addGap(416, 416, 416))
+                    .addComponent(pnlListadoSalidas, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -633,28 +750,24 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
                 .addComponent(lblAccesosRapidos1)
                 .addGap(18, 18, 18)
                 .addComponent(pnlAccesosRapidos, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(45, 45, 45)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(30, 30, 30)
                 .addComponent(lblProximasSalidas)
                 .addGap(18, 18, 18)
                 .addComponent(pnlListadoSalidas, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void pnlNuevaVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlNuevaVentaMouseClicked
-        
-        
-        
-        
+       
+         firePropertyChange("navegar", null, "VENTAPASAJES");        
     }//GEN-LAST:event_pnlNuevaVentaMouseClicked
 
     private void pnlNuevaSalidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlNuevaSalidaMouseClicked
-        
-        
-        
-        
+
+        firePropertyChange("navegar", null, "SALIDASHORARIOS");
     }//GEN-LAST:event_pnlNuevaSalidaMouseClicked
 
     private void pnlSalida1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlSalida1MouseClicked

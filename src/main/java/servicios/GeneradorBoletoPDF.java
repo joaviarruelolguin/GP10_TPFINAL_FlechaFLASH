@@ -20,6 +20,21 @@ public class GeneradorBoletoPDF {
         );
 
         try {
+
+            // Crear la carpeta donde guardaremos los boletos
+            Path carpetaBoletos = Paths.get("boletos");
+
+            Files.createDirectories(carpetaBoletos);
+
+            // Definir el nombre y la ubicación del PDF
+            Path archivoPDF = carpetaBoletos.resolve("BoletoPrueba.pdf");
+
+            PdfWriter.getInstance(
+                    documento,
+                    new FileOutputStream(archivoPDF.toFile())
+            );
+
+            documento.open();
             // Buscar la imagen dentro de los recursos del proyecto
             java.net.URL rutaImagen = getClass().getResource(
                     "/encabezado_flechaflash.png"
@@ -40,21 +55,6 @@ public class GeneradorBoletoPDF {
 
 // Agregar el encabezado al PDF
             documento.add(encabezado);
-
-            // Crear la carpeta donde guardaremos los boletos
-            Path carpetaBoletos = Paths.get("boletos");
-
-            Files.createDirectories(carpetaBoletos);
-
-            // Definir el nombre y la ubicación del PDF
-            Path archivoPDF = carpetaBoletos.resolve("BoletoPrueba.pdf");
-
-            PdfWriter.getInstance(
-                    documento,
-                    new FileOutputStream(archivoPDF.toFile())
-            );
-
-            documento.open();
 
             documento.add(new Paragraph("FLECHAFLASH"));
             documento.add(new Paragraph("BOLETO DE VIAJE"));
