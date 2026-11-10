@@ -276,7 +276,7 @@ import javax.swing.SwingUtilities;
         tituloGestion.setText("Ventas realizadas");
 
         subtituloGestion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        subtituloGestion.setForeground(new java.awt.Color(102, 102, 102));
+        subtituloGestion.setForeground(new java.awt.Color(82, 100, 125));
         subtituloGestion.setText("Historial y consulta de operaciones ");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N

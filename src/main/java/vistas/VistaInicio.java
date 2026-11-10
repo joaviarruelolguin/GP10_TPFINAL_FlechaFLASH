@@ -274,7 +274,7 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
         lblTituloPrincipal.setText("Panel principal");
 
         lblSubtitulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblSubtitulo.setForeground(new java.awt.Color(100, 116, 139));
+        lblSubtitulo.setForeground(new java.awt.Color(82, 100, 125));
         lblSubtitulo.setText("Bienvenido a FlechaFLASH");
 
         pnlEstadisticas.setLayout(new java.awt.GridLayout(2, 2, 20, 20));
@@ -729,9 +729,7 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblProximasSalidas)
-                        .addGap(416, 416, 416))
+                    .addComponent(lblProximasSalidas)
                     .addComponent(pnlListadoSalidas, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(51, 51, 51))
         );

@@ -118,7 +118,7 @@ public class VistaColectivos extends javax.swing.JPanel {
         tituloGestion.setText("Gestión de colectivos");
 
         subtituloGestion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        subtituloGestion.setForeground(new java.awt.Color(102, 102, 102));
+        subtituloGestion.setForeground(new java.awt.Color(82, 100, 125));
         subtituloGestion.setText("Administrá la flota y su documentación  ");
 
         tblColectivos.setModel(new javax.swing.table.DefaultTableModel(
