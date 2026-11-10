@@ -22,7 +22,10 @@ public class VistaRecorridos extends javax.swing.JPanel {
         initComponents();
 
         pnlParadas.setLayout(new javax.swing.BoxLayout(pnlParadas, javax.swing.BoxLayout.Y_AXIS));
-        pnlParadas.setBackground(java.awt.Color.WHITE);
+        pnlParadas.setBackground(new java.awt.Color(242,239,239));
+        
+        pnlParadas.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder
+        (new java.awt.Color(206, 206, 206)), javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 0)));
 
         configurarTablaRecorridos();
         configurarEventos();
@@ -230,12 +233,15 @@ public class VistaRecorridos extends javax.swing.JPanel {
         fila.setLayout(new javax.swing.BoxLayout(fila, javax.swing.BoxLayout.X_AXIS));
         fila.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
         fila.setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, 40));
-        fila.setBackground(java.awt.Color.WHITE);
+        fila.setBackground(new java.awt.Color(242, 239, 239));
 
         javax.swing.JLabel lblOrden = new javax.swing.JLabel(String.valueOf(orden));
-        lblOrden.setPreferredSize(new java.awt.Dimension(25, 28));
-        lblOrden.setMinimumSize(new java.awt.Dimension(25, 28));
-        lblOrden.setMaximumSize(new java.awt.Dimension(25, 28));
+        //lblOrden.setPreferredSize(new java.awt.Dimension(35, 28));
+        //fila.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        lblOrden.setMinimumSize(new java.awt.Dimension(35, 28));
+        lblOrden.setMaximumSize(new java.awt.Dimension(35, 28));
+        //lblOrden.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 20, 0, 0));
+        lblOrden.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.JTextField txtNombre = new javax.swing.JTextField(14);
         txtNombre.setPreferredSize(new java.awt.Dimension(320, 28));
@@ -278,10 +284,12 @@ public class VistaRecorridos extends javax.swing.JPanel {
             actualizarOrdenesParadas();
         });
 
+        //fila.add(javax.swing.Box.createHorizontalGlue());
         fila.add(lblOrden);
         fila.add(txtNombre);
         fila.add(txtDistancia);
         fila.add(btnEliminarFila);
+        //fila.add(javax.swing.Box.createHorizontalGlue());
 
         camposNombreParada.add(txtNombre);
         camposDistanciaParada.add(txtDistancia);
@@ -462,6 +470,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
         headerVista = new java.awt.Panel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -485,6 +494,8 @@ public class VistaRecorridos extends javax.swing.JPanel {
         lblDatosRecorrido = new javax.swing.JLabel();
         pnlParadas = new javax.swing.JPanel();
         lblParadasRecorrido = new javax.swing.JLabel();
+
+        jMenu1.setText("jMenu1");
 
         headerVista.setBackground(new java.awt.Color(20, 43, 73));
         headerVista.setPreferredSize(new java.awt.Dimension(181, 114));
@@ -586,7 +597,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
         pnlFormularioRecorrido.setBackground(new java.awt.Color(238, 238, 238));
 
         pnlDescripcion.setBackground(new java.awt.Color(255, 255, 255));
-        pnlDescripcion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
+        pnlDescripcion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(206, 206, 206)));
         pnlDescripcion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pnlDescripcionMouseClicked(evt);
@@ -644,6 +655,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
         lblDatosRecorrido.setText("Datos del recorrido");
 
         pnlParadas.setBackground(new java.awt.Color(238, 238, 238));
+        pnlParadas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(206, 206, 206)));
         pnlParadas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pnlParadasMouseClicked(evt);
@@ -767,6 +779,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
     private java.awt.Panel headerVista;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDatosRecorrido;
     private javax.swing.JLabel lblDescripcion;

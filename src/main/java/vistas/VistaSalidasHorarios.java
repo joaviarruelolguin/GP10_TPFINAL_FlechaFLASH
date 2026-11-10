@@ -317,7 +317,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
                     .addGroup(pnlDatosSalidaLayout.createSequentialGroup()
                         .addGap(59, 59, 59)
                         .addComponent(dtChFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                .addGap(58, 58, 58)
                 .addGroup(pnlDatosSalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(spnHoraSalida)
                     .addComponent(lblHoraSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -409,7 +409,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
                 .addGroup(layout.createSequentialGroup()
                     .addGap(45, 45, 45)
                     .addComponent(lblSalidasRegistradas1)
-                    .addContainerGap(615, Short.MAX_VALUE)))
+                    .addContainerGap(601, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -72,7 +72,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                   <Component id="lblSalidasRegistradas1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="615" max="32767" attributes="0"/>
+                  <EmptySpace pref="601" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -362,7 +362,7 @@
                           <Component id="dtChFecha" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="109" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="spnHoraSalida" max="32767" attributes="0"/>
                       <Component id="lblHoraSalida" max="32767" attributes="0"/>
