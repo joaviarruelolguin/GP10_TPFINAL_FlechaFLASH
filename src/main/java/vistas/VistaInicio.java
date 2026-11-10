@@ -135,7 +135,7 @@ public class VistaInicio extends javax.swing.JPanel implements PropertyChangeLis
         gbc.weightx = 1;
         gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gbc.anchor = java.awt.GridBagConstraints.WEST;
-        gbc.insets = new java.awt.Insets(espacioSuperior, 50, 0, 50);
+        gbc.insets = new java.awt.Insets(espacioSuperior, 50, 30, 50);
         add(componente, gbc);
     }
 

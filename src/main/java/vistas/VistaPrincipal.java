@@ -124,7 +124,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         btnInicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/inicio.png"))); // NOI18N
         btnInicio.setText("Inicio");
         btnInicio.setBorderPainted(false);
-        btnInicio.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnInicio.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnInicio.setFocusPainted(false);
         btnInicio.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnInicio.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -136,7 +136,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         btnPasajeros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/pasajeros.png"))); // NOI18N
         btnPasajeros.setText("Pasajeros");
         btnPasajeros.setBorderPainted(false);
-        btnPasajeros.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPasajeros.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnPasajeros.setFocusPainted(false);
         btnPasajeros.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnPasajeros.addActionListener(this::btnPasajerosActionPerformed);
@@ -147,7 +147,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         btnColectivos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/colectivos.png"))); // NOI18N
         btnColectivos.setText("Colectivos ");
         btnColectivos.setBorderPainted(false);
-        btnColectivos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnColectivos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnColectivos.setFocusPainted(false);
         btnColectivos.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnColectivos.addActionListener(this::btnColectivosActionPerformed);
@@ -158,7 +158,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         btnRecorridos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/recorridos.png"))); // NOI18N
         btnRecorridos.setText("Recorridos");
         btnRecorridos.setBorderPainted(false);
-        btnRecorridos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRecorridos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRecorridos.setFocusPainted(false);
         btnRecorridos.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnRecorridos.addActionListener(this::btnRecorridosActionPerformed);
@@ -169,7 +169,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         btnVentasRealizadas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/ventas_realizadas.png"))); // NOI18N
         btnVentasRealizadas.setText("Ventas realizadas");
         btnVentasRealizadas.setBorderPainted(false);
-        btnVentasRealizadas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVentasRealizadas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnVentasRealizadas.setFocusPainted(false);
         btnVentasRealizadas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnVentasRealizadas.addActionListener(this::btnVentasRealizadasActionPerformed);
@@ -180,7 +180,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         btnVentasPasajes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/venta_pasajes.png"))); // NOI18N
         btnVentasPasajes.setText("Ventas de pasajes");
         btnVentasPasajes.setBorderPainted(false);
-        btnVentasPasajes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVentasPasajes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnVentasPasajes.setFocusPainted(false);
         btnVentasPasajes.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnVentasPasajes.addActionListener(this::btnVentasPasajesActionPerformed);
@@ -203,7 +203,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         btnSalidasHorarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/salidas_horarios.png"))); // NOI18N
         btnSalidasHorarios.setText("Salidas y horarios");
         btnSalidasHorarios.setBorderPainted(false);
-        btnSalidasHorarios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalidasHorarios.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSalidasHorarios.setFocusPainted(false);
         btnSalidasHorarios.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnSalidasHorarios.addActionListener(this::btnSalidasHorariosActionPerformed);
@@ -214,7 +214,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         btnAsientos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/asientos.png"))); // NOI18N
         btnAsientos.setText("Asientos ");
         btnAsientos.setBorderPainted(false);
-        btnAsientos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAsientos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAsientos.setFocusPainted(false);
         btnAsientos.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnAsientos.addActionListener(this::btnAsientosActionPerformed);
@@ -279,7 +279,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSubtitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(9, 9, 9)
                 .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -318,7 +318,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE)
+            .addComponent(pnPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
         );
 
         pack();
