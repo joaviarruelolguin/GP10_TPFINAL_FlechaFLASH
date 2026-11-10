@@ -37,6 +37,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
     
 
     private void configurarTablaRecorridos() {
+
         String[] columnas = {"Descripción", "Cantidad de paradas", "Estado"};
         javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(columnas, 0) {
             @Override
@@ -44,7 +45,30 @@ public class VistaRecorridos extends javax.swing.JPanel {
                 return false;
             }
         };
+
         tblRecorridos.setModel(modelo);
+        tblRecorridos.setRowHeight(40);  // ALTO
+        tblRecorridos.setBackground(java.awt.Color.WHITE);
+        tblRecorridos.setForeground(new java.awt.Color(23, 47, 77));
+        tblRecorridos.setShowGrid(true);
+        tblRecorridos.setGridColor(new java.awt.Color(220, 220, 220));
+        tblRecorridos.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        tblRecorridos.setFillsViewportHeight(true);
+
+        tblRecorridos.setIntercellSpacing(new java.awt.Dimension(1, 3));
+        tblRecorridos.setSelectionBackground(new java.awt.Color(190, 225, 242));
+        
+        javax.swing.table.DefaultTableCellRenderer centrado = new javax.swing.table.DefaultTableCellRenderer();
+        centrado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        for (int i = 0; i < tblRecorridos.getColumnCount(); i++) {
+            tblRecorridos.getColumnModel().getColumn(i).setCellRenderer(centrado);
+        }
+
+        ((javax.swing.table.DefaultTableCellRenderer) tblRecorridos.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tblRecorridos.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 28));
+        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
+        scrollRecorridos.getViewport().setBackground(java.awt.Color.WHITE);
+
     }
 
     private void cargarRecorridos() {
@@ -546,6 +570,8 @@ public class VistaRecorridos extends javax.swing.JPanel {
         tblRecorridos.setForeground(new java.awt.Color(23, 47, 77));
         tblRecorridos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null},
+                {null, null, null},
                 {null, null, null},
                 {null, null, null},
                 {null, null, null},

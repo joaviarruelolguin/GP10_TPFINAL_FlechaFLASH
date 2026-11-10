@@ -203,7 +203,7 @@
                   <Color blue="4d" green="2f" red="17" type="rgb"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="3" rowCount="6">
+                  <Table columnCount="3" rowCount="8">
                     <Column editable="false" title="Descripci&#xf3;n" type="java.lang.String"/>
                     <Column editable="false" title="Paradas" type="java.lang.Integer"/>
                     <Column editable="false" title="Estado" type="java.lang.String"/>
