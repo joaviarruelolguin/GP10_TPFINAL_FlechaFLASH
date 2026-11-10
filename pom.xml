@@ -31,12 +31,20 @@
     </dependencies>
     <build>
         <resources>
+
+            <!-- Recursos existentes del proyecto -->
             <resource>
                 <directory>src/main/java</directory>
                 <includes>
                     <include>iconos/**</include>
                 </includes>
             </resource>
+
+            <!-- Imágenes y otros recursos para los PDF -->
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+
         </resources>
     </build>
 
