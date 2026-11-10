@@ -622,7 +622,7 @@ public class VistaRecorridos extends javax.swing.JPanel {
 
         pnlFormularioRecorrido.setBackground(new java.awt.Color(238, 238, 238));
 
-        pnlDescripcion.setBackground(new java.awt.Color(255, 255, 255));
+        pnlDescripcion.setBackground(new java.awt.Color(242, 239, 239));
         pnlDescripcion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(206, 206, 206)));
         pnlDescripcion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

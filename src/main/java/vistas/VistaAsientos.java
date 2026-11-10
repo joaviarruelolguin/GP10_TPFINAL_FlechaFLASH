@@ -34,6 +34,7 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
         initComponents();
         NotificadorCambios.agregarListener(this);
         armarTabla();
+        configurarTablaAsientos();
         cargarColectivos();
     }
     
@@ -92,6 +93,33 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
         modelo.setColumnIdentifiers(new String[]{"N.º de asiento", "ID del asiento", "Estado"});
         jTable1.setModel(modelo);
     }
+    
+    
+    private void configurarTablaAsientos() {
+
+        jTable1.setRowHeight(40);
+        jTable1.setBackground(java.awt.Color.WHITE);
+        jTable1.setForeground(new java.awt.Color(23, 47, 77));
+        jTable1.setShowGrid(true);
+        jTable1.setGridColor(new java.awt.Color(220, 220, 220));
+        jTable1.setIntercellSpacing(new java.awt.Dimension(1, 3));
+        jTable1.setFillsViewportHeight(true);
+        jTable1.setSelectionBackground(new java.awt.Color(190, 225, 242));
+
+        javax.swing.table.DefaultTableCellRenderer centrado = new javax.swing.table.DefaultTableCellRenderer();
+        centrado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(centrado);
+        }
+
+        ((javax.swing.table.DefaultTableCellRenderer) jTable1.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jTable1.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 28));
+
+        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
+    }
+
+    
 
     private void cargarColectivos() {
         List<Colectivo> colectivos = colectivoData.listarColectivos();
@@ -172,6 +200,7 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
+        GestionPanel.setBackground(new java.awt.Color(242, 239, 239));
         GestionPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(206, 206, 206)));
 
         lbidAsiento.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -236,8 +265,6 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -251,6 +278,7 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
         jScrollPane1.setViewportView(jTable1);
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(20, 43, 73));
         jLabel2.setText("Lista de Asientos por Colectivo");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -269,11 +297,11 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -284,16 +312,16 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(headerVista, javax.swing.GroupLayout.DEFAULT_SIZE, 863, Short.MAX_VALUE)
+            .addComponent(headerVista, javax.swing.GroupLayout.DEFAULT_SIZE, 869, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap(35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(GestionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 30, Short.MAX_VALUE)))
+                        .addGap(0, 35, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -304,9 +332,9 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addComponent(GestionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(48, 48, 48)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

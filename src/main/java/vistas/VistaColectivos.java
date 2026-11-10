@@ -33,6 +33,7 @@ public class VistaColectivos extends javax.swing.JPanel {
     public VistaColectivos() {
         initComponents();
         armarCabecera();
+        configurarTablaColectivos();
         txtIdOR.setEditable(false);
         modoNuevo();
         cargarColectivos();
@@ -51,6 +52,35 @@ public class VistaColectivos extends javax.swing.JPanel {
         tblColectivos.setModel(modelo);
     }
 
+    
+    
+    private void configurarTablaColectivos() {
+
+        tblColectivos.setRowHeight(40);
+        tblColectivos.setBackground(java.awt.Color.WHITE);
+        tblColectivos.setForeground(new java.awt.Color(23, 47, 77));
+        tblColectivos.setShowGrid(true);
+        tblColectivos.setGridColor(new java.awt.Color(220, 220, 220));
+        tblColectivos.setIntercellSpacing(new java.awt.Dimension(1, 3));
+        tblColectivos.setFillsViewportHeight(true);
+        tblColectivos.setSelectionBackground(new java.awt.Color(190, 225, 242));
+
+        javax.swing.table.DefaultTableCellRenderer centrado = new javax.swing.table.DefaultTableCellRenderer();
+        centrado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        for (int i = 0; i < tblColectivos.getColumnCount(); i++) {
+            tblColectivos.getColumnModel().getColumn(i).setCellRenderer(centrado);
+        }
+
+        ((javax.swing.table.DefaultTableCellRenderer) tblColectivos.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tblColectivos.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 28));
+
+        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
+     
+    }
+
+   
+    
     public void cargarColectivos() {
         modelo.setRowCount(0);
 
