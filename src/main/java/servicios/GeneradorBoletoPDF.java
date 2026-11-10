@@ -1,189 +1,267 @@
+
 package servicios;
+
+import modelo.Venta;
+import modelo.Pasaje;
+import modelo.HorarioParadaViaje;
 
 import org.openpdf.text.Document;
 import org.openpdf.text.Paragraph;
+import org.openpdf.text.Image;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.Font;
+import org.openpdf.text.Chunk;
 import org.openpdf.text.pdf.PdfWriter;
+import org.openpdf.text.pdf.PdfPTable;
+import org.openpdf.text.pdf.PdfPCell;
 
+import java.awt.Color;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.openpdf.text.Image;
-import org.openpdf.text.pdf.PdfPTable;
-import org.openpdf.text.pdf.PdfPCell;
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class GeneradorBoletoPDF {
 
-    public void generarPDFPrueba() {
+    public boolean generarBoleto(Venta venta, Pasaje pasaje) {
 
-        Document documento = new Document(
-                org.openpdf.text.PageSize.A4.rotate(),
-                25, 25, 25, 25
-        );
+        Document documento = null;
 
         try {
+            // Validar los datos necesarios
+            if (venta == null || pasaje == null
+                    || pasaje.getPasajero() == null
+                    || pasaje.getAsiento() == null
+                    || pasaje.getRutaViaje() == null
+                    || pasaje.getParadaOrigen() == null
+                    || pasaje.getParadaDestino() == null) {
 
-            // Crear la carpeta donde guardaremos los boletos
+                throw new IllegalArgumentException(
+                        "Faltan datos necesarios para generar el boleto.");
+            }
+
+            // Obtener la hora de salida desde la parada de origen
+            LocalDateTime horaSalida = null;
+
+            for (HorarioParadaViaje horario
+                    : pasaje.getRutaViaje().getHorarios()) {
+
+                if (horario.getParadaRecorrido()
+                        .getIdParadaRecorrido()
+                        == pasaje.getParadaOrigen().getIdParadaRecorrido()) {
+
+                    horaSalida = horario.getFechaHoraSalida();
+                    break;
+                }
+            }
+
+            if (horaSalida == null) {
+                throw new IllegalStateException(
+                        "No se encontró el horario de salida de la parada de origen.");
+            }
+
+            // Recuperar los datos reales del boleto
+            String nombrePasajero
+                    = pasaje.getPasajero().getNombre() + " "
+                    + pasaje.getPasajero().getApellido();
+
+            String asiento = String.valueOf(
+                    pasaje.getAsiento().getNumeroAsiento());
+
+            String origen = pasaje.getParadaOrigen().getNombreLugar();
+            String destino = pasaje.getParadaDestino().getNombreLugar();
+
+            String fecha = horaSalida.format(
+                    DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+            String hora = horaSalida.format(
+                    DateTimeFormatter.ofPattern("HH:mm")) + " hs";
+
+            String numeroVenta = String.valueOf(venta.getIdVenta());
+            String numeroBoleto = String.valueOf(pasaje.getIdPasaje());
+
+            String importe = NumberFormat.getCurrencyInstance(
+                    new Locale("es", "AR"))
+                    .format(pasaje.getPrecioFinal());
+
+            // Crear la carpeta de boletos
             Path carpetaBoletos = Paths.get("boletos");
-
             Files.createDirectories(carpetaBoletos);
 
-            // Definir el nombre y la ubicación del PDF
-            Path archivoPDF = carpetaBoletos.resolve("BoletoPrueba.pdf");
+            // Crear un archivo diferente para cada pasaje
+            Path archivoPDF = carpetaBoletos.resolve(
+                    "Boleto_Venta_" + venta.getIdVenta()
+                    + "_Pasaje_" + pasaje.getIdPasaje() + ".pdf");
+
+            // Configurar el tamaño del boleto: 16 x 10 cm
+            Rectangle tamañoBoleto = new Rectangle(
+                    16 * 28.34646f,
+                    10 * 28.34646f
+            );
+
+            documento = new Document(
+                    tamañoBoleto, 12, 12, 105, 12);
 
             PdfWriter.getInstance(
                     documento,
-                    new FileOutputStream(archivoPDF.toFile())
-            );
+                    new FileOutputStream(archivoPDF.toFile()));
 
             documento.open();
-            // Buscar la imagen dentro de los recursos del proyecto
-            java.net.URL rutaImagen = getClass().getResource(
-                    "/encabezado_flechaflash.png"
-            );
 
-// Comprobar que la imagen exista
+            // Cargar el encabezado institucional
+            java.net.URL rutaImagen = getClass().getResource(
+                    "/encabezado_flechaflash.png");
+
             if (rutaImagen == null) {
                 throw new IllegalStateException(
-                        "No se encontró la imagen del encabezado."
-                );
+                        "No se encontró la imagen del encabezado.");
             }
 
-// Cargar y ajustar la imagen al documento
             Image encabezado = Image.getInstance(rutaImagen);
 
-            encabezado.scaleToFit(790, 170);
-            encabezado.setAlignment(Image.ALIGN_CENTER);
+            float anchoOriginal = encabezado.getWidth();
+            float altoOriginal = encabezado.getHeight();
 
-// Agregar el encabezado al PDF
+            float nuevoAncho = tamañoBoleto.getWidth();
+            float nuevoAlto = nuevoAncho * altoOriginal / anchoOriginal;
+
+            encabezado.scaleAbsolute(nuevoAncho, nuevoAlto);
+
+            encabezado.setAbsolutePosition(
+                    0, tamañoBoleto.getHeight() - nuevoAlto);
+
             documento.add(encabezado);
 
-            // Título del boleto
-            Paragraph titulo = new Paragraph("BOLETO DE VIAJE");
+            // Colores institucionales
+            Color azulFlecha = new Color(18, 63, 120);
+            Color naranjaFlecha = new Color(245, 155, 35);
+
+            Font fuenteEtiqueta = new Font(
+                    Font.HELVETICA, 8, Font.BOLD, azulFlecha);
+
+            Font fuenteValor = new Font(
+                    Font.HELVETICA, 9, Font.NORMAL, Color.BLACK);
+
+            // Título
+            Font fuenteTitulo = new Font(
+                    Font.HELVETICA, 10, Font.BOLD);
+
+            Paragraph titulo = new Paragraph(
+                    "BOLETO DE VIAJE", fuenteTitulo);
+
             titulo.setAlignment(Paragraph.ALIGN_CENTER);
+            titulo.setSpacingBefore(2);
+            titulo.setSpacingAfter(4);
+
             documento.add(titulo);
 
-// Crear una tabla con dos columnas
+            // Tabla de pasajero y asiento
             PdfPTable tablaPasajero = new PdfPTable(2);
-
-// Establecer el ancho de la tabla
             tablaPasajero.setWidthPercentage(100);
-
-// Definir la proporción de las columnas
             tablaPasajero.setWidths(new float[]{70, 30});
 
-// Crear la celda del pasajero
-            PdfPCell celdaPasajero = new PdfPCell(
-                    new Paragraph("PASAJERO\nJuan Perez")
-            );
+            agregarCelda(tablaPasajero, "PASAJERO", nombrePasajero,
+                    fuenteEtiqueta, fuenteValor);
 
-            celdaPasajero.setPadding(12);
+            agregarCelda(tablaPasajero, "ASIENTO", asiento,
+                    fuenteEtiqueta, fuenteValor);
 
-// Crear la celda del asiento
-            PdfPCell celdaAsiento = new PdfPCell(
-                    new Paragraph("ASIENTO\n12")
-            );
-
-            celdaAsiento.setPadding(12);
-
-// Agregar las celdas a la tabla
-            tablaPasajero.addCell(celdaPasajero);
-            tablaPasajero.addCell(celdaAsiento);
-
-// Agregar la tabla al documento
             documento.add(tablaPasajero);
-            // Crear la tabla de origen y destino
+
+            // Tabla de origen y destino
             PdfPTable tablaRecorrido = new PdfPTable(2);
-
-// La tabla ocupará todo el ancho disponible
             tablaRecorrido.setWidthPercentage(100);
-
-// Distribuir el espacio entre las dos columnas
             tablaRecorrido.setWidths(new float[]{50, 50});
 
-// Crear la celda del origen
-            PdfPCell celdaOrigen = new PdfPCell(
-                    new Paragraph("ORIGEN\nSanta Rosa del Conlara")
-            );
-            celdaOrigen.setPadding(12);
+            agregarCelda(tablaRecorrido, "ORIGEN", origen,
+                    fuenteEtiqueta, fuenteValor);
 
-// Crear la celda del destino
-            PdfPCell celdaDestino = new PdfPCell(
-                    new Paragraph("DESTINO\nSan Luis")
-            );
-            celdaDestino.setPadding(12);
+            agregarCelda(tablaRecorrido, "DESTINO", destino,
+                    fuenteEtiqueta, fuenteValor);
 
-// Agregar las celdas a la tabla
-            tablaRecorrido.addCell(celdaOrigen);
-            tablaRecorrido.addCell(celdaDestino);
-
-// Agregar la tabla al documento
             documento.add(tablaRecorrido);
-            // Crear la tabla de fecha y hora del viaje
+
+            // Tabla de fecha y hora
             PdfPTable tablaFechaHora = new PdfPTable(2);
-
-// Ocupar todo el ancho disponible
             tablaFechaHora.setWidthPercentage(100);
-
-// Distribuir el espacio entre las columnas
             tablaFechaHora.setWidths(new float[]{50, 50});
 
-// Crear la celda de fecha
-            PdfPCell celdaFecha = new PdfPCell(
-                    new Paragraph("FECHA DEL VIAJE\n15/11/2026")
-            );
-            celdaFecha.setPadding(12);
+            agregarCelda(tablaFechaHora, "FECHA DEL VIAJE", fecha,
+                    fuenteEtiqueta, fuenteValor);
 
-// Crear la celda de hora
-            PdfPCell celdaHora = new PdfPCell(
-                    new Paragraph("HORA DE SALIDA\n08:30 hs")
-            );
-            celdaHora.setPadding(12);
+            agregarCelda(tablaFechaHora, "HORA DE SALIDA", hora,
+                    fuenteEtiqueta, fuenteValor);
 
-// Agregar las celdas a la tabla
-            tablaFechaHora.addCell(celdaFecha);
-            tablaFechaHora.addCell(celdaHora);
-
-// Agregar la tabla al documento
             documento.add(tablaFechaHora);
-            // Crear la tabla de identificación de la venta y del boleto
-            PdfPTable tablaIdentificacion = new PdfPTable(2);
 
+            // Tabla de identificación
+            PdfPTable tablaIdentificacion = new PdfPTable(2);
             tablaIdentificacion.setWidthPercentage(100);
             tablaIdentificacion.setWidths(new float[]{50, 50});
 
-// Celda con el número de venta
-            PdfPCell celdaVenta = new PdfPCell(
-                    new Paragraph("N.º DE VENTA\n000125")
-            );
-            celdaVenta.setPadding(12);
+            agregarCelda(tablaIdentificacion, "N.º DE VENTA", numeroVenta,
+                    fuenteEtiqueta, fuenteValor);
 
-// Celda con el número de boleto
-            PdfPCell celdaBoleto = new PdfPCell(
-                    new Paragraph("N.º DE BOLETO\n000348")
-            );
-            celdaBoleto.setPadding(12);
+            agregarCelda(tablaIdentificacion, "N.º DE BOLETO", numeroBoleto,
+                    fuenteEtiqueta, fuenteValor);
 
-// Agregar las celdas
-            tablaIdentificacion.addCell(celdaVenta);
-            tablaIdentificacion.addCell(celdaBoleto);
-
-// Agregar la tabla al documento
             documento.add(tablaIdentificacion);
-            // Mostrar el precio individual del pasaje
-            Paragraph precio = new Paragraph("IMPORTE DEL PASAJE: $ 25.000,00");
+
+            // Importe individual del pasaje
+            Font fuenteImporte = new Font(
+                    Font.HELVETICA, 9, Font.BOLD, naranjaFlecha);
+
+            Paragraph precio = new Paragraph(
+                    "IMPORTE DEL PASAJE: " + importe,
+                    fuenteImporte);
+
             precio.setAlignment(Paragraph.ALIGN_RIGHT);
 
             documento.add(precio);
 
             documento.close();
+            documento = null;
 
-            System.out.println("PDF generado correctamente.");
+            System.out.println(
+                    "Boleto generado correctamente: " + archivoPDF);
+
+            return true;
 
         } catch (Exception e) {
 
-            System.out.println("Error al generar PDF: " + e.getMessage());
+            System.out.println(
+                    "Error al generar el boleto: " + e.getMessage());
 
+            return false;
+
+        } finally {
+
+            if (documento != null && documento.isOpen()) {
+                documento.close();
+            }
         }
+    }
+
+    // Método auxiliar para crear las celdas del boleto
+    private void agregarCelda(
+            PdfPTable tabla,
+            String etiqueta,
+            String valor,
+            Font fuenteEtiqueta,
+            Font fuenteValor) {
+
+        Paragraph contenido = new Paragraph();
+
+        contenido.add(new Chunk(etiqueta + "\n", fuenteEtiqueta));
+        contenido.add(new Chunk(valor, fuenteValor));
+
+        PdfPCell celda = new PdfPCell(contenido);
+        celda.setPadding(5);
+
+        tabla.addCell(celda);
     }
 }

@@ -8,7 +8,8 @@ public class TestGeneradorPDF {
 
         GeneradorBoletoPDF generador = new GeneradorBoletoPDF();
 
-        generador.generarPDFPrueba();
+//        generador.generarPDFPrueba();
+      
 
     }
 }

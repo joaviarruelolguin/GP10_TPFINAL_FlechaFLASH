@@ -306,32 +306,24 @@ public class VentaData {
             // si posteriormente falla el rollback o la restauración.
             Throwable errorPrincipal = null;
 
+       
             try {
 
                 // Iniciar la transacción.
-                // Desactivamos AutoCommit para que las operaciones no se confirmen
-                // individualmente, sino todas juntas al finalizar.
                 con.setAutoCommit(false);
-
                 transaccionIniciada = true;
 
-                // Insertar la venta.
-                // Preparamos la consulta SQL y solicitamos que MariaDB
-                // devuelva el ID generado automáticamente.
+                // Insertar la venta y recuperar su ID.
                 try (PreparedStatement psVenta = con.prepareStatement(
                         sqlVenta, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-                    // Establecemos los valores de cada parámetro de la consulta.
                     psVenta.setInt(1,
                             venta.getPasajeroComprador().getIdPasajero());
 
                     psVenta.setTimestamp(2,
                             Timestamp.valueOf(venta.getFechaHoraVenta()));
 
-                    // Convertimos el enum MedioPago a texto para guardarlo
-                    // en el campo VARCHAR de la base de datos.
                     psVenta.setString(3, venta.getMedioPago().name());
-
                     psVenta.setInt(4, venta.getCantidadCuotas());
                     psVenta.setInt(5, venta.getCantidadPasajes());
                     psVenta.setBigDecimal(6, venta.getImporteTotal());
@@ -339,12 +331,9 @@ public class VentaData {
                     psVenta.setString(8, venta.getNumeroComprobante());
                     psVenta.setBoolean(9, venta.isEstado());
 
-                    // Ejecutamos la inserción de la venta.
                     psVenta.executeUpdate();
 
-                    //  Recuperar el ID generado por MariaDB.
-                    // Este identificador será necesario para relacionar
-                    // los pasajes con la venta recién registrada.
+                    // Recuperar el ID generado por MariaDB.
                     try (ResultSet rs = psVenta.getGeneratedKeys()) {
 
                         if (!rs.next()) {
@@ -352,51 +341,47 @@ public class VentaData {
                                     "No se pudo obtener el ID de la venta.");
                         }
 
-                        // Guardamos el ID generado en el objeto Venta.
-                        // Guardamos el ID generado por MariaDB.
                         venta.setIdVenta(rs.getInt(1));
+                    }
 
-// Generamos el número del comprobante interno.
-                        String numeroComprobante
-                                = generarNumeroComprobante(venta.getIdVenta());
+                    // Generar el número del comprobante interno.
+                    String numeroComprobante
+                            = generarNumeroComprobante(venta.getIdVenta());
 
-// Establecemos el tipo y número de comprobante en el objeto.
-                        venta.setTipoComprobante("TICKET");
-                        venta.setNumeroComprobante(numeroComprobante);
+                    venta.setTipoComprobante("TICKET");
+                    venta.setNumeroComprobante(numeroComprobante);
 
-// Actualizamos los datos del comprobante en la base de datos.
-                        String sqlComprobante
-                                = "UPDATE venta SET tipoComprobante = ?, "
-                                + "numeroComprobante = ? WHERE idVenta = ?";
+                    // Actualizar los datos del comprobante.
+                    String sqlComprobante
+                            = "UPDATE venta SET tipoComprobante = ?, "
+                            + "numeroComprobante = ? WHERE idVenta = ?";
 
-                        try (PreparedStatement psComprobante
-                                = con.prepareStatement(sqlComprobante)) {
+                    try (PreparedStatement psComprobante
+                            = con.prepareStatement(sqlComprobante)) {
 
-                            psComprobante.setString(1, venta.getTipoComprobante());
-                            psComprobante.setString(2, venta.getNumeroComprobante());
-                            psComprobante.setInt(3, venta.getIdVenta());
+                        psComprobante.setString(1, venta.getTipoComprobante());
+                        psComprobante.setString(2, venta.getNumeroComprobante());
+                        psComprobante.setInt(3, venta.getIdVenta());
 
-                            int filasActualizadas = psComprobante.executeUpdate();
+                        int filasActualizadas = psComprobante.executeUpdate();
 
-                            if (filasActualizadas != 1) {
-                                throw new SQLException(
-                                        "No se pudo guardar el comprobante de la venta.");
-                            }
+                        if (filasActualizadas != 1) {
+                            throw new SQLException(
+                                    "No se pudo guardar el comprobante de la venta.");
                         }
                     }
                 }
-                // Creamos el objeto que permite comprobar la disponibilidad de los asientos.
+
+                // Crear el objeto que comprueba la disponibilidad de los asientos.
                 PasajeData pasajeData = new PasajeData();
 
                 // Insertar todos los pasajes asociados a la venta.
-                // Utilizamos un PreparedStatement para ejecutar la misma
-                // consulta varias veces, cambiando sus parámetros.
-                try (PreparedStatement psPasaje = con.prepareStatement(sqlPasaje)) {
+                try (PreparedStatement psPasaje = con.prepareStatement(
+                        sqlPasaje, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-                    // Recorremos la lista de pasajes que forman parte de la venta.
+                    // Recorrer todos los pasajes de la venta.
                     for (Pasaje pasaje : pasajes) {
 
-                        // Asignamos los valores correspondientes a cada parámetro.
                         psPasaje.setInt(1,
                                 pasaje.getPasajero().getIdPasajero());
 
@@ -418,7 +403,8 @@ public class VentaData {
                         psPasaje.setBigDecimal(7, pasaje.getPrecioFinal());
                         psPasaje.setBoolean(8, true);
                         psPasaje.setInt(9, venta.getIdVenta());
-                        // Comprobamos que el asiento esté disponible para el tramo solicitado.
+
+                        // Comprobar la disponibilidad del asiento.
                         boolean disponible = pasajeData.asientoDisponible(
                                 pasaje.getRutaViaje().getIdRutaViaje(),
                                 pasaje.getAsiento().getIdAsiento(),
@@ -430,68 +416,61 @@ public class VentaData {
                                     "El asiento no está disponible para el tramo seleccionado.");
                         }
 
-                        // Ejecutamos la inserción del pasaje.
-                        pasaje.setEstado(true);
+                        // Ejecutar la inserción del pasaje.
                         psPasaje.executeUpdate();
 
-                        // Asociamos el objeto pasaje con la venta.
+                        // Recuperar el ID generado por MariaDB.
+                        try (ResultSet rsPasaje = psPasaje.getGeneratedKeys()) {
+
+                            if (!rsPasaje.next()) {
+                                throw new SQLException(
+                                        "No se pudo obtener el ID del pasaje.");
+                            }
+
+                            pasaje.setIdPasaje(rsPasaje.getInt(1));
+                        }
+
+                        // Asociar el pasaje con la venta.
                         pasaje.setVenta(venta);
+                        pasaje.setEstado(true);
                     }
                 }
 
                 // Confirmar todas las operaciones.
-                // Si la venta y todos sus pasajes se insertaron correctamente,
-                // guardamos definitivamente los cambios en MariaDB.
                 con.commit();
 
-                // Devolvemos true para indicar que la venta fue registrada.
+                // Indicar que la venta se registró correctamente.
                 return true;
 
             } catch (SQLException | RuntimeException e) {
 
-                // Guardamos la excepción original para no perderla
-                // si posteriormente falla el rollback o la restauración.
+                // Guardar la excepción original.
                 errorPrincipal = e;
 
                 // Deshacer las operaciones si algo falla.
-                // Solo intentamos el rollback si la transacción se inició.
                 if (transaccionIniciada) {
 
                     try {
-
                         con.rollback();
 
                     } catch (SQLException errorRollback) {
-
-                        // Si también falla el rollback, agregamos ese error
-                        // como información secundaria de la excepción original.
                         e.addSuppressed(errorRollback);
                     }
                 }
 
-                // Propagamos la excepción original.
                 throw e;
 
             } finally {
 
-                // Restaurar el comportamiento anterior.
-                // Recuperamos la configuración de AutoCommit que tenía
-                // la conexión antes de comenzar la transacción.
+                // Restaurar el estado anterior de AutoCommit.
                 try {
-
                     con.setAutoCommit(autoCommitAnterior);
 
                 } catch (SQLException errorRestauracion) {
 
-                    // Si ya existía un error, agregamos la falla de
-                    // restauración sin ocultar la excepción original.
                     if (errorPrincipal != null) {
-
                         errorPrincipal.addSuppressed(errorRestauracion);
-
                     } else {
-
-                        // Si no había otro error, propagamos este.
                         throw errorRestauracion;
                     }
                 }
@@ -499,7 +478,7 @@ public class VentaData {
         }
     }
 
-    // Devuelve todas las ventas (la más reciente primero), con el comprador cargado.
+        // Devuelve todas las ventas (la más reciente primero), con el comprador cargado.
     public List<Venta> listarVentas() {
 
         List<Venta> ventas = new ArrayList<>();
