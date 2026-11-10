@@ -48,6 +48,7 @@ import javax.swing.SwingUtilities;
             txtNumeroComprobante.addActionListener(e -> filtrarVentas());
             txtComprador.addActionListener(e -> filtrarVentas());
             armarCabecera();
+            configurarTablaVentas();
             cargarMediosPago();
             cargarVentas();
         }
@@ -71,6 +72,34 @@ import javax.swing.SwingUtilities;
 
             tblVentas.setModel(modelo);
         }
+
+        private void configurarTablaVentas() {
+
+            tblVentas.setRowHeight(40);
+            tblVentas.setBackground(java.awt.Color.WHITE);
+            tblVentas.setForeground(new java.awt.Color(23, 47, 77));
+            tblVentas.setShowGrid(true);
+            tblVentas.setGridColor(new java.awt.Color(220, 220, 220));
+            tblVentas.setIntercellSpacing(new java.awt.Dimension(1, 3));
+            tblVentas.setFillsViewportHeight(true);
+            tblVentas.setSelectionBackground(new java.awt.Color(190, 225, 242));
+
+            javax.swing.table.DefaultTableCellRenderer centrado
+                    = new javax.swing.table.DefaultTableCellRenderer();
+            centrado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+            for (int i = 0; i < tblVentas.getColumnCount(); i++) {
+                tblVentas.getColumnModel().getColumn(i).setCellRenderer(centrado);
+            }
+
+            ((javax.swing.table.DefaultTableCellRenderer) tblVentas.getTableHeader().getDefaultRenderer())
+                    .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+            tblVentas.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 28));
+
+            jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
+        }
+
 
         public void cargarVentas() {
             listaVentas = ventaData.listarVentas();

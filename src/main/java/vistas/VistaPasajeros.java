@@ -28,6 +28,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
     public VistaPasajeros() {
         initComponents();
         armarCabecera();
+        configurarTablaPasajeros();
         txtIdOR.setEditable(false);
         cargarPasajeros();
 
@@ -47,6 +48,34 @@ public class VistaPasajeros extends javax.swing.JPanel {
         pasajerosTabla.setModel(modelo);
     }
 
+    private void configurarTablaPasajeros() {
+
+        pasajerosTabla.setRowHeight(40);
+        pasajerosTabla.setBackground(java.awt.Color.WHITE);
+        pasajerosTabla.setForeground(new java.awt.Color(23, 47, 77));
+        pasajerosTabla.setShowGrid(true);
+        pasajerosTabla.setGridColor(new java.awt.Color(220, 220, 220));
+        pasajerosTabla.setIntercellSpacing(new java.awt.Dimension(1, 3));
+        pasajerosTabla.setFillsViewportHeight(true);
+        pasajerosTabla.setSelectionBackground(new java.awt.Color(190, 225, 242));
+
+        javax.swing.table.DefaultTableCellRenderer centrado
+                = new javax.swing.table.DefaultTableCellRenderer();
+        centrado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        for (int i = 0; i < pasajerosTabla.getColumnCount(); i++) {
+            pasajerosTabla.getColumnModel().getColumn(i).setCellRenderer(centrado);
+        }
+
+        ((javax.swing.table.DefaultTableCellRenderer) pasajerosTabla.getTableHeader().getDefaultRenderer())
+                .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        pasajerosTabla.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 28));
+
+        pasajerosTablaScroll.getViewport().setBackground(java.awt.Color.WHITE);
+    }
+
+    
     public void cargarPasajeros() {
         modelo.setRowCount(0);
 
@@ -167,7 +196,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
         crudPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(206, 206, 206)));
 
         tituloCrudPanel.setBackground(new java.awt.Color(20, 43, 73));
-        tituloCrudPanel.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        tituloCrudPanel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         tituloCrudPanel.setForeground(new java.awt.Color(23, 47, 77));
         tituloCrudPanel.setText("Gestión");
 
@@ -324,7 +353,7 @@ public class VistaPasajeros extends javax.swing.JPanel {
         consultaPanel.setBackground(new java.awt.Color(242, 239, 239));
         consultaPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(206, 206, 206)));
 
-        tituloConsultaPanel.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        tituloConsultaPanel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         tituloConsultaPanel.setForeground(new java.awt.Color(23, 47, 77));
         tituloConsultaPanel.setText("Lista de pasajeros");
 
