@@ -124,6 +124,10 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
     private void cargarColectivos() {
         List<Colectivo> colectivos = colectivoData.listarColectivos();
 
+        colectivos.sort(java.util.Comparator
+                .comparing(Colectivo::getMarca, String.CASE_INSENSITIVE_ORDER)
+                .thenComparing(Colectivo::getModelo, String.CASE_INSENSITIVE_ORDER));
+
         cbColectivo.removeAllItems();
 
         for (Colectivo colectivo : colectivos) {
@@ -145,6 +149,8 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
         });
         
         cbColectivo.setSelectedIndex(-1);
+        
+        
     }
 
 
@@ -357,7 +363,17 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
     }//GEN-LAST:event_btConsultarActionPerformed
 
     private void cbColectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbColectivoActionPerformed
-        // TODO add your handling code here:
+
+        Colectivo colectivo = (Colectivo) cbColectivo.getSelectedItem();
+
+        if (colectivo != null) {
+            lblCantidadAsientos.setText(String.valueOf(colectivo.getCapacidad()));
+            lblMatricula.setText(colectivo.getMatricula());
+        } else {
+            lblCantidadAsientos.setText("—");
+            lblMatricula.setText("—");
+        }
+
     }//GEN-LAST:event_cbColectivoActionPerformed
 
 

@@ -72,15 +72,27 @@ public class VistaRecorridos extends javax.swing.JPanel {
     }
 
     private void cargarRecorridos() {
-        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tblRecorridos.getModel();
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tblRecorridos.getModel();
+
         modelo.setRowCount(0);
+
         recorridosCargados = recorridoData.listarRecorridos();
 
+        recorridosCargados.sort(java.util.Comparator.comparing(
+                Recorrido::getDescripcion,
+                String.CASE_INSENSITIVE_ORDER
+        ));
+
         for (Recorrido recorrido : recorridosCargados) {
-            int cantidadParadas = recorrido.getParadas() == null ? 0 : recorrido.getParadas().size();
+            int cantidadParadas = recorrido.getParadas() == null
+                    ? 0 : recorrido.getParadas().size();
+
             String estado = recorrido.isEstado() ? "Activo" : "Inactivo";
 
-            modelo.addRow(new Object[]{recorrido.getDescripcion(), cantidadParadas, estado});
+            modelo.addRow(new Object[]{
+                recorrido.getDescripcion(), cantidadParadas, estado
+            });
         }
     }
 

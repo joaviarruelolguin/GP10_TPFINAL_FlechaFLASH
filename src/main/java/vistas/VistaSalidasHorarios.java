@@ -530,6 +530,27 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         tblSalidasRegistradas.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 28));
 
         jScrollPane2.getViewport().setBackground(java.awt.Color.WHITE);
+
+        tblSalidasRegistradas.setToolTipText("");
+
+        tblSalidasRegistradas.addMouseMotionListener(
+                new java.awt.event.MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(java.awt.event.MouseEvent e) {
+                int fila = tblSalidasRegistradas.rowAtPoint(e.getPoint());
+                int columna = tblSalidasRegistradas.columnAtPoint(e.getPoint());
+
+                if (fila >= 0 && columna >= 0) {
+                    Object valor = tblSalidasRegistradas.getValueAt(fila, columna);
+                    tblSalidasRegistradas.setToolTipText(
+                            valor == null ? null : valor.toString()
+                    );
+                } else {
+                    tblSalidasRegistradas.setToolTipText(null);
+                }
+            }
+        });
+
     }
 
     
@@ -538,7 +559,14 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         cmbRecorrido.removeAllItems();
         cmbColectivo.removeAllItems();
 
-        for (Recorrido recorrido : recorridoData.listarRecorridosActivos()) {
+        List<Recorrido> recorridos = recorridoData.listarRecorridosActivos();
+
+        recorridos.sort(java.util.Comparator.comparing(
+                Recorrido::getDescripcion,
+                String.CASE_INSENSITIVE_ORDER
+        ));
+
+        for (Recorrido recorrido : recorridos) {
             cmbRecorrido.addItem(recorrido);
         }
 
@@ -553,7 +581,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
 
                 if (valor instanceof Colectivo) {
                     Colectivo colectivo = (Colectivo) valor;
-                    setText(colectivo.getMarca() + " – " + colectivo.getModelo() + " – " + colectivo.getMatricula());
+                    setText(colectivo.getMarca() + " – " + colectivo.getMatricula());
                 }
 
                 return this;
@@ -576,6 +604,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         btnDesactivar.setEnabled(!habilitar);
         btnEliminar.setEnabled(!habilitar);
     }
+    
 
     private void cargarTablaSalidas() {
 
@@ -584,11 +613,16 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
 
         listaRutas = rutaViajeData.listarRutasViaje();
 
+        listaRutas.sort(java.util.Comparator.comparing(
+                ruta -> ruta.getRecorrido().getDescripcion(),
+                String.CASE_INSENSITIVE_ORDER
+        ));
+
         for (RutaViaje ruta : listaRutas) {
             modelo.addRow(new Object[]{
                 ruta.getIdRutaViaje(),
                 ruta.getRecorrido().getDescripcion(),
-                ruta.getColectivo().getMarca() + " – " + ruta.getColectivo().getModelo(),
+                ruta.getColectivo().getMatricula(),
                 ruta.getFechaHoraSalida().toLocalDate(),
                 ruta.getFechaHoraSalida().toLocalTime(),
                 ruta.getPrecioBase(),
@@ -596,6 +630,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
             });
         }
     }
+
 
 
     private void cmbRecorridoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRecorridoActionPerformed
