@@ -209,11 +209,11 @@ public class VistaColectivos extends javax.swing.JPanel {
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
+        btnLimpiar.setBackground(new java.awt.Color(204, 153, 0));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnLimpiar.setForeground(new java.awt.Color(255, 102, 0));
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clean.png"))); // NOI18N
         btnLimpiar.setText("Limpiar campos");
-        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 0)));
+        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 0), 0));
         btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
 
         labelID.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
