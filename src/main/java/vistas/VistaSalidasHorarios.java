@@ -253,20 +253,32 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         ));
         jScrollPane2.setViewportView(tblSalidasRegistradas);
 
+        btnNuevo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnNuevo.setForeground(new java.awt.Color(0, 102, 102));
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Nuevo.png"))); // NOI18N
         btnNuevo.setText("Nuevo");
+        btnNuevo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102)));
         btnNuevo.addActionListener(this::btnNuevoActionPerformed);
 
+        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(0, 102, 0));
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Editar.png"))); // NOI18N
         btnEditar.setText("Editar");
+        btnEditar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 0)));
         btnEditar.addActionListener(this::btnEditarActionPerformed);
 
+        btnDesactivar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnDesactivar.setForeground(new java.awt.Color(153, 0, 0));
         btnDesactivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Desactivar.png"))); // NOI18N
         btnDesactivar.setText("Desactivar");
+        btnDesactivar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 0, 0)));
         btnDesactivar.addActionListener(this::btnDesactivarActionPerformed);
 
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 0, 0));
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/borrar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
+        btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
         btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
         lblDatosSalidas.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -362,6 +374,7 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
         btnGuardar.setBackground(new java.awt.Color(0, 108, 158));
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.setOpaque(true);
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
@@ -399,13 +412,13 @@ public class VistaSalidasHorarios extends javax.swing.JPanel implements Property
                 .addContainerGap(55, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(170, 170, 170)
-                .addComponent(btnNuevo)
-                .addGap(35, 35, 35)
-                .addComponent(btnEditar)
-                .addGap(35, 35, 35)
-                .addComponent(btnDesactivar)
-                .addGap(35, 35, 35)
-                .addComponent(btnEliminar)
+                .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnDesactivar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
