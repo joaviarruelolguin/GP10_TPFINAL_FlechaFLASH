@@ -210,9 +210,10 @@ public class VistaColectivos extends javax.swing.JPanel {
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnLimpiar.setForeground(new java.awt.Color(50, 50, 50));
+        btnLimpiar.setForeground(new java.awt.Color(255, 102, 0));
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clean.png"))); // NOI18N
         btnLimpiar.setText("Limpiar campos");
+        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 0)));
         btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
 
         labelID.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
@@ -350,15 +351,17 @@ public class VistaColectivos extends javax.swing.JPanel {
         btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
         btnDesactivar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnDesactivar.setForeground(new java.awt.Color(51, 51, 51));
+        btnDesactivar.setForeground(new java.awt.Color(153, 0, 0));
         btnDesactivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Desactivar.png"))); // NOI18N
         btnDesactivar.setText("Desactivar");
+        btnDesactivar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 0, 0)));
         btnDesactivar.addActionListener(this::btnDesactivarActionPerformed);
 
         btnActivar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnActivar.setForeground(new java.awt.Color(51, 51, 51));
+        btnActivar.setForeground(new java.awt.Color(51, 204, 0));
         btnActivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/activar.png"))); // NOI18N
         btnActivar.setText("Activar");
+        btnActivar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 204, 0)));
         btnActivar.addActionListener(this::btnActivarActionPerformed);
 
         idLabelBusqueda.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
@@ -368,10 +371,10 @@ public class VistaColectivos extends javax.swing.JPanel {
         txtIdBusqueda.addActionListener(this::txtIdBusquedaActionPerformed);
 
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnBuscar.setForeground(new java.awt.Color(0, 108, 158));
+        btnBuscar.setForeground(new java.awt.Color(102, 102, 102));
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
         btnBuscar.setText("Buscar");
-        btnBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 108, 158)));
+        btnBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
         txtBusquedaMarca.addActionListener(this::txtBusquedaMarcaActionPerformed);
