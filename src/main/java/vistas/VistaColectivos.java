@@ -220,11 +220,12 @@ public class VistaColectivos extends javax.swing.JPanel {
         labelID.setForeground(new java.awt.Color(51, 51, 51));
         labelID.setText("ID");
 
+        btnActualizar.setBackground(new java.awt.Color(0, 102, 51));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnActualizar.setForeground(new java.awt.Color(0, 108, 158));
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/actualizar.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
-        btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 108, 158)));
+        btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 108, 158), 0));
         btnActualizar.addActionListener(this::btnActualizarActionPerformed);
 
         javax.swing.GroupLayout panelCrudLayout = new javax.swing.GroupLayout(panelCrud);
