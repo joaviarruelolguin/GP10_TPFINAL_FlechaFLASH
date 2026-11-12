@@ -550,7 +550,7 @@
           <Color blue="33" green="33" red="33" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/iconos/actualizar.png"/>
+          <Image iconType="3" name="/iconos/activar.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Activar"/>
       </Properties>

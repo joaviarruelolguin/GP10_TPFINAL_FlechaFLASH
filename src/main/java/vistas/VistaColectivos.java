@@ -357,7 +357,7 @@ public class VistaColectivos extends javax.swing.JPanel {
 
         btnActivar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnActivar.setForeground(new java.awt.Color(51, 51, 51));
-        btnActivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/actualizar.png"))); // NOI18N
+        btnActivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/activar.png"))); // NOI18N
         btnActivar.setText("Activar");
         btnActivar.addActionListener(this::btnActivarActionPerformed);
 
