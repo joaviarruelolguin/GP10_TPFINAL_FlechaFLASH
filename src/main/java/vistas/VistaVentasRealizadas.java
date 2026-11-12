@@ -346,14 +346,14 @@ import javax.swing.SwingUtilities;
         jLabel2.setText("Medios de pago");
 
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnBuscar.setForeground(new java.awt.Color(0, 108, 158));
+        btnBuscar.setForeground(new java.awt.Color(102, 102, 102));
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
         btnBuscar.setText("Buscar");
-        btnBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 108, 158)));
+        btnBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
+        btnLimpiarFiltros1.setBackground(new java.awt.Color(204, 153, 0));
         btnLimpiarFiltros1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnLimpiarFiltros1.setForeground(new java.awt.Color(51, 51, 51));
         btnLimpiarFiltros1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clean.png"))); // NOI18N
         btnLimpiarFiltros1.setText("Limpiar");
         btnLimpiarFiltros1.addActionListener(this::btnLimpiarFiltros1ActionPerformed);
@@ -406,7 +406,10 @@ import javax.swing.SwingUtilities;
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
+        btnVerPasajes.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnVerPasajes.setForeground(new java.awt.Color(51, 51, 51));
         btnVerPasajes.setText("VER PASAJES");
+        btnVerPasajes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
         btnVerPasajes.addActionListener(this::btnVerPasajesActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -456,7 +459,7 @@ import javax.swing.SwingUtilities;
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addComponent(btnVerPasajes, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(btnVerPasajes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(

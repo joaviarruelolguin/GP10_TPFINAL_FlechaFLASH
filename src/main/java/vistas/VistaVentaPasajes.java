@@ -1814,10 +1814,8 @@ public class VistaVentaPasajes extends javax.swing.JPanel implements PropertyCha
         txtImporteTotal.setForeground(new java.awt.Color(45, 55, 70));
         txtImporteTotal.setText("jTextField1");
 
-        btnCancelarVenta.setBackground(new java.awt.Color(204, 204, 204));
         btnCancelarVenta.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnCancelarVenta.setForeground(new java.awt.Color(38, 54, 74));
-        btnCancelarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Desactivar.png"))); // NOI18N
+        btnCancelarVenta.setForeground(new java.awt.Color(82, 100, 125));
         btnCancelarVenta.setText("CANCELAR ");
         btnCancelarVenta.addActionListener(this::btnCancelarVentaActionPerformed);
 

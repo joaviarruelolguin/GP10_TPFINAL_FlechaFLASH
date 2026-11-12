@@ -211,8 +211,11 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
 
         lbidAsiento.setText("Seleccioná un colectivo");
 
+        btConsultar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btConsultar.setForeground(new java.awt.Color(102, 102, 102));
         btConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
         btConsultar.setText("Consultar");
+        btConsultar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         btConsultar.addActionListener(this::btConsultarActionPerformed);
 
         cbColectivo.addActionListener(this::cbColectivoActionPerformed);
@@ -239,8 +242,8 @@ public class VistaAsientos extends javax.swing.JPanel implements PropertyChangeL
                 .addGap(30, 30, 30)
                 .addGroup(GestionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cbColectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btConsultar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbidAsiento, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbidAsiento, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btConsultar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 246, Short.MAX_VALUE)
                 .addGroup(GestionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
