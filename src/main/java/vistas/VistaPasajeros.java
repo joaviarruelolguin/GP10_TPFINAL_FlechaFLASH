@@ -232,8 +232,9 @@ public class VistaPasajeros extends javax.swing.JPanel {
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
+        btnActualizar.setBackground(new java.awt.Color(0, 102, 51));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnActualizar.setForeground(new java.awt.Color(0, 108, 158));
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/actualizar.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
         btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 108, 158)));
@@ -246,8 +247,8 @@ public class VistaPasajeros extends javax.swing.JPanel {
         btnBorrar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
         btnBorrar.addActionListener(this::btnBorrarActionPerformed);
 
+        btnLimpiar.setBackground(new java.awt.Color(204, 153, 0));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnLimpiar.setForeground(new java.awt.Color(51, 51, 51));
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clean.png"))); // NOI18N
         btnLimpiar.setText("Limpiar campos");
         btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
@@ -362,10 +363,10 @@ public class VistaPasajeros extends javax.swing.JPanel {
         labelID.setText("ID");
 
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnBuscar.setForeground(new java.awt.Color(0, 108, 158));
+        btnBuscar.setForeground(new java.awt.Color(102, 102, 102));
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
         btnBuscar.setText("Buscar");
-        btnBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 108, 158)));
+        btnBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
         pasajerosTabla.setModel(new javax.swing.table.DefaultTableModel(
